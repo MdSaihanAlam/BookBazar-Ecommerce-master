@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.html import format_html
 from mptt.admin import MPTTModelAdmin
 from .models import (
     Author,
@@ -18,6 +19,15 @@ from .models import (
     UserProfile,
     Wishlist
 )
+from .templatetags.admin_dashboard import order_status
+
+admin.site.site_header = 'BookBazar admin'
+admin.site.site_title = 'BookBazar admin'
+admin.site.index_title = 'Store overview'
+
+
+def badge(label, style=''):
+    return format_html('<span class="bb-badge {}">{}</span>', style, label)
 
 
 class AuthorAdmin(admin.ModelAdmin):
@@ -37,16 +47,17 @@ class BookImageInline(admin.TabularInline):
 
 class BookAdmin(admin.ModelAdmin):
     list_display = [
-        'title',
-        'author',
+        'cover',
+        'book',
         'price',
         'discounted_price',
+        'stock_quantity',
         'featured',
-        'category',
         'is_available',
-        'stock_status',
-        'stock_quantity'
     ]
+    list_display_links = ['cover', 'book']
+    list_select_related = ['author', 'category']
+    list_per_page = 25
     list_filter = [
         'featured',
         'category',
@@ -118,23 +129,30 @@ class BookAdmin(admin.ModelAdmin):
         }),
     )
 
-    def stock_status(self, obj):
-        if obj.stock_quantity == 0:
-            return "❌ Out of Stock"
-        elif obj.stock_quantity < 5:
-            return f"⚠️ Low ({obj.stock_quantity})"
-        elif obj.stock_quantity < 10:
-            return f"🔶 Medium ({obj.stock_quantity})"
-        else:
-            return f"✅ Good ({obj.stock_quantity})"
-    stock_status.short_description = 'Stock Status'
-    stock_status.admin_order_field = 'stock_quantity'
+    @admin.display(description='')
+    def cover(self, obj):
+        return format_html('<img class="bb-cover" src="{}" alt="">', obj.image_url)
 
+    @admin.display(description='Book', ordering='title')
+    def book(self, obj):
+        details = ' · '.join(filter(None, [obj.author.name if obj.author else '', obj.category.name if obj.category else '']))
+        return format_html(
+            '<strong>{}</strong><div class="bb-sub">{}</div>{}',
+            obj.title, details or '—', self.stock_badge(obj),
+        )
+
+    def stock_badge(self, obj):
+        if obj.stock_quantity == 0:
+            return badge('Out of stock', 'is-danger')
+        if obj.stock_quantity < 5:
+            return badge(f'Only {obj.stock_quantity} left', 'is-warning')
+        return ''
+
+    @admin.display(description='Sale price')
     def discounted_price(self, obj):
         if obj.discount_price and obj.discount_price < obj.price:
-            return f"${obj.discount_price} (Save ${obj.price - obj.discount_price:.2f})"
-        return "—"
-    discounted_price.short_description = 'Discounted Price'
+            return format_html('${} <span class="bb-badge is-brand">−{}%</span>', obj.discount_price, obj.discount_percentage)
+        return '—'
 
     def make_featured(self, request, queryset):
         updated = queryset.update(featured=True)
@@ -193,20 +211,25 @@ class OrderItemAdmin(admin.ModelAdmin):
     book_display.short_description = 'Book'
 
     def get_final_price(self, obj):
-        return f"${obj.get_final_price():.2f}"
+        return f"${obj.get_final_price():,.2f}"
     get_final_price.short_description = 'Total Price'
 
 class OrderAdmin(admin.ModelAdmin):
     list_display = [
+        'reference',
         'user',
-        'ordered',
         'ordered_date',
-        'get_total',
+        'total',
+        'status',
         'being_delivered',
         'received',
-        'refund_requested',
         'refund_granted'
     ]
+    list_display_links = ['reference']
+    list_select_related = ['user']
+    date_hierarchy = 'ordered_date'
+    ordering = ['-ordered_date']
+    list_per_page = 25
     list_filter = [
         'ordered',
         'ordered_date',
@@ -220,6 +243,20 @@ class OrderAdmin(admin.ModelAdmin):
     readonly_fields = ['ordered_date', 'start_date']
 
     actions = ['mark_delivered', 'mark_received', 'grant_refunds']
+
+    @admin.display(description='Order', ordering='ref_code')
+    def reference(self, obj):
+        return f'#{obj.ref_code or obj.pk}'
+
+    @admin.display(description='Total')
+    def total(self, obj):
+        return f'${obj.get_total():,.2f}'
+
+    @admin.display(description='Status')
+    def status(self, obj):
+        if not obj.ordered:
+            return badge('Not paid')
+        return badge(*order_status(obj))
 
     def mark_delivered(self, request, queryset):
         updated = queryset.update(being_delivered=True)
@@ -355,7 +392,7 @@ class WishlistAdmin(admin.ModelAdmin):
     get_book_price.short_description = 'Price'
 
     def get_book_availability(self, obj):
-        return "✅ Available" if obj.book.is_available else "❌ Unavailable"
+        return badge('Available', 'is-success') if obj.book.is_available else badge('Unavailable', 'is-danger')
     get_book_availability.short_description = 'Available'
 
 

@@ -1,0 +1,89 @@
+{% extends "admin/index.html" %}
+{% load i18n admin_dashboard %}
+
+{% block content %}
+{% admin_dashboard as stats %}
+<div class="bb-dashboard">
+  <div class="bb-stats">
+    <a class="bb-stat" href="{{ stats.links.payments }}">
+      <span class="bb-stat-label">{% translate "Revenue, last 30 days" %}</span>
+      <span class="bb-stat-value">${{ stats.revenue_30d|floatformat:"2g" }}</span>
+      <span class="bb-stat-note">{% blocktranslate with total=stats.revenue_total|floatformat:"2g" %}${{ total }} all time{% endblocktranslate %}</span>
+    </a>
+    <a class="bb-stat" href="{{ stats.links.orders }}">
+      <span class="bb-stat-label">{% translate "Orders" %}</span>
+      <span class="bb-stat-value">{{ stats.orders_total }}</span>
+      <span class="bb-stat-note">{% blocktranslate with count=stats.orders_30d %}{{ count }} in the last 30 days{% endblocktranslate %}</span>
+    </a>
+    <a class="bb-stat {% if stats.to_ship %}is-alert{% endif %}" href="{{ stats.links.to_ship }}">
+      <span class="bb-stat-label">{% translate "To ship" %}</span>
+      <span class="bb-stat-value">{{ stats.to_ship }}</span>
+      <span class="bb-stat-note">{% blocktranslate count counter=stats.refunds_open %}{{ counter }} refund request open{% plural %}{{ counter }} refund requests open{% endblocktranslate %}</span>
+    </a>
+    <a class="bb-stat {% if stats.low_stock_count %}is-alert{% endif %}" href="{{ stats.links.low_stock }}">
+      <span class="bb-stat-label">{% translate "Low stock" %}</span>
+      <span class="bb-stat-value">{{ stats.low_stock_count }}</span>
+      <span class="bb-stat-note">{% blocktranslate with count=stats.books %}of {{ count }} books for sale{% endblocktranslate %}</span>
+    </a>
+    <a class="bb-stat" href="{{ stats.links.customers }}">
+      <span class="bb-stat-label">{% translate "Customers" %}</span>
+      <span class="bb-stat-value">{{ stats.customers }}</span>
+      <span class="bb-stat-note">{% blocktranslate with count=stats.customers_30d %}{{ count }} new in the last 30 days{% endblocktranslate %}</span>
+    </a>
+  </div>
+
+  <div class="bb-panels">
+    <section class="bb-panel">
+      <div class="bb-panel-head">
+        <h2>{% translate "Recent orders" %}</h2>
+        <a href="{{ stats.links.orders }}">{% translate "All orders" %} →</a>
+      </div>
+      {% if stats.recent_orders %}
+        <table>
+          {% for row in stats.recent_orders %}
+            <tr>
+              <td>
+                <a href="{{ row.url }}"><strong>#{{ row.order.ref_code|default:row.order.pk }}</strong></a>
+                <div class="bb-muted">{{ row.order.user.email }}</div>
+              </td>
+              <td class="bb-muted">{{ row.order.ordered_date|date:"DATE_FORMAT" }}</td>
+              <td><span class="bb-badge {{ row.status_style }}">{{ row.status }}</span></td>
+              <td class="bb-num">${{ row.total|floatformat:"2g" }}</td>
+            </tr>
+          {% endfor %}
+        </table>
+      {% else %}
+        <p class="bb-empty">{% translate "No orders yet. They will appear here as soon as customers check out." %}</p>
+      {% endif %}
+    </section>
+
+    <section class="bb-panel">
+      <div class="bb-panel-head">
+        <h2>{% translate "Running low" %}</h2>
+        <a href="{{ stats.links.books }}">{% translate "All books" %} →</a>
+      </div>
+      {% if stats.low_stock %}
+        <table>
+          {% for book in stats.low_stock %}
+            <tr>
+              <td>
+                <a class="bb-book" href="{% url 'admin:eco_book_change' book.pk %}">
+                  <img class="bb-cover" src="{{ book.image_url }}" alt="">
+                  <span><strong>{{ book.title }}</strong><div class="bb-muted">{{ book.author.name|default:"—" }}</div></span>
+                </a>
+              </td>
+              <td class="bb-num">
+                {% if book.stock_quantity == 0 %}<span class="bb-badge is-danger">{% translate "Out of stock" %}</span>
+                {% else %}<span class="bb-badge is-warning">{% blocktranslate with count=book.stock_quantity %}{{ count }} left{% endblocktranslate %}</span>{% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </table>
+      {% else %}
+        <p class="bb-empty">{% translate "Every book has at least 5 copies in stock." %}</p>
+      {% endif %}
+    </section>
+  </div>
+</div>
+{{ block.super }}
+{% endblock %}

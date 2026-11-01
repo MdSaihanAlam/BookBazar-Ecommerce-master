@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-02 01:07+0600\n"
+"POT-Creation-Date: 2026-11-02 01:44+0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -380,6 +380,91 @@ msgstr "নতুন বিভাগ যোগ করুন"
 msgid "Category added successfully!"
 msgstr "বিভাগ সফলভাবে যোগ হয়েছে!"
 
+#: .\templates\admin\base_site.html:18
+#: .\templates\store\partials\header.html:64
+msgid "Admin"
+msgstr "অ্যাডমিন"
+
+#: .\templates\admin\index.html:9
+msgid "Revenue, last 30 days"
+msgstr "আয়, গত ৩০ দিন"
+
+#: .\templates\admin\index.html:11
+#, python-format
+msgid "$%(total)s all time"
+msgstr "সব মিলিয়ে $%(total)s"
+
+#: .\templates\admin\index.html:14
+msgid "Orders"
+msgstr "অর্ডার"
+
+#: .\templates\admin\index.html:16
+#, python-format
+msgid "%(count)s in the last 30 days"
+msgstr "গত ৩০ দিনে %(count)sটি"
+
+#: .\templates\admin\index.html:19
+msgid "To ship"
+msgstr "পাঠাতে হবে"
+
+#: .\templates\admin\index.html:21
+msgid "%(counter)s refund request open"
+msgid_plural "%(counter)s refund requests open"
+msgstr[0] "%(counter)sটি রিফান্ড অনুরোধ খোলা"
+msgstr[1] "%(counter)sটি রিফান্ড অনুরোধ খোলা"
+
+#: .\templates\admin\index.html:24
+msgid "Low stock"
+msgstr "স্টক কম"
+
+#: .\templates\admin\index.html:26
+#, python-format
+msgid "of %(count)s books for sale"
+msgstr "বিক্রির জন্য থাকা %(count)sটি বইয়ের মধ্যে"
+
+#: .\templates\admin\index.html:29
+msgid "Customers"
+msgstr "গ্রাহক"
+
+#: .\templates\admin\index.html:31
+#, python-format
+msgid "%(count)s new in the last 30 days"
+msgstr "গত ৩০ দিনে %(count)s জন নতুন"
+
+#: .\templates\admin\index.html:38
+msgid "Recent orders"
+msgstr "সাম্প্রতিক অর্ডার"
+
+#: .\templates\admin\index.html:39
+msgid "All orders"
+msgstr "সব অর্ডার"
+
+#: .\templates\admin\index.html:56
+msgid "No orders yet. They will appear here as soon as customers check out."
+msgstr "এখনো কোনো অর্ডার নেই। গ্রাহকরা চেকআউট করলেই এখানে দেখা যাবে।"
+
+#: .\templates\admin\index.html:62
+msgid "Running low"
+msgstr "ফুরিয়ে আসছে"
+
+#: .\templates\admin\index.html:63 .\templates\store\browse_books.html:11
+#: .\templates\store\footer.html:20
+msgid "All books"
+msgstr "সব বই"
+
+#: .\templates\admin\index.html:76 .\templates\store\book_detail.html:55
+msgid "Out of stock"
+msgstr "স্টকে নেই"
+
+#: .\templates\admin\index.html:77
+#, python-format
+msgid "%(count)s left"
+msgstr "%(count)sটি বাকি"
+
+#: .\templates\admin\index.html:83
+msgid "Every book has at least 5 copies in stock."
+msgstr "প্রতিটি বইয়ের অন্তত ৫ কপি স্টকে আছে।"
+
 #: .\templates\store\basket.html:4 .\templates\store\basket.html:11
 #: .\templates\store\footer.html:22 .\templates\store\layout.html:112
 msgid "Your cart"
@@ -569,10 +654,6 @@ msgstr "স্টকে আছে, পাঠানোর জন্য প্র�
 msgid "Only %(count)s left, order soon"
 msgstr "মাত্র %(count)sটি বাকি, দ্রুত অর্ডার করুন"
 
-#: .\templates\store\book_detail.html:55
-msgid "Out of stock"
-msgstr "স্টকে নেই"
-
 #: .\templates\store\book_detail.html:62
 msgid "Quantity"
 msgstr "পরিমাণ"
@@ -670,10 +751,6 @@ msgstr "আমাদের দোকান"
 #, python-format
 msgid "Results for “%(query)s”"
 msgstr "“%(query)s”-এর ফলাফল"
-
-#: .\templates\store\browse_books.html:11 .\templates\store\footer.html:20
-msgid "All books"
-msgstr "সব বই"
 
 #: .\templates\store\browse_books.html:14
 #, python-format
@@ -1464,10 +1541,6 @@ msgstr "ঠিকানাসমূহ"
 #: .\templates\store\partials\header.html:63
 msgid "Add a book"
 msgstr "বই যোগ করুন"
-
-#: .\templates\store\partials\header.html:64
-msgid "Admin"
-msgstr "অ্যাডমিন"
 
 #: .\templates\store\partials\header.html:67
 #: .\templates\store\partials\header.html:99
