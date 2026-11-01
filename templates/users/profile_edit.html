@@ -37,8 +37,8 @@
     <h2 class="card-title">{% translate "Personal information" %}</h2>
     <div class="form-grid">
       <div class="form-grid-2">
-        {% include 'eco/partials/field.html' with field=form.first_name %}
-        {% include 'eco/partials/field.html' with field=form.last_name %}
+        {% include 'store/partials/field.html' with field=form.first_name %}
+        {% include 'store/partials/field.html' with field=form.last_name %}
       </div>
       <div class="field">
         <label for="email">{% translate "Email" %}</label>
@@ -46,8 +46,8 @@
         <span class="hint">{% translate "Your email is used to sign in and can't be changed here." %}</span>
       </div>
       <div class="form-grid-2">
-        {% include 'eco/partials/field.html' with field=form.phone %}
-        {% include 'eco/partials/field.html' with field=form.birthdate %}
+        {% include 'store/partials/field.html' with field=form.phone %}
+        {% include 'store/partials/field.html' with field=form.birthdate %}
       </div>
     </div>
   </section>
@@ -56,13 +56,13 @@
     <h2 class="card-title">{% translate "Preferences" %}</h2>
     <div class="form-grid">
       <div class="stack">
-        {% include 'eco/partials/field.html' with field=form.newsletter %}
-        {% include 'eco/partials/field.html' with field=form.order_updates %}
-        {% include 'eco/partials/field.html' with field=form.promotions %}
+        {% include 'store/partials/field.html' with field=form.newsletter %}
+        {% include 'store/partials/field.html' with field=form.order_updates %}
+        {% include 'store/partials/field.html' with field=form.promotions %}
       </div>
       <div class="form-grid-2">
-        {% include 'eco/partials/field.html' with field=form.language %}
-        {% include 'eco/partials/field.html' with field=form.currency %}
+        {% include 'store/partials/field.html' with field=form.language %}
+        {% include 'store/partials/field.html' with field=form.currency %}
       </div>
       <p class="hint muted text-sm">{% translate "The site is available in English and Bangla. Prices are shown in your chosen currency; card payments are charged in US dollars." %}</p>
     </div>

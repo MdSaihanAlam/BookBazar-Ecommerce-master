@@ -9,8 +9,8 @@ from django.utils.translation import gettext as _
 from django.views import generic
 from django.urls import reverse_lazy
 from django.utils.http import url_has_allowed_host_and_scheme
-from eco.middleware import activate_user_language
-from eco.models import Address, Order
+from store.middleware import activate_user_language
+from store.models import Address, Order
 from .forms import CustomUserCreationForm, ProfileEditForm
 from .models import UserProfile
 
@@ -18,11 +18,11 @@ from .models import UserProfile
 class RegisterView(generic.CreateView):
     template_name = 'users/register.html'
     form_class = CustomUserCreationForm
-    success_url = reverse_lazy('eco:home')
+    success_url = reverse_lazy('store:home')
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return redirect('eco:home')
+            return redirect('store:home')
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
@@ -34,7 +34,7 @@ class RegisterView(generic.CreateView):
 
 def login_view(request):
     if request.user.is_authenticated:
-        return redirect('eco:home')
+        return redirect('store:home')
 
     next_url = request.POST.get('next') or request.GET.get('next')
     if request.method == 'POST':
@@ -46,7 +46,7 @@ def login_view(request):
             messages.success(request, _('Welcome back, %(email)s!') % {'email': user.email})
             if next_url and url_has_allowed_host_and_scheme(next_url, allowed_hosts={request.get_host()}):
                 return redirect(next_url)
-            return redirect('eco:home')
+            return redirect('store:home')
     else:
         form = AuthenticationForm()
 
@@ -59,7 +59,7 @@ def logout_view(request):
     activate_user_language(request)
     if was_signed_in:
         messages.info(request, _('You have been logged out.'))
-    return redirect('eco:home')
+    return redirect('store:home')
 
 
 @login_required

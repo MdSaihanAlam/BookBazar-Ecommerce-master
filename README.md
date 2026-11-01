@@ -1,66 +1,82 @@
-# 🚀 Django E-Commerce Web Application
+# 📚 BookBazar
 
-A **full-featured E-Commerce web application** built with **Django & Python**. This project includes user authentication, product management, cart functionality, checkout, and an admin panel.
+An online bookstore built with **Django**. Readers can browse and search books, keep a wishlist, apply promo codes and pay by card through Stripe. The site is available in English and Bangla, and prices can be shown in several currencies.
 
 ## 🌟 Features
-✅ User authentication (Signup/Login)  
-✅ Product listing & detailed view  
-✅ Add to cart & checkout  
-✅ Order management system  
-✅ Admin panel for product & order management  
+- Book catalogue with categories, search (press `Ctrl K` or `/` anywhere) and book pages
+- Cart with a slide-out drawer, promo codes and Stripe checkout
+- Wishlist, saved addresses, order history and account settings
+- Language and currency picker for every visitor (English / বাংলা; USD, EUR, GBP, BDT, INR, CAD, AUD, JPY)
+- Light and dark themes, mobile tab bar and page transitions
+- Django admin for books, orders, coupons and users
 
-## 🛠️ Tech Stack
-- **Backend:** Django, Python  
-- **Frontend:** HTML, CSS, Bootstrap, JavaScript  
-- **Database:** SQLite (default) or PostgreSQL  
+## 🛠️ Tech stack
+- **Backend:** Python 3.11, Django 4.2
+- **Frontend:** Django templates, hand-written CSS and JavaScript (no framework)
+- **Payments:** Stripe
+- **Database:** SQLite by default
 
-## 📦 Installation & Setup
+## 🗂️ Project layout
+```
+config/      Django project settings, root URLs, WSGI/ASGI entry points
+store/       The shop: catalogue, cart, checkout, wishlist, addresses
+users/       Custom email-based user model, sign-in, profile
+templates/   HTML templates (store/ and users/)
+static/      CSS, JavaScript and images (static/store/)
+locale/      Translations (Bangla)
+media/       Uploaded files such as book covers (not in git)
+```
 
-1. **Clone the repository**  
+## 📦 Setup
+1. **Clone the repository**
    ```bash
    git clone https://github.com/Saihan-DIU/BookBazar-Ecommerce-master.git
+   cd BookBazar-Ecommerce-master
    ```
-
-2. **Create a virtual environment & activate it**  
+2. **Create and activate a virtual environment**
    ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows use: venv\Scripts\activate
+   python -m venv .venv
+   .venv\Scripts\activate        # macOS/Linux: source .venv/bin/activate
    ```
-
-3. **Install dependencies**  
+3. **Install dependencies**
    ```bash
    pip install -r requirements.txt
    ```
-
-4. **Run migrations**  
+4. **Create the database and some demo data**
    ```bash
    python manage.py migrate
+   python manage.py seed_demo
    ```
-
-5. **Create a superuser for admin access**  
+5. **Create an admin account**
    ```bash
    python manage.py createsuperuser
    ```
-
-6. **Run the development server**  
+6. **Run the development server**
    ```bash
    python manage.py runserver
    ```
+   - Store: http://127.0.0.1:8000/
+   - Admin: http://127.0.0.1:8000/admin/
 
-7. **Access the app**  
-   - **Frontend:** `http://127.0.0.1:8000/`  
-   - **Admin Panel:** `http://127.0.0.1:8000/admin/`  
+## ⚙️ Configuration
+Settings are read from environment variables (or a `.env` file):
 
-## 🚀 Deployment Guide
-- Set up a production server with **Gunicorn & Nginx**  
-- Configure **PostgreSQL** as the database  
-- Use **Docker** for containerization (optional)  
+| Variable | Purpose |
+| --- | --- |
+| `SECRET_KEY`, `DEBUG`, `ALLOWED_HOSTS` | Standard Django settings |
+| `STRIPE_PUBLIC_KEY`, `STRIPE_SECRET_KEY` | Stripe keys (test keys are used by default) |
+| `DATABASE_PATH` | Where the SQLite database lives |
+| `RATE_EUR`, `RATE_GBP`, `RATE_BDT`, ... | Display exchange rates per US dollar |
+
+## 🌍 Translations
+After changing text in templates or Python code:
+```bash
+python manage.py makemessages -l bn
+python manage.py compilemessages -l bn
+```
+Both commands need GNU gettext installed.
 
 ## 📜 License
-This project is open-source and available under the **MIT License**.
+Open source under the **MIT License**.
 
----
-
-🔗 **Live Demo (if available):**  
-📌 **GitHub Repository:** [https://github.com/Saihan-DIU/BookBazar-Ecommerce-master.git]
-📌 **Developer:** Saihan | DIU 🚀
+📌 **Developer:** Saihan | DIU

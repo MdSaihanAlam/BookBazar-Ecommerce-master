@@ -20,8 +20,8 @@
 </section>
 
 <div class="stat-grid">
-  <a href="{% url 'eco:cart' %}" class="stat"><strong>{{ cart_count }}</strong><span>{% translate "Items in cart" %}</span></a>
-  <a href="{% url 'eco:wish-summary' %}" class="stat"><strong>{{ wishlist_ids|length }}</strong><span>{% translate "Saved books" %}</span></a>
+  <a href="{% url 'store:cart' %}" class="stat"><strong>{{ cart_count }}</strong><span>{% translate "Items in cart" %}</span></a>
+  <a href="{% url 'store:wish-summary' %}" class="stat"><strong>{{ wishlist_ids|length }}</strong><span>{% translate "Saved books" %}</span></a>
   <div class="stat"><strong>{{ orders|length }}</strong><span>{% translate "Orders placed" %}</span></div>
 </div>
 
@@ -37,7 +37,7 @@
     <div><dt>{% translate "Birthday" %}</dt><dd>{{ profile.birthdate|date:"DATE_FORMAT"|default:"—" }}</dd></div>
     <div><dt>{% translate "Language" %}</dt><dd>{{ profile.get_language_display }}</dd></div>
     <div><dt>{% translate "Currency" %}</dt><dd>{{ profile.get_currency_display }}</dd></div>
-    <div><dt>{% translate "Default address" %}</dt><dd>{% if default_address %}{{ default_address.street_address }}, {{ default_address.city }}{% else %}<a href="{% url 'eco:shipping-address' %}" class="link">{% translate "Add an address" %}</a>{% endif %}</dd></div>
+    <div><dt>{% translate "Default address" %}</dt><dd>{% if default_address %}{{ default_address.street_address }}, {{ default_address.city }}{% else %}<a href="{% url 'store:shipping-address' %}" class="link">{% translate "Add an address" %}</a>{% endif %}</dd></div>
     <div><dt>{% translate "Newsletter" %}</dt><dd>{% if profile.newsletter %}<span class="badge badge-success">{% translate "Subscribed" %}</span>{% else %}<span class="badge">{% translate "Not subscribed" %}</span>{% endif %}</dd></div>
   </dl>
 </section>
@@ -64,7 +64,7 @@
       <span class="icon"><i class="fa-solid fa-receipt"></i></span>
       <h3>{% translate "No orders yet" %}</h3>
       <p>{% translate "When you buy books, your orders will show up here." %}</p>
-      <a href="{% url 'eco:product-list' %}" class="btn btn-primary">{% translate "Start shopping" %}</a>
+      <a href="{% url 'store:product-list' %}" class="btn btn-primary">{% translate "Start shopping" %}</a>
     </div>
   {% endif %}
 </section>

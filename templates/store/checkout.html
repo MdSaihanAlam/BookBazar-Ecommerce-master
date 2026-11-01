@@ -1,0 +1,93 @@
+{% extends 'store/layout.html' %}
+{% load i18n money %}
+
+{% block title %}{% translate "Checkout" %} — BookBazar{% endblock %}
+
+{% block content %}
+<div class="page">
+  <div class="container">
+    <div class="steps" aria-label="{% translate 'Checkout progress' %}">
+      <span class="step done"><b><i class="fa-solid fa-check"></i></b> {% translate "Cart" %}</span><span class="line"></span>
+      <span class="step active"><b>2</b> {% translate "Review" %}</span><span class="line"></span>
+      <span class="step"><b>3</b> {% translate "Payment" %}</span>
+    </div>
+
+    <div class="page-head">
+      <h1>{% translate "Review your order" %}</h1>
+      <p>{% translate "Check your delivery details, then continue to secure payment." %}</p>
+    </div>
+
+    <div class="cart-layout">
+      <div class="stack">
+        <section class="card">
+          <div class="card-head">
+            <h2 class="card-title"><i class="fa-solid fa-location-dot" style="color: var(--brand)"></i> {% translate "Delivery address" %}</h2>
+            <a href="{% url 'store:shipping-address' %}?from_checkout=true" class="btn btn-ghost btn-sm">{% translate "Change" %}</a>
+          </div>
+          {% with address=default_shipping_address %}
+            <div class="address-box">
+              <strong>{{ address.first_name }} {{ address.last_name }}</strong><br>
+              {{ address.street_address }}{% if address.apartment_address %}, {{ address.apartment_address }}{% endif %}<br>
+              {{ address.city }} {{ address.zip_code }}, {{ address.country.name }}<br>
+              {% if address.phone_number %}<span class="muted"><i class="fa-solid fa-phone"></i> {{ address.phone_number }}</span>{% endif %}
+            </div>
+          {% endwith %}
+        </section>
+
+        <section class="card">
+          <h2 class="card-title"><i class="fa-regular fa-credit-card" style="color: var(--brand)"></i> {% translate "Payment method" %}</h2>
+          <div class="option">
+            <span class="icon"><i class="fa-brands fa-stripe-s"></i></span>
+            <div>
+              <strong>{% translate "Credit or debit card" %}</strong>
+              <div class="muted text-sm">{% translate "Processed securely by Stripe. You'll enter your card on the next step." %}</div>
+            </div>
+            <i class="fa-solid fa-circle-check" style="margin-left: auto; color: var(--brand); font-size: 1.2rem;"></i>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2 class="card-title"><i class="fa-solid fa-book" style="color: var(--brand)"></i> {% blocktranslate with count=cart.total_items %}Items ({{ count }}){% endblocktranslate %}</h2>
+          {% for item in cart_items %}
+            <div class="mini-item">
+              <span class="book-cover"><img src="{{ item.book.image_url }}" alt=""></span>
+              <div><strong>{{ item.book.title }}</strong><span>{% money item.book.final_price as unit_price %}{% blocktranslate with qty=item.quantity %}Qty {{ qty }} · {{ unit_price }} each{% endblocktranslate %}</span></div>
+              <strong>{% money item.final_price %}</strong>
+            </div>
+          {% endfor %}
+        </section>
+      </div>
+
+      <aside class="card summary">
+        <h2 class="card-title">{% translate "Order summary" %}</h2>
+        <div class="summary-row"><span>{% translate "Subtotal" %}</span><span>{% money cart.subtotal %}</span></div>
+        {% if cart.total_discount > 0 %}
+          <div class="summary-row"><span>{% translate "Book discounts" %}</span><span class="save">−{% money cart.total_discount %}</span></div>
+        {% endif %}
+        {% if coupon %}
+          <div class="summary-row"><span>{% translate "Promo" %} <span class="badge badge-brand">{{ coupon.code }}</span></span><span class="save">−{% money coupon_discount %}</span></div>
+        {% endif %}
+        <div class="summary-row"><span>{% translate "Shipping" %}</span><span class="text-success">{% translate "Free" %}</span></div>
+        <div class="summary-row total"><span>{% translate "Total" %}</span><span>{% money order_total %}</span></div>
+
+        <form method="post" action="{% url 'store:checkout' %}" id="checkoutForm" style="margin-top: 20px;">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-primary btn-lg btn-block">
+            {% translate "Continue to payment" %} <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </form>
+        <a href="{% url 'store:cart' %}" class="btn btn-ghost btn-block" style="margin-top: 8px;">{% translate "Back to cart" %}</a>
+        <p class="secure-note"><i class="fa-solid fa-lock"></i> {% translate "Your data is encrypted and secure" %}</p>
+      </aside>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.getElementById('checkoutForm').addEventListener('submit', function (event) {
+    event.submitter && window.BookBazar.setLoading(event.submitter, true);
+  });
+</script>
+{% endblock %}

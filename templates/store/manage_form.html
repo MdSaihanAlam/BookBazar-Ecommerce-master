@@ -1,0 +1,28 @@
+{% extends 'store/layout.html' %}
+{% load i18n %}
+
+{% block title %}{{ title }} — BookBazar{% endblock %}
+
+{% block content %}
+<div class="page">
+  <div class="container container-sm">
+    <div class="page-head">
+      <span class="eyebrow"><i class="fa-solid fa-screwdriver-wrench"></i> {% translate "Staff" %}</span>
+      <h1>{{ title }}</h1>
+    </div>
+    <section class="card">
+      <form method="post" enctype="multipart/form-data" class="form-grid" novalidate>
+        {% csrf_token %}
+        {% if form.non_field_errors %}<div class="alert alert-error">{{ form.non_field_errors|join:" " }}</div>{% endif %}
+        {% for field in form %}
+          {% include 'store/partials/field.html' %}
+        {% endfor %}
+        <div class="row">
+          <button type="submit" class="btn btn-primary btn-lg">{% translate "Save" %}</button>
+          <a href="{% url 'store:home' %}" class="btn btn-ghost btn-lg">{% translate "Cancel" %}</a>
+        </div>
+      </form>
+    </section>
+  </div>
+</div>
+{% endblock %}

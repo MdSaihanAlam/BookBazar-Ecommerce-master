@@ -1,0 +1,205 @@
+{% extends 'store/layout.html' %}
+{% load i18n money %}
+
+{% block title %}{% translate "Your cart" %} — BookBazar{% endblock %}
+
+{% block content %}
+<div class="page">
+  <div class="container">
+    <div class="page-head row-between">
+      <div>
+        <h1>{% translate "Your cart" %}</h1>
+        <p data-item-count>{% blocktranslate count counter=cart.total_items %}{{ counter }} item{% plural %}{{ counter }} items{% endblocktranslate %}</p>
+      </div>
+      <a href="{% url 'store:product-list' %}" class="link-arrow"><i class="fa-solid fa-arrow-left"></i> {% translate "Continue shopping" %}</a>
+    </div>
+
+    <div id="cartEmpty" class="empty {% if cart_items %}hidden{% endif %}">
+      <span class="icon"><i class="fa-solid fa-bag-shopping"></i></span>
+      <h3>{% translate "Your cart is empty" %}</h3>
+      <p>{% translate "Looks like you haven't added any books yet. Let's find something great to read." %}</p>
+      <a href="{% url 'store:product-list' %}" class="btn btn-primary">{% translate "Start shopping" %}</a>
+    </div>
+
+    {% if cart_items %}
+    <div class="cart-layout" id="cartLayout">
+      <div class="cart-list">
+        {% for item in cart_items %}
+          <div class="cart-item" id="cartItem-{{ item.id }}">
+            <a href="{{ item.book.get_absolute_url }}" class="book-cover"><img src="{{ item.book.image_url }}" alt="{% blocktranslate with title=item.book.title %}Cover of {{ title }}{% endblocktranslate %}"></a>
+            <div>
+              <h3><a href="{{ item.book.get_absolute_url }}">{{ item.book.title }}</a></h3>
+              <p class="muted text-sm">{{ item.book.author.name|default:_("Unknown author") }} · {{ item.book.get_format_type_display }}</p>
+              <p class="text-sm" style="margin-top: 6px;">
+                {% money item.book.final_price as unit_price %}{% blocktranslate %}{{ unit_price }} each{% endblocktranslate %}
+                {% if item.book.is_on_sale %}<span class="badge badge-success" style="margin-left: 6px;">−{{ item.book.discount_percentage }}%</span>{% endif %}
+              </p>
+              <div class="cart-item-actions">
+                <div class="qty qty-sm">
+                  <button type="button" data-cart-action="decrease" data-item="{{ item.id }}" aria-label="{% translate 'Decrease quantity' %}"><i class="fa-solid fa-minus"></i></button>
+                  <span id="qty-{{ item.id }}">{{ item.quantity }}</span>
+                  <button type="button" data-cart-action="increase" data-item="{{ item.id }}" aria-label="{% translate 'Increase quantity' %}"><i class="fa-solid fa-plus"></i></button>
+                </div>
+                <button type="button" class="btn btn-ghost btn-sm {% if item.book.pk in wishlist_ids %}is-active{% endif %}" data-wishlist
+                        data-add-url="{% url 'store:add-to-wish' item.book.slug %}" data-remove-url="{% url 'store:remove-from-wish' item.book.slug %}">
+                  <i class="{% if item.book.pk in wishlist_ids %}fa-solid{% else %}fa-regular{% endif %} fa-heart"></i> <span data-label>{% if item.book.pk in wishlist_ids %}{% translate "Saved" %}{% else %}{% translate "Save" %}{% endif %}</span>
+                </button>
+                <button type="button" class="btn btn-ghost btn-sm" data-cart-action="remove" data-item="{{ item.id }}">
+                  <i class="fa-regular fa-trash-can"></i> {% translate "Remove" %}
+                </button>
+              </div>
+            </div>
+            <div class="cart-item-price">
+              <div class="now" id="total-{{ item.id }}">{% money item.final_price %}</div>
+              {% if item.book.is_on_sale %}<div class="was" id="was-{{ item.id }}" data-unit="{{ item.book.price|stringformat:'s' }}">{% money item.total_price %}</div>{% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <aside class="card summary" data-coupon-amount="{% if coupon %}{{ coupon.amount|stringformat:'s' }}{% else %}0{% endif %}">
+        <h2 class="card-title">{% translate "Order summary" %}</h2>
+        <div class="summary-row"><span>{% translate "Subtotal" %}</span><span data-subtotal>{% money cart.subtotal %}</span></div>
+        <div class="summary-row {% if not cart.total_discount %}hidden{% endif %}" data-discount-row>
+          <span>{% translate "Book discounts" %}</span><span class="save" data-discount>−{% money cart.total_discount %}</span>
+        </div>
+        <div class="summary-row {% if not coupon %}hidden{% endif %}" data-coupon-row>
+          <span>{% translate "Promo" %} <span class="badge badge-brand" data-coupon-code>{{ coupon.code }}</span></span>
+          <span class="save" data-coupon>−{% money coupon_discount %}</span>
+        </div>
+        <div class="summary-row"><span>{% translate "Shipping" %}</span><span class="text-success">{% translate "Free" %}</span></div>
+        <div class="summary-row total"><span>{% translate "Total" %}</span><span data-total>{% money order_total %}</span></div>
+
+        <form class="promo" id="promoForm">
+          <label class="sr-only" for="promoInput">{% translate "Promo code" %}</label>
+          <input id="promoInput" class="input" placeholder="{% translate 'Promo code' %}" autocomplete="off" value="{{ coupon.code|default:'' }}">
+          <button type="submit" class="btn btn-secondary">{% translate "Apply" %}</button>
+        </form>
+        <div class="promo-msg" id="promoMsg"></div>
+
+        <button type="button" class="btn btn-primary btn-lg btn-block" id="checkoutBtn" style="margin-top: 10px;">
+          {% translate "Checkout" %} <i class="fa-solid fa-arrow-right"></i>
+        </button>
+        <p class="secure-note"><i class="fa-solid fa-lock"></i> {% translate "Secure checkout powered by Stripe" %}</p>
+      </aside>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  (function () {
+    const { api, toast, setLoading, setCartCount } = window.BookBazar;
+    const summary = document.querySelector('.summary');
+    if (!summary) return;
+
+    const text = {
+      removed: "{{ _('Removed from your cart')|escapejs }}",
+      updateError: "{{ _('Could not update your cart.')|escapejs }}",
+      enterCode: "{{ _('Enter a promo code first.')|escapejs }}",
+      needAddress: "{{ _('Add a shipping address to continue to checkout.')|escapejs }}",
+      oneItem: "{{ _('1 item')|escapejs }}",
+      manyItems: "{{ _('{count} items')|escapejs }}"
+    };
+    const money = window.BookBazar.formatMoney;
+    let couponAmount = parseFloat(summary.dataset.couponAmount) || 0;
+
+    function renderTotals(data) {
+      const couponDiscount = Math.min(couponAmount, data.final_total);
+      summary.querySelector('[data-subtotal]').textContent = money(data.subtotal);
+      summary.querySelector('[data-discount]').textContent = '−' + money(data.total_discount);
+      summary.querySelector('[data-discount-row]').classList.toggle('hidden', !data.total_discount);
+      summary.querySelector('[data-coupon]').textContent = '−' + money(couponDiscount);
+      summary.querySelector('[data-total]').textContent = money(data.final_total - couponDiscount);
+      document.querySelector('[data-item-count]').textContent =
+        data.total_items === 1 ? text.oneItem : text.manyItems.replace('{count}', data.total_items);
+      setCartCount(data.total_items);
+
+      if (!data.total_items) {
+        document.getElementById('cartLayout').remove();
+        document.getElementById('cartEmpty').classList.remove('hidden');
+      }
+    }
+
+    document.addEventListener('click', async (event) => {
+      const button = event.target.closest('[data-cart-action]');
+      if (!button) return;
+      const id = button.dataset.item;
+      const action = button.dataset.cartAction;
+      button.disabled = true;
+      try {
+        const data = await api(`{% url 'store:update-cart-item' 0 %}`.replace('0', id), { body: { action } });
+        if (!data.success) {
+          toast(data.error || text.updateError, 'warning');
+          return;
+        }
+        if (action === 'remove') {
+          const row = document.getElementById(`cartItem-${id}`);
+          row.classList.add('is-removing');
+          setTimeout(() => row.remove(), 300);
+          toast(text.removed, 'success');
+        } else {
+          document.getElementById(`qty-${id}`).textContent = data.item_quantity;
+          document.getElementById(`total-${id}`).textContent = money(data.item_total);
+          const was = document.getElementById(`was-${id}`);
+          if (was) was.textContent = money(parseFloat(was.dataset.unit) * data.item_quantity);
+        }
+        renderTotals(data);
+      } catch (error) {
+        toast(error.message, 'error');
+      } finally {
+        button.disabled = false;
+      }
+    });
+
+    document.getElementById('promoForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const input = document.getElementById('promoInput');
+      const message = document.getElementById('promoMsg');
+      const button = event.submitter;
+      if (!input.value.trim()) {
+        message.className = 'promo-msg text-danger';
+        message.textContent = text.enterCode;
+        return;
+      }
+      setLoading(button, true);
+      try {
+        const data = await api(`{% url 'store:apply-promo-code' %}`, { body: { promo_code: input.value } });
+        message.className = 'promo-msg ' + (data.success ? 'text-success' : 'text-danger');
+        message.textContent = data.message;
+        if (data.success) {
+          couponAmount = data.discount_amount;
+          summary.querySelector('[data-coupon-row]').classList.remove('hidden');
+          summary.querySelector('[data-coupon-code]').textContent = input.value.trim().toUpperCase();
+          summary.querySelector('[data-coupon]').textContent = '−' + money(data.discount_amount);
+          summary.querySelector('[data-total]').textContent = money(data.cart_data.grand_total);
+        }
+      } catch (error) {
+        message.className = 'promo-msg text-danger';
+        message.textContent = error.message;
+      } finally {
+        setLoading(button, false);
+      }
+    });
+
+    document.getElementById('checkoutBtn').addEventListener('click', async (event) => {
+      const button = event.currentTarget;
+      setLoading(button, true);
+      try {
+        const data = await api(`{% url 'store:check-shipping-address' %}`, { method: 'GET' });
+        if (data.has_shipping_address) {
+          window.location.href = `{% url 'store:checkout' %}`;
+        } else {
+          toast(text.needAddress, 'info');
+          setTimeout(() => { window.location.href = `{% url 'store:shipping-address' %}?from_checkout=true`; }, 900);
+        }
+      } catch (error) {
+        toast(error.message, 'error');
+        setLoading(button, false);
+      }
+    });
+  })();
+</script>
+{% endblock %}

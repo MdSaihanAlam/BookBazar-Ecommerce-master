@@ -1,0 +1,141 @@
+{% extends 'store/layout.html' %}
+{% load i18n money %}
+
+{% block title %}{{ item.title }}{% if item.author %} — {{ item.author.name }}{% endif %} — BookBazar{% endblock %}
+{% block description %}{{ item.description|truncatewords:30 }}{% endblock %}
+
+{% block head %}
+<meta property="og:title" content="{{ item.title }}">
+<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ item.image_url }}">
+{% endblock %}
+
+{% block content %}
+<div class="page">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="{% translate 'Breadcrumb' %}">
+      <a href="{% url 'store:home' %}">{% translate "Home" %}</a><i class="fa-solid fa-chevron-right"></i>
+      <a href="{% url 'store:product-list' %}">{% translate "Shop" %}</a><i class="fa-solid fa-chevron-right"></i>
+      {% if item.category %}<a href="{{ item.category.get_absolute_url }}">{{ item.category.name }}</a><i class="fa-solid fa-chevron-right"></i>{% endif %}
+      <span>{{ item.title }}</span>
+    </nav>
+
+    <div class="product">
+      <div class="product-media">
+        <div class="book-cover">
+          <img src="{{ item.image_url }}" alt="{% blocktranslate with title=item.title %}Cover of {{ title }}{% endblocktranslate %}">
+          {% if item.is_on_sale %}
+            <span class="book-badges"><span class="badge badge-solid">{% blocktranslate with percent=item.discount_percentage %}Save {{ percent }}%{% endblocktranslate %}</span></span>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="product-info">
+        <div class="row">
+          {% if item.category %}<a href="{{ item.category.get_absolute_url }}" class="badge badge-brand">{{ item.category.name }}</a>{% endif %}
+          <span class="badge">{{ item.get_format_type_display }}</span>
+          {% if item.featured %}<span class="badge badge-warning"><i class="fa-solid fa-star"></i> {% translate "Featured" %}</span>{% endif %}
+        </div>
+
+        <h1>{{ item.title }}</h1>
+        <p class="product-author">{% translate "by" %} <a href="{% url 'store:product-list' %}?q={{ item.author.name|urlencode }}">{{ item.author.name|default:_("Unknown author") }}</a></p>
+
+        <div class="product-price price price-lg">
+          <span class="now">{% money item.final_price %}</span>
+          {% if item.is_on_sale %}
+            <span class="was">{% money item.price %}</span>
+            {% money item.savings as savings %}<span class="badge badge-success">{% blocktranslate %}You save {{ savings }}{% endblocktranslate %}</span>
+          {% endif %}
+        </div>
+
+        {% if item.is_available and item.stock_quantity > 5 %}
+          <span class="stock in"><span class="dot"></span> {% translate "In stock, ready to ship" %}</span>
+        {% elif item.is_available and item.stock_quantity > 0 %}
+          <span class="stock low"><span class="dot"></span> {% blocktranslate with count=item.stock_quantity %}Only {{ count }} left, order soon{% endblocktranslate %}</span>
+        {% else %}
+          <span class="stock out"><span class="dot"></span> {% translate "Out of stock" %}</span>
+        {% endif %}
+
+        <div class="buy-box">
+          {% if item.is_available and item.stock_quantity > 0 %}
+            <div class="qty">
+              <button type="button" data-qty-step="-1" aria-label="{% translate 'Decrease quantity' %}"><i class="fa-solid fa-minus"></i></button>
+              <input id="quantity" type="number" value="1" min="1" max="{{ item.stock_quantity }}" aria-label="{% translate 'Quantity' %}">
+              <button type="button" data-qty-step="1" aria-label="{% translate 'Increase quantity' %}"><i class="fa-solid fa-plus"></i></button>
+            </div>
+            <button type="button" class="btn btn-primary btn-lg" data-add-to-cart="{% url 'store:add-to-cart' item.slug %}" data-qty-input="#quantity">
+              <i class="fa-solid fa-bag-shopping"></i> {% translate "Add to cart" %}
+            </button>
+          {% else %}
+            <button type="button" class="btn btn-secondary btn-lg" disabled>{% translate "Currently unavailable" %}</button>
+          {% endif %}
+          <button type="button" class="btn btn-secondary btn-lg {% if in_wishlist %}is-active{% endif %}" data-wishlist
+                  data-add-url="{% url 'store:add-to-wish' item.slug %}" data-remove-url="{% url 'store:remove-from-wish' item.slug %}"
+                  aria-pressed="{% if in_wishlist %}true{% else %}false{% endif %}">
+            <i class="{% if in_wishlist %}fa-solid{% else %}fa-regular{% endif %} fa-heart"></i>
+            <span data-label>{% if in_wishlist %}{% translate "Saved" %}{% else %}{% translate "Save" %}{% endif %}</span>
+          </button>
+        </div>
+
+        <div class="trust">
+          <div><i class="fa-solid fa-truck-fast"></i> {% if ship_country %}{% blocktranslate with country=ship_country %}Free delivery to {{ country }}{% endblocktranslate %}{% else %}{% translate "Free worldwide delivery" %}{% endif %}</div>
+          <div><i class="fa-solid fa-rotate-left"></i> {% translate "Easy returns" %}</div>
+          <div><i class="fa-solid fa-lock"></i> {% translate "Secure payment" %}</div>
+        </div>
+
+        <hr class="divider">
+
+        <h3 style="margin-bottom: 12px;">{% translate "About this book" %}</h3>
+        <div class="prose">{{ item.description|linebreaks }}</div>
+        {% if item.excerpt %}
+          <h3 style="margin: 28px 0 12px;">{% translate "Excerpt" %}</h3>
+          <blockquote class="prose" style="padding-left: 18px; border-left: 3px solid var(--brand); font-style: italic;">{{ item.excerpt|linebreaks }}</blockquote>
+        {% endif %}
+
+        <h3 style="margin: 32px 0 0;">{% translate "Details" %}</h3>
+        <dl class="specs">
+          <div><dt>{% translate "Author" %}</dt><dd>{{ item.author.name|default:"—" }}</dd></div>
+          <div><dt>{% translate "Publisher" %}</dt><dd>{{ item.publisher.name|default:"—" }}</dd></div>
+          <div><dt>{% translate "Published" %}</dt><dd>{{ item.publication_date|date:"Y"|default:"—" }}</dd></div>
+          <div><dt>{% translate "Language" %}</dt><dd>{{ item.language|default:"English" }}</dd></div>
+          <div><dt>{% translate "Format" %}</dt><dd>{{ item.get_format_type_display }}</dd></div>
+          <div><dt>{% translate "Condition" %}</dt><dd>{{ item.get_condition_display }}</dd></div>
+          {% if item.pages %}<div><dt>{% translate "Pages" %}</dt><dd>{{ item.pages }}</dd></div>{% endif %}
+          {% if item.isbn13 or item.isbn %}<div><dt>ISBN</dt><dd>{{ item.isbn13|default:item.isbn }}</dd></div>{% endif %}
+        </dl>
+      </div>
+    </div>
+
+    {% if item.is_available and item.stock_quantity > 0 %}
+      <div class="buy-bar" aria-hidden="true">
+        <div class="container buy-bar-inner">
+          <img src="{{ item.image_url }}" alt="">
+          <div class="buy-bar-text">
+            <strong>{{ item.title }}</strong>
+            <span class="price"><span class="now">{% money item.final_price %}</span>{% if item.is_on_sale %}<span class="was">{% money item.price %}</span>{% endif %}</span>
+          </div>
+          <button type="button" class="btn btn-primary" tabindex="-1" data-add-to-cart="{% url 'store:add-to-cart' item.slug %}" data-qty-input="#quantity">
+            <i class="fa-solid fa-bag-shopping"></i> <span>{% translate "Add to cart" %}</span>
+          </button>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if related_items %}
+      <section class="section" style="padding-bottom: 0;">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">{% translate "Keep reading" %}</span>
+            <h2>{% blocktranslate with category=item.category.name %}More in {{ category }}{% endblocktranslate %}</h2>
+          </div>
+          <a href="{{ item.category.get_absolute_url }}" class="link-arrow">{% translate "View all" %} <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+        <div class="book-grid">
+          {% for book in related_items %}
+            {% include 'store/partials/book_card.html' %}
+          {% endfor %}
+        </div>
+      </section>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

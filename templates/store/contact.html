@@ -1,0 +1,61 @@
+{% extends 'store/layout.html' %}
+{% load i18n %}
+
+{% block title %}{% translate "Contact us" %} — BookBazar{% endblock %}
+
+{% block content %}
+<div class="page">
+  <div class="container">
+    <div class="page-head" style="max-width: 640px;">
+      <span class="eyebrow">{% translate "Help & support" %}</span>
+      <h1>{% translate "We'd love to hear from you" %}</h1>
+      <p>{% translate "Questions about an order, a book recommendation, or just want to say hello? Send us a message and we'll reply within one business day." %}</p>
+    </div>
+
+    <div class="contact-layout">
+      <aside class="card">
+        <div class="contact-item">
+          <span class="icon"><i class="fa-regular fa-envelope"></i></span>
+          <div><strong>{% translate "Email" %}</strong><span><a href="mailto:support@bookbazar.com">support@bookbazar.com</a><br>{% translate "Best for order questions from any country" %}</span></div>
+        </div>
+        <div class="contact-item">
+          <span class="icon"><i class="fa-solid fa-phone"></i></span>
+          <div><strong>{% translate "Call us" %}</strong><span><a href="tel:+8809658306642">+880 9658 306642</a><br>{% translate "International call rates may apply" %}</span></div>
+        </div>
+        <div class="contact-item">
+          <span class="icon"><i class="fa-regular fa-clock"></i></span>
+          <div><strong>{% translate "Support hours" %}</strong><span>{% translate "Saturday – Thursday, 10:00 – 20:00 Bangladesh time (GMT+6)" %}</span></div>
+        </div>
+        <div class="contact-item">
+          <span class="icon"><i class="fa-solid fa-language"></i></span>
+          <div><strong>{% translate "Languages" %}</strong><span>{% translate "We reply in English and Bangla" %}</span></div>
+        </div>
+        <div class="contact-item">
+          <span class="icon"><i class="fa-solid fa-location-dot"></i></span>
+          <div><strong>{% translate "Head office" %}</strong><span>{% translate "Block A, Gulshan Square, Gulshan 2, Dhaka 1212, Bangladesh" %}</span></div>
+        </div>
+        <hr class="divider" style="margin: 24px 0;">
+        <div class="socials">
+          <a href="https://www.facebook.com/share/16Pfn5VSLN/" target="_blank" rel="noopener" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="https://www.instagram.com/zat_rabbii?igsh=bTZjN2NhY2hkd2dz&utm_source=qr" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://www.linkedin.com/in/md-saihan-alam-b56117253" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        </div>
+      </aside>
+
+      <section class="card">
+        <h2 class="card-title">{% translate "Send a message" %}</h2>
+        <form method="post" action="{% url 'store:contact' %}" class="form-grid" novalidate>
+          {% csrf_token %}
+          <div class="form-grid-2">
+            {% include 'store/partials/field.html' with field=form.name %}
+            {% include 'store/partials/field.html' with field=form.email %}
+          </div>
+          {% include 'store/partials/field.html' with field=form.subject %}
+          {% include 'store/partials/field.html' with field=form.message %}
+          <div><button type="submit" class="btn btn-primary btn-lg"><i class="fa-regular fa-paper-plane"></i> {% translate "Send message" %}</button></div>
+        </form>
+      </section>
+    </div>
+  </div>
+</div>
+{% endblock %}

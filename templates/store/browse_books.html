@@ -1,0 +1,62 @@
+{% extends 'store/layout.html' %}
+{% load i18n %}
+
+{% block title %}{% if query %}“{{ query }}” — {% endif %}{% translate "Shop books" %} — BookBazar{% endblock %}
+
+{% block content %}
+<div class="page">
+  <div class="container">
+    <div class="page-head">
+      <span class="eyebrow">{% translate "The shop" %}</span>
+      <h1>{% if query %}{% blocktranslate %}Results for “{{ query }}”{% endblocktranslate %}{% else %}{% translate "All books" %}{% endif %}</h1>
+      <p>
+        {% if query %}
+          {% blocktranslate count counter=page_obj.paginator.count %}{{ counter }} book found{% plural %}{{ counter }} books found{% endblocktranslate %}
+        {% else %}
+          {% blocktranslate count counter=page_obj.paginator.count %}{{ counter }} book ready to ship{% plural %}{{ counter }} books ready to ship{% endblocktranslate %}
+        {% endif %}
+      </p>
+    </div>
+
+    <div class="toolbar">
+      <form action="{% url 'store:product-list' %}" method="get" role="search">
+        <div class="input-icon" style="flex: 1;">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <label class="sr-only" for="shop-search">{% translate "Search books" %}</label>
+          <input id="shop-search" class="input" type="search" name="q" value="{{ query }}" placeholder="{% translate 'Title, author, ISBN or category…' %}">
+        </div>
+        <button class="btn btn-dark" type="submit">{% translate "Search" %}</button>
+      </form>
+      <div class="chips">
+        <a href="{% url 'store:product-list' %}" class="chip {% if not query %}is-active{% endif %}">{% translate "All" %}</a>
+        {% for category in categories %}
+          {% if category.total_books %}
+            <a href="{{ category.get_absolute_url }}" class="chip">{{ category.name }} <small>{{ category.total_books }}</small></a>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+
+    {% if queryset %}
+      <div class="book-grid">
+        {% for book in queryset %}
+          {% include 'store/partials/book_card.html' %}
+        {% endfor %}
+      </div>
+      {% include 'store/pagination.html' %}
+    {% else %}
+      <div class="empty">
+        <span class="icon"><i class="fa-solid fa-book-open"></i></span>
+        {% if query %}
+          <h3>{% blocktranslate %}No books match “{{ query }}”{% endblocktranslate %}</h3>
+          <p>{% translate "Try a different title or author, or browse everything we have in stock." %}</p>
+          <a href="{% url 'store:product-list' %}" class="btn btn-primary">{% translate "Clear search" %}</a>
+        {% else %}
+          <h3>{% translate "No books yet" %}</h3>
+          <p>{% translate "New titles are on their way. Check back soon!" %}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
