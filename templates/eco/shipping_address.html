@@ -1,29 +1,30 @@
 {% extends 'eco/layout.html' %}
+{% load i18n %}
 
-{% block title %}{% if editing %}Edit address{% else %}Addresses{% endif %} — BookBazar{% endblock %}
+{% block title %}{% if editing %}{% translate "Edit address" %}{% else %}{% translate "Addresses" %}{% endif %} — BookBazar{% endblock %}
 
 {% block content %}
 <div class="page">
   <div class="container">
     {% if request.GET.from_checkout %}
-      <div class="steps" aria-label="Checkout progress">
-        <span class="step done"><b><i class="fa-solid fa-check"></i></b> Cart</span><span class="line"></span>
-        <span class="step active"><b>2</b> Address</span><span class="line"></span>
-        <span class="step"><b>3</b> Payment</span>
+      <div class="steps" aria-label="{% translate 'Checkout progress' %}">
+        <span class="step done"><b><i class="fa-solid fa-check"></i></b> {% translate "Cart" %}</span><span class="line"></span>
+        <span class="step active"><b>2</b> {% translate "Address" %}</span><span class="line"></span>
+        <span class="step"><b>3</b> {% translate "Payment" %}</span>
       </div>
     {% endif %}
 
     <div class="page-head">
-      <span class="eyebrow"><i class="fa-solid fa-location-dot"></i> Delivery</span>
-      <h1>{% if editing %}Edit address{% else %}Your addresses{% endif %}</h1>
-      <p>{% if request.GET.from_checkout %}Add where we should send your books, then we'll take you back to checkout.{% else %}Manage where your orders are delivered.{% endif %}</p>
+      <span class="eyebrow"><i class="fa-solid fa-location-dot"></i> {% translate "Delivery" %}</span>
+      <h1>{% if editing %}{% translate "Edit address" %}{% else %}{% translate "Your addresses" %}{% endif %}</h1>
+      <p>{% if request.GET.from_checkout %}{% translate "Add where we should send your books, then we'll take you back to checkout." %}{% else %}{% translate "Manage where your orders are delivered." %}{% endif %}</p>
     </div>
 
     <div class="cart-layout" style="grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);">
       <section class="card">
         <div class="card-head">
-          <h2 class="card-title">{% if editing %}Update details{% else %}Add a new address{% endif %}</h2>
-          {% if editing %}<a href="{% url 'eco:shipping-address' %}" class="btn btn-ghost btn-sm">Cancel</a>{% endif %}
+          <h2 class="card-title">{% if editing %}{% translate "Update details" %}{% else %}{% translate "Add a new address" %}{% endif %}</h2>
+          {% if editing %}<a href="{% url 'eco:shipping-address' %}" class="btn btn-ghost btn-sm">{% translate "Cancel" %}</a>{% endif %}
         </div>
 
         <form method="post" class="form-grid" novalidate>
@@ -37,34 +38,34 @@
             {% include 'eco/partials/field.html' with field=form.email %}
             {% include 'eco/partials/field.html' with field=form.phone_number %}
           </div>
-          {% include 'eco/partials/field.html' with field=form.street_address label="Street address" %}
-          {% include 'eco/partials/field.html' with field=form.apartment_address label="Apartment, suite, etc." %}
+          {% include 'eco/partials/field.html' with field=form.street_address %}
+          {% include 'eco/partials/field.html' with field=form.apartment_address %}
           <div class="form-grid-2">
             {% include 'eco/partials/field.html' with field=form.city %}
-            {% include 'eco/partials/field.html' with field=form.zip_code label="Postal code" %}
+            {% include 'eco/partials/field.html' with field=form.zip_code %}
           </div>
           {% include 'eco/partials/field.html' with field=form.country %}
           {% include 'eco/partials/field.html' with field=form.alternate_email %}
           <div class="stack" style="margin-top: 4px;">
-            {% include 'eco/partials/field.html' with field=form.is_business_address label="This is a business address" %}
-            {% include 'eco/partials/field.html' with field=form.default label="Use as my default delivery address" %}
+            {% include 'eco/partials/field.html' with field=form.is_business_address %}
+            {% include 'eco/partials/field.html' with field=form.default %}
           </div>
           <button type="submit" class="btn btn-primary btn-lg">
-            {% if editing %}Save changes{% elif request.GET.from_checkout %}Save and continue to checkout{% else %}Save address{% endif %}
+            {% if editing %}{% translate "Save changes" %}{% elif request.GET.from_checkout %}{% translate "Save and continue to checkout" %}{% else %}{% translate "Save address" %}{% endif %}
             <i class="fa-solid fa-arrow-right"></i>
           </button>
         </form>
       </section>
 
       <section>
-        <h2 class="card-title" style="font-size: 1.25rem;">Saved addresses</h2>
+        <h2 class="card-title" style="font-size: 1.25rem;">{% translate "Saved addresses" %}</h2>
         {% if shipping_addresses %}
           <div class="stack">
             {% for address in shipping_addresses %}
               <div class="address-card {% if address.default %}is-default{% endif %}">
                 <div class="row-between">
                   <strong>{{ address.first_name }} {{ address.last_name }}</strong>
-                  {% if address.default %}<span class="badge badge-brand"><i class="fa-solid fa-star"></i> Default</span>{% endif %}
+                  {% if address.default %}<span class="badge badge-brand"><i class="fa-solid fa-star"></i> {% translate "Default" %}</span>{% endif %}
                 </div>
                 <div class="muted">
                   {{ address.street_address }}{% if address.apartment_address %}, {{ address.apartment_address }}{% endif %}<br>
@@ -72,16 +73,16 @@
                   {% if address.phone_number %}<br>{{ address.phone_number }}{% endif %}
                 </div>
                 <div class="actions">
-                  <a href="{% url 'eco:edit-address' address.id %}" class="btn btn-secondary btn-sm"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
+                  <a href="{% url 'eco:edit-address' address.id %}" class="btn btn-secondary btn-sm"><i class="fa-regular fa-pen-to-square"></i> {% translate "Edit" %}</a>
                   {% if not address.default %}
                     <form method="post" action="{% url 'eco:set-default-address' address.id %}">
                       {% csrf_token %}
-                      <button class="btn btn-ghost btn-sm" type="submit"><i class="fa-regular fa-star"></i> Make default</button>
+                      <button class="btn btn-ghost btn-sm" type="submit"><i class="fa-regular fa-star"></i> {% translate "Make default" %}</button>
                     </form>
                   {% endif %}
-                  <form method="post" action="{% url 'eco:delete-address' address.id %}" data-confirm="Delete this address?">
+                  <form method="post" action="{% url 'eco:delete-address' address.id %}" data-confirm="{% translate 'Delete this address?' %}">
                     {% csrf_token %}
-                    <button class="btn btn-ghost btn-sm text-danger" type="submit"><i class="fa-regular fa-trash-can"></i> Delete</button>
+                    <button class="btn btn-ghost btn-sm text-danger" type="submit"><i class="fa-regular fa-trash-can"></i> {% translate "Delete" %}</button>
                   </form>
                 </div>
               </div>
@@ -90,8 +91,8 @@
         {% else %}
           <div class="empty" style="padding: 40px 20px;">
             <span class="icon"><i class="fa-solid fa-map-location-dot"></i></span>
-            <h3>No addresses yet</h3>
-            <p>Your saved addresses will appear here.</p>
+            <h3>{% translate "No addresses yet" %}</h3>
+            <p>{% translate "Your saved addresses will appear here." %}</p>
           </div>
         {% endif %}
       </section>

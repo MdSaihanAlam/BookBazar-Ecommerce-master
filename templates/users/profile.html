@@ -1,6 +1,7 @@
 {% extends 'users/account_base.html' %}
+{% load i18n %}
 
-{% block title %}My account — BookBazar{% endblock %}
+{% block title %}{% translate "My account" %} — BookBazar{% endblock %}
 
 {% block account_content %}
 {% with profile=user.profile %}
@@ -10,48 +11,50 @@
       {% if not profile.profile_photo %}{{ user.email|first|upper }}{% endif %}
     </span>
     <div>
-      <span class="eyebrow">My account</span>
-      <h1 style="font-size: 2rem; margin-top: 4px;">Hi, {{ profile.get_display_name }}</h1>
-      <p class="muted">Member for {{ profile.member_since }}</p>
+      <span class="eyebrow">{% translate "My account" %}</span>
+      <h1 style="font-size: 2rem; margin-top: 4px;">{% blocktranslate with name=profile.get_display_name %}Hi, {{ name }}{% endblocktranslate %}</h1>
+      <p class="muted">{% blocktranslate with since=profile.member_since %}Member for {{ since }}{% endblocktranslate %}</p>
     </div>
-    <a href="{% url 'users:profile_edit' %}" class="btn btn-secondary hide-mobile" style="margin-left: auto;"><i class="fa-regular fa-pen-to-square"></i> Edit profile</a>
+    <a href="{% url 'users:profile_edit' %}" class="btn btn-secondary hide-mobile" style="margin-left: auto;"><i class="fa-regular fa-pen-to-square"></i> {% translate "Edit profile" %}</a>
   </div>
 </section>
 
 <div class="stat-grid">
-  <a href="{% url 'eco:cart' %}" class="stat"><strong>{{ cart_count }}</strong><span>Items in cart</span></a>
-  <a href="{% url 'eco:wish-summary' %}" class="stat"><strong>{{ wishlist_ids|length }}</strong><span>Saved books</span></a>
-  <div class="stat"><strong>{{ orders|length }}</strong><span>Orders placed</span></div>
+  <a href="{% url 'eco:cart' %}" class="stat"><strong>{{ cart_count }}</strong><span>{% translate "Items in cart" %}</span></a>
+  <a href="{% url 'eco:wish-summary' %}" class="stat"><strong>{{ wishlist_ids|length }}</strong><span>{% translate "Saved books" %}</span></a>
+  <div class="stat"><strong>{{ orders|length }}</strong><span>{% translate "Orders placed" %}</span></div>
 </div>
 
 <section class="card">
   <div class="card-head">
-    <h2 class="card-title">Personal details</h2>
-    <a href="{% url 'users:profile_edit' %}" class="btn btn-ghost btn-sm">Edit</a>
+    <h2 class="card-title">{% translate "Personal details" %}</h2>
+    <a href="{% url 'users:profile_edit' %}" class="btn btn-ghost btn-sm">{% translate "Edit" %}</a>
   </div>
   <dl class="info-list">
-    <div><dt>Full name</dt><dd>{% if profile.first_name %}{{ profile.first_name }} {{ profile.last_name }}{% else %}<span class="muted">Not set</span>{% endif %}</dd></div>
-    <div><dt>Email</dt><dd>{{ user.email }}</dd></div>
-    <div><dt>Phone</dt><dd>{{ profile.phone|default:"—" }}</dd></div>
-    <div><dt>Birthday</dt><dd>{{ profile.birthdate|date:"F j, Y"|default:"—" }}</dd></div>
-    <div><dt>Default address</dt><dd>{% if default_address %}{{ default_address.street_address }}, {{ default_address.city }}{% else %}<a href="{% url 'eco:shipping-address' %}" class="link">Add an address</a>{% endif %}</dd></div>
-    <div><dt>Newsletter</dt><dd>{% if profile.newsletter %}<span class="badge badge-success">Subscribed</span>{% else %}<span class="badge">Not subscribed</span>{% endif %}</dd></div>
+    <div><dt>{% translate "Full name" %}</dt><dd>{% if profile.first_name %}{{ profile.first_name }} {{ profile.last_name }}{% else %}<span class="muted">{% translate "Not set" %}</span>{% endif %}</dd></div>
+    <div><dt>{% translate "Email" %}</dt><dd>{{ user.email }}</dd></div>
+    <div><dt>{% translate "Phone" %}</dt><dd>{{ profile.phone|default:"—" }}</dd></div>
+    <div><dt>{% translate "Birthday" %}</dt><dd>{{ profile.birthdate|date:"F j, Y"|default:"—" }}</dd></div>
+    <div><dt>{% translate "Language" %}</dt><dd>{{ profile.get_language_display }}</dd></div>
+    <div><dt>{% translate "Currency" %}</dt><dd>{{ profile.get_currency_display }}</dd></div>
+    <div><dt>{% translate "Default address" %}</dt><dd>{% if default_address %}{{ default_address.street_address }}, {{ default_address.city }}{% else %}<a href="{% url 'eco:shipping-address' %}" class="link">{% translate "Add an address" %}</a>{% endif %}</dd></div>
+    <div><dt>{% translate "Newsletter" %}</dt><dd>{% if profile.newsletter %}<span class="badge badge-success">{% translate "Subscribed" %}</span>{% else %}<span class="badge">{% translate "Not subscribed" %}</span>{% endif %}</dd></div>
   </dl>
 </section>
 
 <section class="card">
-  <h2 class="card-title">Order history</h2>
+  <h2 class="card-title">{% translate "Order history" %}</h2>
   {% if orders %}
     {% for order in orders %}
       <div class="row-between" style="padding: 14px 0; {% if not forloop.last %}border-bottom: 1px solid var(--border);{% endif %}">
         <div>
-          <strong>Order #{{ order.ref_code|upper|slice:":8" }}</strong>
-          <div class="muted text-sm">{{ order.ordered_date|date:"M j, Y" }} · {{ order.items.count }} item{{ order.items.count|pluralize }}</div>
+          <strong>{% blocktranslate with ref=order.ref_code|upper|slice:":8" %}Order #{{ ref }}{% endblocktranslate %}</strong>
+          <div class="muted text-sm">{{ order.ordered_date|date:"M j, Y" }} · {% blocktranslate count counter=order.items.count %}{{ counter }} item{% plural %}{{ counter }} items{% endblocktranslate %}</div>
         </div>
         <div class="row">
-          {% if order.received %}<span class="badge badge-success">Delivered</span>
-          {% elif order.being_delivered %}<span class="badge badge-warning">On the way</span>
-          {% else %}<span class="badge badge-brand">Processing</span>{% endif %}
+          {% if order.received %}<span class="badge badge-success">{% translate "Delivered" %}</span>
+          {% elif order.being_delivered %}<span class="badge badge-warning">{% translate "On the way" %}</span>
+          {% else %}<span class="badge badge-brand">{% translate "Processing" %}</span>{% endif %}
           <strong>${{ order.payment.amount|floatformat:2 }}</strong>
         </div>
       </div>
@@ -59,9 +62,9 @@
   {% else %}
     <div class="empty" style="padding: 36px 20px;">
       <span class="icon"><i class="fa-solid fa-receipt"></i></span>
-      <h3>No orders yet</h3>
-      <p>When you buy books, your orders will show up here.</p>
-      <a href="{% url 'eco:product-list' %}" class="btn btn-primary">Start shopping</a>
+      <h3>{% translate "No orders yet" %}</h3>
+      <p>{% translate "When you buy books, your orders will show up here." %}</p>
+      <a href="{% url 'eco:product-list' %}" class="btn btn-primary">{% translate "Start shopping" %}</a>
     </div>
   {% endif %}
 </section>

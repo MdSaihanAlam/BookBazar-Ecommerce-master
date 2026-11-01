@@ -1,11 +1,12 @@
-{% load static %}<!DOCTYPE html>
-<html lang="en">
+{% load static i18n %}<!DOCTYPE html>
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="csrf-token" content="{{ csrf_token }}">
-  <title>{% block title %}BookBazar — Find your next favourite book{% endblock %}</title>
-  <meta name="description" content="{% block description %}BookBazar is an online bookstore with classics, bestsellers and new arrivals delivered to your door.{% endblock %}">
+  <title>{% block title %}{% translate "BookBazar — Find your next favourite book" %}{% endblock %}</title>
+  <meta name="description" content="{% block description %}{% translate "BookBazar is an online bookstore with classics, bestsellers and new arrivals delivered to your door." %}{% endblock %}">
   <script>
     (function () {
       var theme = null;
@@ -16,7 +17,7 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700{% if LANGUAGE_CODE == 'bn' %}&family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Serif+Bengali:wght@500;600;700{% endif %}&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="{% static 'eco/css/app.css' %}">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
@@ -37,6 +38,19 @@
     </div>
   {% endif %}
 
+  <script>
+    window.BookBazarText = {
+      viewCart: "{{ _("View cart")|escapejs }}",
+      addedToWishlist: "{{ _("Saved to your wishlist")|escapejs }}",
+      removedFromWishlist: "{{ _("Removed from your wishlist")|escapejs }}",
+      saved: "{{ _("Saved")|escapejs }}",
+      save: "{{ _("Save")|escapejs }}",
+      dismiss: "{{ _("Dismiss")|escapejs }}",
+      genericError: "{{ _("Something went wrong. Please try again.")|escapejs }}",
+      cartError: "{{ _("Could not add to cart.")|escapejs }}",
+      wishlistError: "{{ _("Could not update wishlist.")|escapejs }}"
+    };
+  </script>
   <script src="{% static 'eco/js/app.js' %}"></script>
   {% block scripts %}{% endblock %}
 </body>

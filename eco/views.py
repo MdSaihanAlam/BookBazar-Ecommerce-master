@@ -17,6 +17,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
+from django.utils.translation import gettext as _, gettext_lazy
 from django.views.decorators.http import require_POST
 from django.views.generic import CreateView, DetailView, FormView, ListView, UpdateView, View
 from django.views.generic.list import MultipleObjectMixin
@@ -47,7 +48,7 @@ def ajax_login_required(view):
         next_url = request.headers.get('referer') or request.get_full_path()
         if is_ajax(request):
             login_url = redirect_to_login(next_url)['Location']
-            return JsonResponse({'success': False, 'message': 'Please log in first.', 'login_url': login_url}, status=401)
+            return JsonResponse({'success': False, 'message': _('Please log in first.'), 'login_url': login_url}, status=401)
         return redirect_to_login(request.get_full_path())
     return wrapper
 
@@ -141,7 +142,7 @@ class SearchView(View):
 
 @login_required
 def cart_view(request):
-    cart, _ = Cart.objects.get_or_create(user=request.user)
+    cart, _created = Cart.objects.get_or_create(user=request.user)
     coupon = get_session_coupon(request)
     coupon_discount = min(float(coupon.amount), cart.final_total) if coupon else 0
     context = {
@@ -157,7 +158,7 @@ def cart_view(request):
 @ajax_login_required
 def add_to_cart(request, slug):
     book = get_object_or_404(Book, slug=slug)
-    cart, _ = Cart.objects.get_or_create(user=request.user)
+    cart, _created = Cart.objects.get_or_create(user=request.user)
     cart_item = CartItem.objects.filter(cart=cart, book=book).first()
     in_cart = cart_item.quantity if cart_item else 0
 
@@ -167,8 +168,8 @@ def add_to_cart(request, slug):
         quantity = 1
 
     if not book.is_available or in_cart + quantity > book.stock_quantity:
-        message = (f"Sorry, {book.title} is out of stock." if not book.is_available
-                   else f"Only {book.stock_quantity} copies of {book.title} are available.")
+        message = (_("Sorry, %(title)s is out of stock.") % {'title': book.title} if not book.is_available
+                   else _("Only %(count)s copies of %(title)s are available.") % {'count': book.stock_quantity, 'title': book.title})
         if is_ajax(request):
             return JsonResponse({'success': False, 'message': message})
         messages.warning(request, message)
@@ -180,7 +181,7 @@ def add_to_cart(request, slug):
     else:
         CartItem.objects.create(cart=cart, book=book, quantity=quantity)
 
-    message = f"{book.title} added to your cart!"
+    message = _("%(title)s added to your cart!") % {'title': book.title}
     if is_ajax(request):
         return JsonResponse({'success': True, 'message': message, 'total_items': cart.total_items})
     messages.success(request, message)
@@ -203,13 +204,13 @@ def update_cart_item(request, item_id):
     try:
         action = json.loads(request.body or '{}').get('action')
     except json.JSONDecodeError:
-        return JsonResponse({'success': False, 'error': 'Invalid request'}, status=400)
+        return JsonResponse({'success': False, 'error': _('Invalid request')}, status=400)
 
     if action == 'increase':
         if cart_item.quantity >= cart_item.book.stock_quantity:
             return JsonResponse({
                 'success': False,
-                'error': f"Only {cart_item.book.stock_quantity} copies available."
+                'error': _("Only %(count)s copies available.") % {'count': cart_item.book.stock_quantity}
             })
         cart_item.quantity += 1
         cart_item.save()
@@ -239,10 +240,10 @@ def remove_from_cart(request, item_id):
     if is_ajax(request):
         return JsonResponse({
             'success': True,
-            'message': f"{book_title} removed from cart",
+            'message': _("%(title)s removed from cart") % {'title': book_title},
             **cart_totals(cart),
         })
-    messages.info(request, f"{book_title} removed from cart")
+    messages.info(request, _("%(title)s removed from cart") % {'title': book_title})
     return redirect("eco:cart")
 
 
@@ -254,11 +255,11 @@ def order_summary(request):
 @login_required
 def remove_from_cart_legacy(request, slug):
     book = get_object_or_404(Book, slug=slug)
-    deleted, _ = CartItem.objects.filter(cart__user=request.user, book=book).delete()
+    deleted, _details = CartItem.objects.filter(cart__user=request.user, book=book).delete()
     if deleted:
-        messages.info(request, f"{book.title} removed from cart")
+        messages.info(request, _("%(title)s removed from cart") % {'title': book.title})
     else:
-        messages.info(request, "Item not found in cart")
+        messages.info(request, _("Item not found in cart"))
     return redirect("eco:cart")
 
 
@@ -267,14 +268,14 @@ def remove_single_item_from_cart(request, slug):
     book = get_object_or_404(Book, slug=slug)
     cart_item = CartItem.objects.filter(cart__user=request.user, book=book).first()
     if not cart_item:
-        messages.info(request, "Item not found in cart")
+        messages.info(request, _("Item not found in cart"))
     elif cart_item.quantity > 1:
         cart_item.quantity -= 1
         cart_item.save()
-        messages.info(request, f"{book.title} quantity updated")
+        messages.info(request, _("%(title)s quantity updated") % {'title': book.title})
     else:
         cart_item.delete()
-        messages.info(request, f"{book.title} removed from cart")
+        messages.info(request, _("%(title)s removed from cart") % {'title': book.title})
     return redirect("eco:cart")
 
 
@@ -337,19 +338,19 @@ def check_shipping_address(request):
 
 class Checkout(LoginRequiredMixin, View):
     def get_cart(self):
-        cart, _ = Cart.objects.get_or_create(user=self.request.user)
+        cart, _created = Cart.objects.get_or_create(user=self.request.user)
         return cart
 
     def get(self, *args, **kwargs):
         cart = self.get_cart()
         cart_items = cart.items.select_related('book')
         if not cart_items.exists():
-            messages.info(self.request, "Your cart is empty")
+            messages.info(self.request, _("Your cart is empty"))
             return redirect("eco:cart")
 
         shipping_address = get_default_shipping_address(self.request.user)
         if not shipping_address:
-            messages.warning(self.request, "Please set up your default shipping address before checkout.")
+            messages.warning(self.request, _("Please set up your default shipping address before checkout."))
             return redirect('eco:shipping-address')
 
         coupon = get_session_coupon(self.request)
@@ -370,24 +371,24 @@ class Checkout(LoginRequiredMixin, View):
         cart = self.get_cart()
         cart_items = cart.items.select_related('book')
         if not cart_items.exists():
-            messages.info(self.request, "Your cart is empty")
+            messages.info(self.request, _("Your cart is empty"))
             return redirect("eco:cart")
 
         shipping_address = get_default_shipping_address(user)
         if not shipping_address:
-            messages.warning(self.request, "Please set up your default shipping address before checkout.")
+            messages.warning(self.request, _("Please set up your default shipping address before checkout."))
             return redirect('eco:shipping-address')
 
         for item in cart_items:
             if item.quantity > item.book.stock_quantity:
                 messages.warning(
                     self.request,
-                    f"Only {item.book.stock_quantity} copies of {item.book.title} are available."
+                    _("Only %(count)s copies of %(title)s are available.") % {'count': item.book.stock_quantity, 'title': item.book.title}
                 )
                 return redirect("eco:cart")
 
         # Rebuild the pending order from the current cart contents
-        order, _ = Order.objects.get_or_create(user=user, ordered=False)
+        order, _created = Order.objects.get_or_create(user=user, ordered=False)
         OrderItem.objects.filter(user=user, ordered=False).delete()
         order.items.set([
             OrderItem.objects.create(user=user, book=item.book, quantity=item.quantity)
@@ -410,7 +411,7 @@ class PaymentView(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
         order = self.get_order()
         if not order:
-            messages.warning(self.request, "Please complete checkout first.")
+            messages.warning(self.request, _("Please complete checkout first."))
             return redirect("eco:checkout")
         context = {
             'order': order,
@@ -422,12 +423,12 @@ class PaymentView(LoginRequiredMixin, View):
     def post(self, *args, **kwargs):
         order = self.get_order()
         if not order:
-            messages.warning(self.request, "Please complete checkout first.")
+            messages.warning(self.request, _("Please complete checkout first."))
             return redirect("eco:checkout")
 
         form = PaymentForm(self.request.POST)
         if not form.is_valid():
-            messages.warning(self.request, "Please enter your card details.")
+            messages.warning(self.request, _("Please enter your card details."))
             return redirect(self.request.path)
 
         amount = int(round(order.get_total() * 100))
@@ -442,14 +443,14 @@ class PaymentView(LoginRequiredMixin, View):
                 )
                 charge_id = charge['id']
         except stripe.CardError as e:
-            messages.warning(self.request, e.user_message or "Your card was declined.")
+            messages.warning(self.request, e.user_message or _("Your card was declined."))
             return redirect(self.request.path)
         except stripe.StripeError:
-            messages.warning(self.request, "Payment could not be processed. You have not been charged.")
+            messages.warning(self.request, _("Payment could not be processed. You have not been charged."))
             return redirect(self.request.path)
 
         self.complete_order(order, charge_id, amount)
-        messages.success(self.request, f"Your order was placed successfully! Reference: {order.ref_code}")
+        messages.success(self.request, _("Your order was placed successfully! Reference: %(ref)s") % {'ref': order.ref_code})
         return redirect("eco:home")
 
     @transaction.atomic
@@ -482,8 +483,8 @@ class WishSummaryView(LoginRequiredMixin, View):
 @ajax_login_required
 def add_to_wish(request, slug):
     book = get_object_or_404(Book, slug=slug)
-    _, created = Wishlist.objects.get_or_create(book=book, user=request.user)
-    message = "Book was added to your wishlist" if created else "Book was already in your wishlist"
+    _wish, created = Wishlist.objects.get_or_create(book=book, user=request.user)
+    message = _("Book was added to your wishlist") if created else _("Book was already in your wishlist")
 
     if is_ajax(request):
         return JsonResponse({'success': True, 'message': message, 'created': created})
@@ -498,17 +499,17 @@ def add_to_wish(request, slug):
 @ajax_login_required
 def remove_from_wish(request, slug):
     book = get_object_or_404(Book, slug=slug)
-    deleted, _ = Wishlist.objects.filter(book=book, user=request.user).delete()
+    deleted, _details = Wishlist.objects.filter(book=book, user=request.user).delete()
 
     if is_ajax(request):
         if deleted:
-            return JsonResponse({'success': True, 'message': 'Book removed from your wishlist'})
-        return JsonResponse({'success': False, 'message': 'Book not found in your wishlist'}, status=404)
+            return JsonResponse({'success': True, 'message': _('Book removed from your wishlist')})
+        return JsonResponse({'success': False, 'message': _('Book not found in your wishlist')}, status=404)
 
     if deleted:
-        messages.info(request, "Book was removed from your wishlist.")
+        messages.info(request, _("Book was removed from your wishlist."))
     else:
-        messages.error(request, "Book not found in your wishlist.")
+        messages.error(request, _("Book not found in your wishlist."))
     return redirect("eco:wish-summary")
 
 
@@ -517,22 +518,22 @@ def remove_from_wish(request, slug):
 @require_POST
 def apply_promo_code(request):
     if not request.user.is_authenticated:
-        return JsonResponse({'success': False, 'message': 'Please log in to apply promo codes.'})
+        return JsonResponse({'success': False, 'message': _('Please log in to apply promo codes.')})
 
     try:
         promo_code = json.loads(request.body or '{}').get('promo_code', '').strip()
     except json.JSONDecodeError:
-        return JsonResponse({'success': False, 'message': 'Invalid request.'}, status=400)
+        return JsonResponse({'success': False, 'message': _('Invalid request.')}, status=400)
 
     cart = Cart.objects.filter(user=request.user).first()
     if not cart or not cart.items.exists():
-        return JsonResponse({'success': False, 'message': 'Please add items to your cart first.'})
+        return JsonResponse({'success': False, 'message': _('Please add items to your cart first.')})
 
     coupon = Coupon.objects.filter(code__iexact=promo_code, active=True).first()
     if not coupon:
-        return JsonResponse({'success': False, 'message': 'Invalid or expired promo code.'})
+        return JsonResponse({'success': False, 'message': _('Invalid or expired promo code.')})
     if not coupon.is_valid():
-        return JsonResponse({'success': False, 'message': 'This promo code has expired.'})
+        return JsonResponse({'success': False, 'message': _('This promo code has expired.')})
 
     request.session['applied_coupon'] = {'code': coupon.code, 'amount': float(coupon.amount), 'id': coupon.id}
 
@@ -540,7 +541,7 @@ def apply_promo_code(request):
     new_final_total = cart.final_total - discount_amount
     return JsonResponse({
         'success': True,
-        'message': f'Promo code applied! ${discount_amount:.2f} discount added.',
+        'message': _('Promo code applied! $%(amount)s discount added.') % {'amount': f'{discount_amount:.2f}'},
         'discount_amount': discount_amount,
         'cart_data': {
             'subtotal': cart.subtotal,
@@ -576,9 +577,9 @@ class ContactView(FormView):
         try:
             email.send(fail_silently=False)
         except (BadHeaderError, OSError):
-            messages.error(self.request, "There was an error sending your message. Please try again later.")
+            messages.error(self.request, _("There was an error sending your message. Please try again later."))
             return self.form_invalid(form)
-        messages.success(self.request, "Your message has been sent successfully!")
+        messages.success(self.request, _("Your message has been sent successfully!"))
         return super().form_valid(form)
 
 
@@ -607,11 +608,11 @@ def shipping_address_view(request):
             address.save()
             if address.default:
                 unset_other_defaults(request.user, address)
-            messages.success(request, 'Shipping address saved successfully!')
+            messages.success(request, _('Shipping address saved successfully!'))
             if from_checkout:
                 return redirect('eco:checkout')
             return redirect('eco:shipping-address')
-        messages.error(request, 'Please correct the errors below.')
+        messages.error(request, _('Please correct the errors below.'))
     else:
         form = AddressForm(initial={'address_type': 'S'})
 
@@ -630,8 +631,8 @@ def delete_address(request, address_id):
     address = Address.objects.filter(id=address_id, user=request.user).first()
     if not address:
         if is_ajax(request):
-            return JsonResponse({'success': False, 'error': 'Address not found'}, status=404)
-        messages.error(request, 'Address not found')
+            return JsonResponse({'success': False, 'error': _('Address not found')}, status=404)
+        messages.error(request, _('Address not found'))
         return redirect('eco:shipping-address')
 
     address_title = f"{address.street_address}, {address.city}"
@@ -643,7 +644,7 @@ def delete_address(request, address_id):
             replacement.default = True
             replacement.save()
 
-    message = f'Address "{address_title}" deleted successfully!'
+    message = _('Address "%(address)s" deleted successfully!') % {'address': address_title}
     if is_ajax(request):
         return JsonResponse({'success': True, 'message': message})
     messages.success(request, message)
@@ -656,15 +657,15 @@ def set_default_address(request, address_id):
     address = Address.objects.filter(id=address_id, user=request.user).first()
     if not address:
         if is_ajax(request):
-            return JsonResponse({'success': False, 'error': 'Address not found'}, status=404)
-        messages.error(request, 'Address not found')
+            return JsonResponse({'success': False, 'error': _('Address not found')}, status=404)
+        messages.error(request, _('Address not found'))
         return redirect('eco:shipping-address')
 
     address.default = True
     address.save()
     unset_other_defaults(request.user, address)
 
-    message = 'Default shipping address updated successfully!'
+    message = _('Default shipping address updated successfully!')
     if is_ajax(request):
         return JsonResponse({'success': True, 'message': message})
     messages.success(request, message)
@@ -681,7 +682,7 @@ def edit_address(request, address_id):
             address = form.save()
             if address.default:
                 unset_other_defaults(request.user, address)
-            messages.success(request, 'Address updated successfully!')
+            messages.success(request, _('Address updated successfully!'))
             return redirect('eco:shipping-address')
     else:
         form = AddressForm(instance=address)
@@ -722,15 +723,15 @@ class ManageFormMixin:
 class AddProductView(StaffRequiredMixin, ManageFormMixin, CreateView):
     model = Book
     form_class = ProductForm
-    page_title = 'Add New Book'
-    success_message = 'Book added successfully!'
+    page_title = gettext_lazy('Add New Book')
+    success_message = gettext_lazy('Book added successfully!')
 
 
 class EditProductView(StaffRequiredMixin, ManageFormMixin, UpdateView):
     model = Book
     form_class = ProductForm
-    page_title = 'Edit Book'
-    success_message = 'Book updated successfully!'
+    page_title = gettext_lazy('Edit Book')
+    success_message = gettext_lazy('Book updated successfully!')
 
 
 class DeleteProductView(StaffRequiredMixin, View):
@@ -738,12 +739,12 @@ class DeleteProductView(StaffRequiredMixin, View):
         product = get_object_or_404(Book, slug=slug)
         product_title = product.title
         product.delete()
-        messages.success(request, f'Book "{product_title}" deleted successfully!')
+        messages.success(request, _('Book "%(title)s" deleted successfully!') % {'title': product_title})
         return redirect('eco:home')
 
 
 class AddCategoryView(StaffRequiredMixin, ManageFormMixin, CreateView):
     model = Category
     form_class = CategoryForm
-    page_title = 'Add New Category'
-    success_message = 'Category added successfully!'
+    page_title = gettext_lazy('Add New Category')
+    success_message = gettext_lazy('Category added successfully!')

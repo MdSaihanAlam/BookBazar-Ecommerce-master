@@ -1,3 +1,4 @@
+{% load i18n %}
 <footer class="site-footer">
   <div class="container footer-grid">
     <div class="footer-about">
@@ -5,7 +6,7 @@
         <span class="logo-mark"><i class="fa-solid fa-book-open"></i></span>
         <span>Book<em>Bazar</em></span>
       </a>
-      <p>Your trusted partner for quality books and educational resources. Discover your next favourite read with us.</p>
+      <p>{% translate "Your trusted partner for quality books and educational resources. Discover your next favourite read with us." %}</p>
       <div class="socials">
         <a href="https://www.facebook.com/share/16Pfn5VSLN/" target="_blank" rel="noopener" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
         <a href="https://www.instagram.com/zat_rabbii?igsh=bTZjN2NhY2hkd2dz&utm_source=qr" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
@@ -14,34 +15,34 @@
     </div>
 
     <div>
-      <h4>Shop</h4>
+      <h4>{% translate "Shop" %}</h4>
       <ul>
-        <li><a href="{% url 'eco:product-list' %}">All books</a></li>
-        <li><a href="{% url 'eco:category-list' %}">Categories</a></li>
-        <li><a href="{% url 'eco:cart' %}">Your cart</a></li>
-        <li><a href="{% url 'eco:wish-summary' %}">Wishlist</a></li>
+        <li><a href="{% url 'eco:product-list' %}">{% translate "All books" %}</a></li>
+        <li><a href="{% url 'eco:category-list' %}">{% translate "Categories" %}</a></li>
+        <li><a href="{% url 'eco:cart' %}">{% translate "Your cart" %}</a></li>
+        <li><a href="{% url 'eco:wish-summary' %}">{% translate "Wishlist" %}</a></li>
       </ul>
     </div>
 
     <div>
-      <h4>Account</h4>
+      <h4>{% translate "Account" %}</h4>
       <ul>
         {% if user.is_authenticated %}
-          <li><a href="{% url 'users:profile' %}">My account</a></li>
-          <li><a href="{% url 'eco:shipping-address' %}">Addresses</a></li>
-          <li><a href="{% url 'users:change_password' %}">Change password</a></li>
+          <li><a href="{% url 'users:profile' %}">{% translate "My account" %}</a></li>
+          <li><a href="{% url 'eco:shipping-address' %}">{% translate "Addresses" %}</a></li>
+          <li><a href="{% url 'users:change_password' %}">{% translate "Change password" %}</a></li>
         {% else %}
-          <li><a href="{% url 'users:login' %}">Sign in</a></li>
-          <li><a href="{% url 'users:register' %}">Create account</a></li>
+          <li><a href="{% url 'users:login' %}">{% translate "Sign in" %}</a></li>
+          <li><a href="{% url 'users:register' %}">{% translate "Create account" %}</a></li>
         {% endif %}
-        <li><a href="{% url 'eco:contact' %}">Help &amp; contact</a></li>
+        <li><a href="{% url 'eco:contact' %}">{% translate "Help & contact" %}</a></li>
       </ul>
     </div>
 
     <div>
-      <h4>Get in touch</h4>
+      <h4>{% translate "Get in touch" %}</h4>
       <ul class="footer-contact">
-        <li><i class="fa-solid fa-location-dot"></i> Block A, Gulshan Square, Gulshan 2, Dhaka 1200</li>
+        <li><i class="fa-solid fa-location-dot"></i> {% translate "Block A, Gulshan Square, Gulshan 2, Dhaka 1200" %}</li>
         <li><i class="fa-solid fa-phone"></i> <a href="tel:+8809658306642">+880 9658 306642</a></li>
         <li><i class="fa-regular fa-envelope"></i> <a href="mailto:support@bookbazar.com">support@bookbazar.com</a></li>
       </ul>
@@ -49,7 +50,7 @@
   </div>
 
   <div class="container footer-bottom">
-    <span>© {% now "Y" %} BookBazar. All rights reserved.</span>
-    <span>Made with <i class="fa-solid fa-heart" style="color: var(--brand)"></i> for readers</span>
+    <span>© {% now "Y" %} BookBazar. {% translate "All rights reserved." %}</span>
+    <span>{% translate "Made with" %} <i class="fa-solid fa-heart" style="color: var(--brand)"></i> {% translate "for readers" %}</span>
   </div>
 </footer>

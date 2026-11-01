@@ -1,8 +1,9 @@
 {% extends 'users/auth_base.html' %}
+{% load i18n %}
 
-{% block page_title %}Sign in{% endblock %}
-{% block heading %}Welcome back{% endblock %}
-{% block subtitle %}Sign in to pick up where you left off.{% endblock %}
+{% block page_title %}{% translate "Sign in" %}{% endblock %}
+{% block heading %}{% translate "Welcome back" %}{% endblock %}
+{% block subtitle %}{% translate "Sign in to pick up where you left off." %}{% endblock %}
 
 {% block body %}
 <form method="post" class="form-grid" novalidate>
@@ -12,23 +13,23 @@
     <div class="alert alert-error"><i class="fa-solid fa-circle-exclamation" style="margin-top: 3px;"></i> {{ form.non_field_errors|join:" " }}</div>
   {% endif %}
   <div class="field">
-    <label for="id_username">Email address</label>
+    <label for="id_username">{% translate "Email address" %}</label>
     <input type="email" name="username" id="id_username" placeholder="you@example.com" value="{{ form.username.value|default:'' }}" autocomplete="email" required autofocus>
   </div>
   <div class="field">
     <div class="row-between">
-      <label for="id_password">Password</label>
-      <a href="{% url 'users:password_reset' %}" class="link text-sm">Forgot password?</a>
+      <label for="id_password">{% translate "Password" %}</label>
+      <a href="{% url 'users:password_reset' %}" class="link text-sm">{% translate "Forgot password?" %}</a>
     </div>
     <div class="with-action">
-      <input type="password" name="password" id="id_password" placeholder="Your password" autocomplete="current-password" required>
-      <button type="button" class="icon-btn input-action" data-toggle-password="#id_password" aria-label="Show password"><i class="fa-regular fa-eye"></i></button>
+      <input type="password" name="password" id="id_password" placeholder="{% translate 'Your password' %}" autocomplete="current-password" required>
+      <button type="button" class="icon-btn input-action" data-toggle-password="#id_password" aria-label="{% translate 'Show password' %}"><i class="fa-regular fa-eye"></i></button>
     </div>
   </div>
-  <button type="submit" class="btn btn-primary btn-lg btn-block">Sign in</button>
+  <button type="submit" class="btn btn-primary btn-lg btn-block">{% translate "Sign in" %}</button>
 </form>
 
-<p class="auth-foot">New to BookBazar? <a href="{% url 'users:register' %}{% if next %}?next={{ next|urlencode }}{% endif %}">Create an account</a></p>
+<p class="auth-foot">{% translate "New to BookBazar?" %} <a href="{% url 'users:register' %}{% if next %}?next={{ next|urlencode }}{% endif %}">{% translate "Create an account" %}</a></p>
 {% endblock %}
 
 {% block scripts %}{% include 'users/password_toggle.html' %}{% endblock %}

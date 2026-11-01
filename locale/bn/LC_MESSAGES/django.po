@@ -1,0 +1,1325 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-01 16:52+0600\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: bn\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Your name"
+msgstr "আপনার নাম"
+
+msgid "Your full name"
+msgstr "আপনার পুরো নাম"
+
+msgid "Email address"
+msgstr "ইমেইল ঠিকানা"
+
+msgid "Your email address"
+msgstr "আপনার ইমেইল ঠিকানা"
+
+msgid "Subject"
+msgstr "বিষয়"
+
+msgid "What is this about?"
+msgstr "কী বিষয়ে লিখছেন?"
+
+msgid "Message"
+msgstr "বার্তা"
+
+msgid "Your message..."
+msgstr "আপনার বার্তা..."
+
+msgid "Name must be at least 2 characters long."
+msgstr "নাম অন্তত ২ অক্ষরের হতে হবে।"
+
+msgid "Subject must be at least 5 characters long."
+msgstr "বিষয় অন্তত ৫ অক্ষরের হতে হবে।"
+
+msgid "Message must be at least 10 characters long."
+msgstr "বার্তা অন্তত ১০ অক্ষরের হতে হবে।"
+
+msgid "First name"
+msgstr "নামের প্রথম অংশ"
+
+msgid "Last name"
+msgstr "নামের শেষ অংশ"
+
+msgid "Email"
+msgstr "ইমেইল"
+
+msgid "Phone number"
+msgstr "ফোন নম্বর"
+
+msgid "Alternate email"
+msgstr "বিকল্প ইমেইল"
+
+msgid "This is a business address"
+msgstr "এটি একটি ব্যবসায়িক ঠিকানা"
+
+msgid "City"
+msgstr "শহর"
+
+msgid "Street address"
+msgstr "রাস্তার ঠিকানা"
+
+msgid "Apartment, suite, etc."
+msgstr "ফ্ল্যাট, তলা ইত্যাদি"
+
+msgid "Postal code"
+msgstr "পোস্ট কোড"
+
+msgid "Country"
+msgstr "দেশ"
+
+msgid "Use as my default delivery address"
+msgstr "এটিকে আমার ডিফল্ট ডেলিভারি ঠিকানা করুন"
+
+msgid "House, road and area"
+msgstr "বাড়ি, রোড ও এলাকা"
+
+msgid "Flat or floor (optional)"
+msgstr "ফ্ল্যাট বা তলা (ঐচ্ছিক)"
+
+msgid "Hardcover"
+msgstr "হার্ডকভার"
+
+msgid "Paperback"
+msgstr "পেপারব্যাক"
+
+msgid "E-Book"
+msgstr "ই-বুক"
+
+msgid "Audiobook"
+msgstr "অডিওবুক"
+
+msgid "New"
+msgstr "নতুন"
+
+msgid "Like New"
+msgstr "প্রায় নতুন"
+
+msgid "Very Good"
+msgstr "খুব ভালো"
+
+msgid "Good"
+msgstr "ভালো"
+
+msgid "Acceptable"
+msgstr "চলনসই"
+
+msgid "Please log in first."
+msgstr "আগে লগ ইন করুন।"
+
+#, python-format
+msgid "Sorry, %(title)s is out of stock."
+msgstr "দুঃখিত, %(title)s এখন স্টকে নেই।"
+
+#, python-format
+msgid "Only %(count)s copies of %(title)s are available."
+msgstr "%(title)s-এর মাত্র %(count)s কপি আছে।"
+
+#, python-format
+msgid "%(title)s added to your cart!"
+msgstr "%(title)s আপনার কার্টে যোগ হয়েছে!"
+
+msgid "Invalid request"
+msgstr "অবৈধ অনুরোধ"
+
+#, python-format
+msgid "Only %(count)s copies available."
+msgstr "মাত্র %(count)s কপি আছে।"
+
+#, python-format
+msgid "%(title)s removed from cart"
+msgstr "%(title)s কার্ট থেকে সরানো হয়েছে"
+
+msgid "Item not found in cart"
+msgstr "কার্টে বইটি পাওয়া যায়নি"
+
+#, python-format
+msgid "%(title)s quantity updated"
+msgstr "%(title)s-এর পরিমাণ হালনাগাদ হয়েছে"
+
+msgid "Your cart is empty"
+msgstr "আপনার কার্ট খালি"
+
+msgid "Please set up your default shipping address before checkout."
+msgstr "চেকআউটের আগে আপনার ডিফল্ট ডেলিভারি ঠিকানা যোগ করুন।"
+
+msgid "Please complete checkout first."
+msgstr "আগে চেকআউট সম্পন্ন করুন।"
+
+msgid "Please enter your card details."
+msgstr "আপনার কার্ডের তথ্য দিন।"
+
+msgid "Your card was declined."
+msgstr "আপনার কার্ডটি গ্রহণ করা হয়নি।"
+
+msgid "Payment could not be processed. You have not been charged."
+msgstr "পেমেন্ট সম্পন্ন করা যায়নি। আপনার কাছ থেকে কোনো টাকা কাটা হয়নি।"
+
+#, python-format
+msgid "Your order was placed successfully! Reference: %(ref)s"
+msgstr "আপনার অর্ডার সফলভাবে দেওয়া হয়েছে! রেফারেন্স: %(ref)s"
+
+msgid "Book was added to your wishlist"
+msgstr "বইটি আপনার উইশলিস্টে যোগ হয়েছে"
+
+msgid "Book was already in your wishlist"
+msgstr "বইটি আগেই আপনার উইশলিস্টে আছে"
+
+msgid "Book removed from your wishlist"
+msgstr "বইটি উইশলিস্ট থেকে সরানো হয়েছে"
+
+msgid "Book not found in your wishlist"
+msgstr "উইশলিস্টে বইটি পাওয়া যায়নি"
+
+msgid "Book was removed from your wishlist."
+msgstr "বইটি উইশলিস্ট থেকে সরানো হয়েছে।"
+
+msgid "Book not found in your wishlist."
+msgstr "উইশলিস্টে বইটি পাওয়া যায়নি।"
+
+msgid "Please log in to apply promo codes."
+msgstr "প্রোমো কোড ব্যবহার করতে লগ ইন করুন।"
+
+msgid "Invalid request."
+msgstr "অবৈধ অনুরোধ।"
+
+msgid "Please add items to your cart first."
+msgstr "আগে কার্টে বই যোগ করুন।"
+
+msgid "Invalid or expired promo code."
+msgstr "প্রোমো কোডটি সঠিক নয় বা মেয়াদ শেষ।"
+
+msgid "This promo code has expired."
+msgstr "এই প্রোমো কোডের মেয়াদ শেষ হয়ে গেছে।"
+
+#, python-format
+msgid "Promo code applied! $%(amount)s discount added."
+msgstr "প্রোমো কোড প্রয়োগ হয়েছে! $%(amount)s ছাড় যোগ হয়েছে।"
+
+msgid "There was an error sending your message. Please try again later."
+msgstr "বার্তা পাঠাতে সমস্যা হয়েছে। পরে আবার চেষ্টা করুন।"
+
+msgid "Your message has been sent successfully!"
+msgstr "আপনার বার্তা সফলভাবে পাঠানো হয়েছে!"
+
+msgid "Shipping address saved successfully!"
+msgstr "ডেলিভারি ঠিকানা সংরক্ষণ করা হয়েছে!"
+
+msgid "Please correct the errors below."
+msgstr "নিচের ভুলগুলো ঠিক করুন।"
+
+msgid "Address not found"
+msgstr "ঠিকানা পাওয়া যায়নি"
+
+#, python-format
+msgid "Address \"%(address)s\" deleted successfully!"
+msgstr "\"%(address)s\" ঠিকানাটি মুছে ফেলা হয়েছে!"
+
+msgid "Default shipping address updated successfully!"
+msgstr "ডিফল্ট ডেলিভারি ঠিকানা হালনাগাদ হয়েছে!"
+
+msgid "Address updated successfully!"
+msgstr "ঠিকানা হালনাগাদ হয়েছে!"
+
+msgid "Add New Book"
+msgstr "নতুন বই যোগ করুন"
+
+msgid "Book added successfully!"
+msgstr "বই সফলভাবে যোগ হয়েছে!"
+
+msgid "Edit Book"
+msgstr "বই সম্পাদনা"
+
+msgid "Book updated successfully!"
+msgstr "বই হালনাগাদ হয়েছে!"
+
+#, python-format
+msgid "Book \"%(title)s\" deleted successfully!"
+msgstr "\"%(title)s\" বইটি মুছে ফেলা হয়েছে!"
+
+msgid "Add New Category"
+msgstr "নতুন বিভাগ যোগ করুন"
+
+msgid "Category added successfully!"
+msgstr "বিভাগ সফলভাবে যোগ হয়েছে!"
+
+msgid "Your cart"
+msgstr "আপনার কার্ট"
+
+#, python-format
+msgid "%(counter)s item"
+msgid_plural "%(counter)s items"
+msgstr[0] "%(counter)sটি বই"
+msgstr[1] "%(counter)sটি বই"
+
+msgid "Continue shopping"
+msgstr "কেনাকাটা চালিয়ে যান"
+
+msgid ""
+"Looks like you haven't added any books yet. Let's find something great to "
+"read."
+msgstr "মনে হচ্ছে আপনি এখনো কোনো বই যোগ করেননি। চলুন পড়ার মতো দারুণ কিছু খুঁজে নিই।"
+
+msgid "Start shopping"
+msgstr "কেনাকাটা শুরু করুন"
+
+#, python-format
+msgid "Cover of %(title)s"
+msgstr "%(title)s-এর প্রচ্ছদ"
+
+msgid "Unknown author"
+msgstr "অজানা লেখক"
+
+#, python-format
+msgid "$%(price)s each"
+msgstr "প্রতিটি $%(price)s"
+
+msgid "Decrease quantity"
+msgstr "পরিমাণ কমান"
+
+msgid "Increase quantity"
+msgstr "পরিমাণ বাড়ান"
+
+msgid "Saved"
+msgstr "সংরক্ষিত"
+
+msgid "Save"
+msgstr "সংরক্ষণ"
+
+msgid "Remove"
+msgstr "সরান"
+
+msgid "Order summary"
+msgstr "অর্ডারের সারাংশ"
+
+msgid "Subtotal"
+msgstr "উপমোট"
+
+msgid "Book discounts"
+msgstr "বইয়ের ছাড়"
+
+msgid "Promo"
+msgstr "প্রোমো"
+
+msgid "Shipping"
+msgstr "ডেলিভারি"
+
+msgid "Free"
+msgstr "ফ্রি"
+
+msgid "Total"
+msgstr "সর্বমোট"
+
+msgid "Promo code"
+msgstr "প্রোমো কোড"
+
+msgid "Apply"
+msgstr "প্রয়োগ করুন"
+
+msgid "Checkout"
+msgstr "চেকআউট"
+
+msgid "Secure checkout powered by Stripe"
+msgstr "Stripe-এর মাধ্যমে নিরাপদ চেকআউট"
+
+msgid "Removed from your cart"
+msgstr "কার্ট থেকে সরানো হয়েছে"
+
+msgid "Could not update your cart."
+msgstr "কার্ট হালনাগাদ করা যায়নি।"
+
+msgid "Enter a promo code first."
+msgstr "আগে একটি প্রোমো কোড লিখুন।"
+
+msgid "Add a shipping address to continue to checkout."
+msgstr "চেকআউট করতে একটি ডেলিভারি ঠিকানা যোগ করুন।"
+
+msgid "1 item"
+msgstr "১টি বই"
+
+#, python-format
+msgid "%(count)s items"
+msgstr "%(count)sটি বই"
+
+msgid "Breadcrumb"
+msgstr "পথনির্দেশ"
+
+msgid "Home"
+msgstr "হোম"
+
+msgid "Shop"
+msgstr "দোকান"
+
+#, python-format
+msgid "Save %(percent)s%%"
+msgstr "%(percent)s%% সাশ্রয়"
+
+msgid "Featured"
+msgstr "বিশেষ"
+
+msgid "by"
+msgstr "লেখক:"
+
+#, python-format
+msgid "You save $%(amount)s"
+msgstr "আপনার সাশ্রয় $%(amount)s"
+
+msgid "In stock, ready to ship"
+msgstr "স্টকে আছে, পাঠানোর জন্য প্রস্তুত"
+
+#, python-format
+msgid "Only %(count)s left, order soon"
+msgstr "মাত্র %(count)sটি বাকি, দ্রুত অর্ডার করুন"
+
+msgid "Out of stock"
+msgstr "স্টকে নেই"
+
+msgid "Quantity"
+msgstr "পরিমাণ"
+
+msgid "Add to cart"
+msgstr "কার্টে যোগ করুন"
+
+msgid "Currently unavailable"
+msgstr "এখন পাওয়া যাচ্ছে না"
+
+msgid "Free delivery"
+msgstr "ফ্রি ডেলিভারি"
+
+msgid "Easy returns"
+msgstr "সহজ রিটার্ন"
+
+msgid "Secure payment"
+msgstr "নিরাপদ পেমেন্ট"
+
+msgid "About this book"
+msgstr "বইটি সম্পর্কে"
+
+msgid "Excerpt"
+msgstr "অংশবিশেষ"
+
+msgid "Details"
+msgstr "বিস্তারিত"
+
+msgid "Author"
+msgstr "লেখক"
+
+msgid "Publisher"
+msgstr "প্রকাশক"
+
+msgid "Published"
+msgstr "প্রকাশকাল"
+
+msgid "Language"
+msgstr "ভাষা"
+
+msgid "Format"
+msgstr "ধরন"
+
+msgid "Condition"
+msgstr "অবস্থা"
+
+msgid "Pages"
+msgstr "পৃষ্ঠা"
+
+msgid "Keep reading"
+msgstr "আরও পড়ুন"
+
+#, python-format
+msgid "More in %(category)s"
+msgstr "%(category)s বিভাগে আরও"
+
+msgid "View all"
+msgstr "সব দেখুন"
+
+msgid "Shop books"
+msgstr "বই কিনুন"
+
+msgid "The shop"
+msgstr "আমাদের দোকান"
+
+#, python-format
+msgid "Results for “%(query)s”"
+msgstr "“%(query)s”-এর ফলাফল"
+
+msgid "All books"
+msgstr "সব বই"
+
+#, python-format
+msgid "%(counter)s book found"
+msgid_plural "%(counter)s books found"
+msgstr[0] "%(counter)sটি বই পাওয়া গেছে"
+msgstr[1] "%(counter)sটি বই পাওয়া গেছে"
+
+#, python-format
+msgid "%(counter)s book ready to ship"
+msgid_plural "%(counter)s books ready to ship"
+msgstr[0] "%(counter)sটি বই পাঠানোর জন্য প্রস্তুত"
+msgstr[1] "%(counter)sটি বই পাঠানোর জন্য প্রস্তুত"
+
+msgid "Search books"
+msgstr "বই খুঁজুন"
+
+msgid "Title, author, ISBN or category…"
+msgstr "শিরোনাম, লেখক, ISBN বা বিভাগ…"
+
+msgid "Search"
+msgstr "খুঁজুন"
+
+msgid "All"
+msgstr "সব"
+
+#, python-format
+msgid "No books match “%(query)s”"
+msgstr "“%(query)s”-এর সাথে মেলে এমন কোনো বই নেই"
+
+msgid "Try a different title or author, or browse everything we have in stock."
+msgstr "অন্য কোনো শিরোনাম বা লেখক দিয়ে চেষ্টা করুন, অথবা স্টকের সব বই দেখুন।"
+
+msgid "Clear search"
+msgstr "খোঁজা মুছুন"
+
+msgid "No books yet"
+msgstr "এখনো কোনো বই নেই"
+
+msgid "New titles are on their way. Check back soon!"
+msgstr "নতুন বই আসছে। শিগগিরই আবার দেখুন!"
+
+msgid "Categories"
+msgstr "বিভাগসমূহ"
+
+msgid "Category"
+msgstr "বিভাগ"
+
+msgid "Explore our hand-picked titles in this category."
+msgstr "এই বিভাগে আমাদের বাছাই করা বইগুলো দেখুন।"
+
+msgid "Explore"
+msgstr "ঘুরে দেখুন"
+
+msgid "Browse by category"
+msgstr "বিভাগ অনুযায়ী দেখুন"
+
+msgid "From timeless classics to page-turning thrillers, find your next read."
+msgstr "চিরায়ত ক্লাসিক থেকে রুদ্ধশ্বাস থ্রিলার, খুঁজে নিন আপনার পরের বই।"
+
+#, python-format
+msgid "%(counter)s book"
+msgid_plural "%(counter)s books"
+msgstr[0] "%(counter)sটি বই"
+msgstr[1] "%(counter)sটি বই"
+
+msgid "Everything in the shop"
+msgstr "দোকানের সব বই"
+
+msgid "No books here yet"
+msgstr "এখানে এখনো কোনো বই নেই"
+
+msgid ""
+"We're restocking this shelf. In the meantime, explore the rest of the shop."
+msgstr "এই তাকটি আবার সাজানো হচ্ছে। এর মধ্যে দোকানের অন্য বইগুলো দেখুন।"
+
+msgid "Browse all books"
+msgstr "সব বই দেখুন"
+
+msgid "Checkout progress"
+msgstr "চেকআউটের ধাপ"
+
+msgid "Cart"
+msgstr "কার্ট"
+
+msgid "Review"
+msgstr "যাচাই"
+
+msgid "Payment"
+msgstr "পেমেন্ট"
+
+msgid "Review your order"
+msgstr "আপনার অর্ডার যাচাই করুন"
+
+msgid "Check your delivery details, then continue to secure payment."
+msgstr "ডেলিভারির তথ্য যাচাই করে নিরাপদ পেমেন্টে যান।"
+
+msgid "Delivery address"
+msgstr "ডেলিভারি ঠিকানা"
+
+msgid "Change"
+msgstr "পরিবর্তন"
+
+msgid "Payment method"
+msgstr "পেমেন্ট পদ্ধতি"
+
+msgid "Credit or debit card"
+msgstr "ক্রেডিট বা ডেবিট কার্ড"
+
+msgid "Processed securely by Stripe. You'll enter your card on the next step."
+msgstr "Stripe নিরাপদে পেমেন্ট সম্পন্ন করে। পরের ধাপে কার্ডের তথ্য দেবেন।"
+
+#, python-format
+msgid "Items (%(count)s)"
+msgstr "বই (%(count)s)"
+
+#, python-format
+msgid "Qty %(qty)s · $%(price)s each"
+msgstr "পরিমাণ %(qty)s · প্রতিটি $%(price)s"
+
+msgid "Continue to payment"
+msgstr "পেমেন্টে যান"
+
+msgid "Back to cart"
+msgstr "কার্টে ফিরুন"
+
+msgid "Your data is encrypted and secure"
+msgstr "আপনার তথ্য এনক্রিপ্টেড ও নিরাপদ"
+
+msgid "Contact us"
+msgstr "যোগাযোগ করুন"
+
+msgid "Help & support"
+msgstr "সহায়তা"
+
+msgid "We'd love to hear from you"
+msgstr "আপনার কথা শুনতে আমরা আগ্রহী"
+
+msgid ""
+"Questions about an order, a book recommendation, or just want to say hello? "
+"Send us a message and we'll reply within one business day."
+msgstr "অর্ডার নিয়ে প্রশ্ন, বইয়ের পরামর্শ, নাকি শুধু শুভেচ্ছা জানাতে চান? আমাদের বার্তা পাঠান, এক কর্মদিবসের মধ্যে উত্তর দেব।"
+
+msgid "Visit us"
+msgstr "আমাদের ঠিকানা"
+
+msgid "Block A, Gulshan Square, Gulshan 2, Dhaka 1200"
+msgstr "ব্লক এ, গুলশান স্কয়ার, গুলশান ২, ঢাকা ১২০০"
+
+msgid "Call us"
+msgstr "ফোন করুন"
+
+msgid "Opening hours"
+msgstr "খোলার সময়"
+
+msgid "Saturday – Thursday, 10am – 8pm"
+msgstr "শনিবার – বৃহস্পতিবার, সকাল ১০টা – রাত ৮টা"
+
+msgid "Send a message"
+msgstr "বার্তা পাঠান"
+
+msgid "Send message"
+msgstr "বার্তা পাঠান"
+
+msgid "Your wishlist"
+msgstr "আপনার উইশলিস্ট"
+
+msgid "Saved for later"
+msgstr "পরে পড়ার জন্য রাখা"
+
+#, python-format
+msgid "%(counter)s book saved"
+msgid_plural "%(counter)s books saved"
+msgstr[0] "%(counter)sটি বই সংরক্ষিত"
+msgstr[1] "%(counter)sটি বই সংরক্ষিত"
+
+msgid "Sold out"
+msgstr "বিক্রি শেষ"
+
+#, python-format
+msgid "Remove %(title)s from wishlist"
+msgstr "%(title)s উইশলিস্ট থেকে সরান"
+
+msgid "Your wishlist is empty"
+msgstr "আপনার উইশলিস্ট খালি"
+
+msgid "Tap the heart on any book to save it here for later."
+msgstr "যেকোনো বইয়ের হার্ট চিহ্নে চাপ দিয়ে পরে পড়ার জন্য এখানে রাখুন।"
+
+msgid "Discover books"
+msgstr "বই খুঁজুন"
+
+msgid "1 book saved"
+msgstr "১টি বই সংরক্ষিত"
+
+#, python-format
+msgid "%(count)s books saved"
+msgstr "%(count)sটি বই সংরক্ষিত"
+
+msgid ""
+"Your trusted partner for quality books and educational resources. Discover "
+"your next favourite read with us."
+msgstr "মানসম্মত বই ও শিক্ষাসামগ্রীর বিশ্বস্ত সঙ্গী। আমাদের সাথে খুঁজে নিন আপনার পরের প্রিয় বই।"
+
+msgid "Wishlist"
+msgstr "উইশলিস্ট"
+
+msgid "Account"
+msgstr "অ্যাকাউন্ট"
+
+msgid "My account"
+msgstr "আমার অ্যাকাউন্ট"
+
+msgid "Addresses"
+msgstr "ঠিকানাসমূহ"
+
+msgid "Change password"
+msgstr "পাসওয়ার্ড পরিবর্তন"
+
+msgid "Sign in"
+msgstr "সাইন ইন"
+
+msgid "Create account"
+msgstr "অ্যাকাউন্ট খুলুন"
+
+msgid "Help & contact"
+msgstr "সহায়তা ও যোগাযোগ"
+
+msgid "Get in touch"
+msgstr "যোগাযোগ"
+
+msgid "All rights reserved."
+msgstr "সর্বস্বত্ব সংরক্ষিত।"
+
+msgid "Made with"
+msgstr "পাঠকদের জন্য"
+
+msgid "for readers"
+msgstr "দিয়ে তৈরি"
+
+msgid "New season, new stories"
+msgstr "নতুন মৌসুম, নতুন গল্প"
+
+#| msgid "Find the book that"
+msgid "Find the book that <em>finds you</em>."
+msgstr "খুঁজে নিন সেই বই, যা <em>আপনাকে খুঁজছে</em>।"
+
+msgid ""
+"Hand-picked classics, modern bestsellers and hidden gems, delivered to your "
+"door. Free shipping on every order."
+msgstr "বাছাই করা ক্লাসিক, আধুনিক বেস্টসেলার আর লুকানো রত্ন, পৌঁছে যাবে আপনার দরজায়। প্রতিটি অর্ডারে ফ্রি ডেলিভারি।"
+
+msgid "Search by title, author or category…"
+msgstr "শিরোনাম, লেখক বা বিভাগ দিয়ে খুঁজুন…"
+
+msgid "Books in stock"
+msgstr "স্টকে থাকা বই"
+
+msgid "Authors"
+msgstr "লেখক"
+
+msgid "On every order, no minimum"
+msgstr "প্রতিটি অর্ডারে, কোনো ন্যূনতম সীমা নেই"
+
+msgid "Free shipping"
+msgstr "ফ্রি ডেলিভারি"
+
+msgid "Delivered to your door"
+msgstr "আপনার দরজায় পৌঁছে দিই"
+
+msgid "Secure checkout"
+msgstr "নিরাপদ চেকআউট"
+
+msgid "Payments by Stripe"
+msgstr "Stripe-এর মাধ্যমে পেমেন্ট"
+
+msgid "Weekly deals"
+msgstr "সাপ্তাহিক অফার"
+
+msgid "Save on top titles"
+msgstr "জনপ্রিয় বইয়ে সাশ্রয়"
+
+msgid "Save books for later"
+msgstr "পরে পড়ার জন্য বই রাখুন"
+
+msgid "Editor's picks"
+msgstr "সম্পাদকের পছন্দ"
+
+msgid "Featured books"
+msgstr "বিশেষ বই"
+
+msgid "Browse all"
+msgstr "সব দেখুন"
+
+msgid "Shop by category"
+msgstr "বিভাগ অনুযায়ী কিনুন"
+
+msgid "All categories"
+msgstr "সব বিভাগ"
+
+msgid "Reader offer"
+msgstr "পাঠক অফার"
+
+#, python-format
+msgid "$%(amount)s off your order"
+msgstr "আপনার অর্ডারে $%(amount)s ছাড়"
+
+#, python-format
+msgid ""
+"Add a few books to your cart and enter the code on the cart page. Valid "
+"until %(date)s."
+msgstr "কার্টে কয়েকটি বই যোগ করে কার্ট পেজে কোডটি লিখুন। %(date)s পর্যন্ত প্রযোজ্য।"
+
+msgid "Use code"
+msgstr "কোড ব্যবহার করুন"
+
+msgid "Just landed"
+msgstr "সদ্য এসেছে"
+
+msgid "New arrivals"
+msgstr "নতুন বই"
+
+msgid "See more"
+msgstr "আরও দেখুন"
+
+msgid "Limited time"
+msgstr "সীমিত সময়"
+
+msgid "Deals of the week"
+msgstr "এই সপ্তাহের অফার"
+
+msgid "Great reads at even better prices."
+msgstr "দারুণ বই, আরও ভালো দামে।"
+
+msgid "BookBazar — Find your next favourite book"
+msgstr "BookBazar — খুঁজে নিন আপনার পরের প্রিয় বই"
+
+msgid ""
+"BookBazar is an online bookstore with classics, bestsellers and new arrivals "
+"delivered to your door."
+msgstr "BookBazar একটি অনলাইন বইয়ের দোকান, যেখানে ক্লাসিক, বেস্টসেলার ও নতুন বই পৌঁছে যায় আপনার দরজায়।"
+
+msgid "View cart"
+msgstr "কার্ট দেখুন"
+
+msgid "Saved to your wishlist"
+msgstr "উইশলিস্টে সংরক্ষিত হয়েছে"
+
+msgid "Removed from your wishlist"
+msgstr "উইশলিস্ট থেকে সরানো হয়েছে"
+
+msgid "Dismiss"
+msgstr "বন্ধ করুন"
+
+msgid "Something went wrong. Please try again."
+msgstr "কিছু একটা ভুল হয়েছে। আবার চেষ্টা করুন।"
+
+msgid "Could not add to cart."
+msgstr "কার্টে যোগ করা যায়নি।"
+
+msgid "Could not update wishlist."
+msgstr "উইশলিস্ট হালনাগাদ করা যায়নি।"
+
+msgid "Staff"
+msgstr "স্টাফ"
+
+msgid "Cancel"
+msgstr "বাতিল"
+
+msgid "Pagination"
+msgstr "পৃষ্ঠা নম্বর"
+
+msgid "Previous page"
+msgstr "আগের পৃষ্ঠা"
+
+msgid "Next page"
+msgstr "পরের পৃষ্ঠা"
+
+#, python-format
+msgid "Save %(title)s to wishlist"
+msgstr "%(title)s উইশলিস্টে রাখুন"
+
+msgid "(optional)"
+msgstr "(ঐচ্ছিক)"
+
+msgid "BookBazar home"
+msgstr "BookBazar হোম"
+
+msgid "Main"
+msgstr "প্রধান"
+
+msgid "Contact"
+msgstr "যোগাযোগ"
+
+msgid "Search titles, authors…"
+msgstr "শিরোনাম, লেখক খুঁজুন…"
+
+msgid "Toggle dark mode"
+msgstr "ডার্ক মোড চালু/বন্ধ"
+
+msgid "Account menu"
+msgstr "অ্যাকাউন্ট মেনু"
+
+msgid "Add a book"
+msgstr "বই যোগ করুন"
+
+msgid "Admin"
+msgstr "অ্যাডমিন"
+
+msgid "Sign out"
+msgstr "সাইন আউট"
+
+msgid "Open menu"
+msgstr "মেনু খুলুন"
+
+msgid "Mobile"
+msgstr "মোবাইল"
+
+msgid "Enter your card details to complete your order."
+msgstr "অর্ডার সম্পন্ন করতে কার্ডের তথ্য দিন।"
+
+msgid "Card details"
+msgstr "কার্ডের তথ্য"
+
+#, python-format
+msgid "Pay $%(amount)s"
+msgstr "$%(amount)s পরিশোধ করুন"
+
+msgid ""
+"Test mode: use card <strong>4242 4242 4242 4242</strong> with any future "
+"expiry date and any CVC."
+msgstr "টেস্ট মোড: <strong>4242 4242 4242 4242</strong> কার্ড, ভবিষ্যতের যেকোনো মেয়াদ ও যেকোনো CVC ব্যবহার করুন।"
+
+#, python-format
+msgid "Qty %(qty)s"
+msgstr "পরিমাণ %(qty)s"
+
+msgid "Card details never touch our servers"
+msgstr "কার্ডের তথ্য কখনো আমাদের সার্ভারে যায় না"
+
+msgid "Edit address"
+msgstr "ঠিকানা সম্পাদনা"
+
+msgid "Address"
+msgstr "ঠিকানা"
+
+msgid "Delivery"
+msgstr "ডেলিভারি"
+
+msgid "Your addresses"
+msgstr "আপনার ঠিকানাসমূহ"
+
+msgid ""
+"Add where we should send your books, then we'll take you back to checkout."
+msgstr "কোথায় বই পাঠাব তা যোগ করুন, তারপর আমরা আপনাকে চেকআউটে ফিরিয়ে নেব।"
+
+msgid "Manage where your orders are delivered."
+msgstr "আপনার অর্ডার কোথায় পৌঁছাবে তা পরিচালনা করুন।"
+
+msgid "Update details"
+msgstr "তথ্য হালনাগাদ"
+
+msgid "Add a new address"
+msgstr "নতুন ঠিকানা যোগ করুন"
+
+msgid "Save changes"
+msgstr "পরিবর্তন সংরক্ষণ"
+
+msgid "Save and continue to checkout"
+msgstr "সংরক্ষণ করে চেকআউটে যান"
+
+msgid "Save address"
+msgstr "ঠিকানা সংরক্ষণ"
+
+msgid "Saved addresses"
+msgstr "সংরক্ষিত ঠিকানা"
+
+msgid "Default"
+msgstr "ডিফল্ট"
+
+msgid "Edit"
+msgstr "সম্পাদনা"
+
+msgid "Make default"
+msgstr "ডিফল্ট করুন"
+
+msgid "Delete this address?"
+msgstr "এই ঠিকানাটি মুছে ফেলবেন?"
+
+msgid "Delete"
+msgstr "মুছুন"
+
+msgid "No addresses yet"
+msgstr "এখনো কোনো ঠিকানা নেই"
+
+msgid "Your saved addresses will appear here."
+msgstr "আপনার সংরক্ষিত ঠিকানা এখানে দেখা যাবে।"
+
+msgid "Overview"
+msgstr "সারসংক্ষেপ"
+
+msgid "Edit profile"
+msgstr "প্রোফাইল সম্পাদনা"
+
+msgid "Password"
+msgstr "পাসওয়ার্ড"
+
+msgid ""
+"A reader lives a thousand lives before he dies. The man who never reads "
+"lives only one."
+msgstr "একজন পাঠক মৃত্যুর আগে হাজারটা জীবন বাঁচে। যে কখনো পড়ে না, সে বাঁচে মাত্র একটি।"
+
+msgid "Use at least 8 characters, and avoid passwords you use elsewhere."
+msgstr "অন্তত ৮ অক্ষর ব্যবহার করুন, এবং অন্য কোথাও ব্যবহৃত পাসওয়ার্ড এড়িয়ে চলুন।"
+
+msgid "Current password"
+msgstr "বর্তমান পাসওয়ার্ড"
+
+msgid "New password"
+msgstr "নতুন পাসওয়ার্ড"
+
+msgid "Show password"
+msgstr "পাসওয়ার্ড দেখান"
+
+msgid "Confirm new password"
+msgstr "নতুন পাসওয়ার্ড নিশ্চিত করুন"
+
+msgid "Update password"
+msgstr "পাসওয়ার্ড হালনাগাদ"
+
+msgid "Welcome back"
+msgstr "আবার স্বাগতম"
+
+msgid "Sign in to pick up where you left off."
+msgstr "যেখানে থেমেছিলেন সেখান থেকে শুরু করতে সাইন ইন করুন।"
+
+msgid "Forgot password?"
+msgstr "পাসওয়ার্ড ভুলে গেছেন?"
+
+msgid "Your password"
+msgstr "আপনার পাসওয়ার্ড"
+
+msgid "New to BookBazar?"
+msgstr "BookBazar-এ নতুন?"
+
+msgid "Create an account"
+msgstr "অ্যাকাউন্ট খুলুন"
+
+msgid "Reset password"
+msgstr "পাসওয়ার্ড রিসেট"
+
+msgid "Forgot your password?"
+msgstr "পাসওয়ার্ড ভুলে গেছেন?"
+
+msgid "Enter your email and we'll send you a link to choose a new one."
+msgstr "আপনার ইমেইল দিন, নতুন পাসওয়ার্ড বেছে নেওয়ার লিংক পাঠিয়ে দেব।"
+
+msgid "Send reset link"
+msgstr "রিসেট লিংক পাঠান"
+
+msgid "Back to sign in"
+msgstr "সাইন ইনে ফিরুন"
+
+msgid "Password updated"
+msgstr "পাসওয়ার্ড হালনাগাদ হয়েছে"
+
+msgid "You're all set"
+msgstr "সব ঠিক আছে"
+
+msgid ""
+"Your password has been changed. You can now sign in with your new password."
+msgstr "আপনার পাসওয়ার্ড পরিবর্তন হয়েছে। এখন নতুন পাসওয়ার্ড দিয়ে সাইন ইন করতে পারবেন।"
+
+msgid "Choose a new password"
+msgstr "নতুন পাসওয়ার্ড বেছে নিন"
+
+msgid "Link expired"
+msgstr "লিংকের মেয়াদ শেষ"
+
+msgid "Make it at least 8 characters and hard to guess."
+msgstr "অন্তত ৮ অক্ষরের এবং অনুমান করা কঠিন এমন পাসওয়ার্ড দিন।"
+
+msgid "This reset link is invalid or has already been used."
+msgstr "এই রিসেট লিংকটি অবৈধ বা আগেই ব্যবহার করা হয়েছে।"
+
+msgid "Request a new link"
+msgstr "নতুন লিংক চান"
+
+msgid "Check your email"
+msgstr "ইমেইল দেখুন"
+
+msgid "Check your inbox"
+msgstr "আপনার ইনবক্স দেখুন"
+
+msgid ""
+"If an account exists for that email, we've sent a link to reset your "
+"password."
+msgstr "এই ইমেইলে কোনো অ্যাকাউন্ট থাকলে, পাসওয়ার্ড রিসেটের লিংক পাঠানো হয়েছে।"
+
+msgid ""
+"Didn't get it? Check your spam folder, or make sure you used the email you "
+"registered with."
+msgstr "পাননি? স্প্যাম ফোল্ডার দেখুন, অথবা নিশ্চিত হোন যে নিবন্ধনের ইমেইলটিই দিয়েছেন।"
+
+#, python-format
+msgid ""
+"You're receiving this email because you requested a password reset for your "
+"user account at %(site_name)s."
+msgstr "আপনি %(site_name)s-এ আপনার অ্যাকাউন্টের পাসওয়ার্ড রিসেটের অনুরোধ করেছেন বলে এই ইমেইলটি পাচ্ছেন।"
+
+msgid "Please go to the following page and choose a new password:"
+msgstr "নিচের পৃষ্ঠায় গিয়ে নতুন পাসওয়ার্ড বেছে নিন:"
+
+msgid "Your username, in case you've forgotten:"
+msgstr "আপনার ইউজারনেম, যদি ভুলে গিয়ে থাকেন:"
+
+msgid "Thanks for using our site!"
+msgstr "আমাদের সাইট ব্যবহারের জন্য ধন্যবাদ!"
+
+#, python-format
+msgid "The %(site_name)s team"
+msgstr "%(site_name)s টিম"
+
+msgid "Hide password"
+msgstr "পাসওয়ার্ড লুকান"
+
+#, python-format
+msgid "Hi, %(name)s"
+msgstr "হ্যালো, %(name)s"
+
+#, python-format
+msgid "Member for %(since)s"
+msgstr "%(since)s ধরে সদস্য"
+
+msgid "Items in cart"
+msgstr "কার্টে থাকা বই"
+
+msgid "Saved books"
+msgstr "সংরক্ষিত বই"
+
+msgid "Orders placed"
+msgstr "দেওয়া অর্ডার"
+
+msgid "Personal details"
+msgstr "ব্যক্তিগত তথ্য"
+
+msgid "Full name"
+msgstr "পুরো নাম"
+
+msgid "Not set"
+msgstr "দেওয়া হয়নি"
+
+msgid "Phone"
+msgstr "ফোন"
+
+msgid "Birthday"
+msgstr "জন্মদিন"
+
+msgid "Currency"
+msgstr "মুদ্রা"
+
+msgid "Default address"
+msgstr "ডিফল্ট ঠিকানা"
+
+msgid "Add an address"
+msgstr "ঠিকানা যোগ করুন"
+
+msgid "Newsletter"
+msgstr "নিউজলেটার"
+
+msgid "Subscribed"
+msgstr "সাবস্ক্রাইব করা"
+
+msgid "Not subscribed"
+msgstr "সাবস্ক্রাইব করা নেই"
+
+msgid "Order history"
+msgstr "অর্ডারের ইতিহাস"
+
+#, python-format
+msgid "Order #%(ref)s"
+msgstr "অর্ডার #%(ref)s"
+
+msgid "Delivered"
+msgstr "পৌঁছে গেছে"
+
+msgid "On the way"
+msgstr "পথে আছে"
+
+msgid "Processing"
+msgstr "প্রক্রিয়াধীন"
+
+msgid "No orders yet"
+msgstr "এখনো কোনো অর্ডার নেই"
+
+msgid "When you buy books, your orders will show up here."
+msgstr "বই কিনলে আপনার অর্ডার এখানে দেখা যাবে।"
+
+msgid "Keep your details up to date."
+msgstr "আপনার তথ্য হালনাগাদ রাখুন।"
+
+msgid "Profile photo"
+msgstr "প্রোফাইল ছবি"
+
+msgid "Upload photo"
+msgstr "ছবি আপলোড করুন"
+
+msgid "JPG, PNG, GIF or WebP, up to 5 MB."
+msgstr "JPG, PNG, GIF বা WebP, সর্বোচ্চ ৫ MB।"
+
+msgid "Personal information"
+msgstr "ব্যক্তিগত তথ্য"
+
+msgid "Your email is used to sign in and can't be changed here."
+msgstr "সাইন ইনের জন্য আপনার ইমেইল ব্যবহার হয়, তাই এখানে এটি পরিবর্তন করা যায় না।"
+
+msgid "Preferences"
+msgstr "পছন্দসমূহ"
+
+msgid ""
+"The site is available in English and Bangla. Prices are shown in US dollars."
+msgstr "সাইটটি ইংরেজি ও বাংলায় পাওয়া যায়। দাম মার্কিন ডলারে দেখানো হয়।"
+
+msgid "That photo is larger than 5 MB."
+msgstr "ছবিটি ৫ MB-এর চেয়ে বড়।"
+
+msgid "Create your account"
+msgstr "আপনার অ্যাকাউন্ট খুলুন"
+
+msgid "Save books to your wishlist, track your cart and check out faster."
+msgstr "উইশলিস্টে বই রাখুন, কার্ট দেখুন এবং দ্রুত চেকআউট করুন।"
+
+msgid "At least 8 characters"
+msgstr "অন্তত ৮ অক্ষর"
+
+msgid "Confirm password"
+msgstr "পাসওয়ার্ড নিশ্চিত করুন"
+
+msgid "Repeat your password"
+msgstr "পাসওয়ার্ড আবার লিখুন"
+
+msgid "Already have an account?"
+msgstr "আগে থেকেই অ্যাকাউন্ট আছে?"
+
+msgid "Personal Info"
+msgstr ""
+
+msgid "Permissions"
+msgstr ""
+
+msgid "Important dates"
+msgstr ""
+
+msgid "User Information"
+msgstr ""
+
+msgid "Personal Information"
+msgstr ""
+
+msgid "Metadata"
+msgstr ""
+
+msgid "A user with this email already exists."
+msgstr "এই ইমেইলে আগেই একটি অ্যাকাউন্ট আছে।"
+
+msgid "Send me the BookBazar newsletter"
+msgstr "আমাকে BookBazar নিউজলেটার পাঠান"
+
+msgid "Email me updates about my orders"
+msgstr "আমার অর্ডারের আপডেট ইমেইলে পাঠান"
+
+msgid "Tell me about deals and promotions"
+msgstr "অফার ও প্রমোশনের খবর জানান"
+
+msgid "Enter your first name"
+msgstr "নামের প্রথম অংশ লিখুন"
+
+msgid "Enter your last name"
+msgstr "নামের শেষ অংশ লিখুন"
+
+msgid "Please enter a valid phone number with at least 10 digits."
+msgstr "অন্তত ১০ অঙ্কের একটি সঠিক ফোন নম্বর দিন।"
+
+msgid "You must be at least 13 years old to use this service."
+msgstr "এই সেবা ব্যবহার করতে আপনার বয়স অন্তত ১৩ বছর হতে হবে।"
+
+msgid "Please enter a valid birthdate."
+msgstr "সঠিক জন্মতারিখ দিন।"
+
+msgid "Profile photo must be less than 5MB."
+msgstr "প্রোফাইল ছবি ৫MB-এর কম হতে হবে।"
+
+msgid "Unsupported file format. Please upload JPG, PNG, GIF, or WebP."
+msgstr "এই ফাইল ফরম্যাট সমর্থিত নয়। JPG, PNG, GIF বা WebP আপলোড করুন।"
+
+msgid "The Email must be set"
+msgstr ""
+
+msgid "Superuser must have is_staff=True."
+msgstr ""
+
+msgid "Superuser must have is_superuser=True."
+msgstr ""
+
+msgid "email address"
+msgstr ""
+
+msgid "English"
+msgstr "ইংরেজি"
+
+msgid "Spanish"
+msgstr "স্প্যানিশ"
+
+msgid "French"
+msgstr "ফরাসি"
+
+msgid "German"
+msgstr "জার্মান"
+
+msgid "Bangla (বাংলা)"
+msgstr "বাংলা"
+
+msgid "USD ($)"
+msgstr "USD ($)"
+
+msgid "EUR (€)"
+msgstr "EUR (€)"
+
+msgid "GBP (£)"
+msgstr "GBP (£)"
+
+msgid "BDT (৳ Taka)"
+msgstr "BDT (৳ টাকা)"
+
+msgid "User Profile"
+msgstr ""
+
+msgid "User Profiles"
+msgstr ""
+
+#, python-format
+msgid "Welcome %(email)s! Your account has been created successfully."
+msgstr "স্বাগতম %(email)s! আপনার অ্যাকাউন্ট সফলভাবে খোলা হয়েছে।"
+
+#, python-format
+msgid "Welcome back, %(email)s!"
+msgstr "আবার স্বাগতম, %(email)s!"
+
+msgid "You have been logged out."
+msgstr "আপনি সাইন আউট করেছেন।"
+
+msgid "Profile updated successfully!"
+msgstr "প্রোফাইল হালনাগাদ হয়েছে!"
+
+msgid "All fields are required."
+msgstr "সব ঘর পূরণ করা আবশ্যক।"
+
+msgid "New passwords don't match."
+msgstr "নতুন পাসওয়ার্ড দুটি মেলেনি।"
+
+msgid "Current password is incorrect."
+msgstr "বর্তমান পাসওয়ার্ড সঠিক নয়।"
+
+msgid "Password changed successfully!"
+msgstr "পাসওয়ার্ড সফলভাবে পরিবর্তন হয়েছে!"

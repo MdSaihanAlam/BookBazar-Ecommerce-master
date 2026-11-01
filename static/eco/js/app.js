@@ -2,6 +2,7 @@
   'use strict';
 
   const root = document.documentElement;
+  const text = window.BookBazarText || {};
 
   function csrfToken() {
     const meta = document.querySelector('meta[name="csrf-token"]');
@@ -32,7 +33,7 @@
     const el = document.createElement('div');
     el.className = `toast toast-${type}`;
     el.innerHTML = `<i class="fa-solid ${ICONS[type] || ICONS.info}"></i><div class="toast-body"></div>
-      <button class="toast-close" aria-label="Dismiss"><i class="fa-solid fa-xmark"></i></button>`;
+      <button class="toast-close" aria-label="${text.dismiss || 'Dismiss'}"><i class="fa-solid fa-xmark"></i></button>`;
     const body = el.querySelector('.toast-body');
     if (html) body.innerHTML = message; else body.textContent = message;
 
@@ -66,7 +67,7 @@
       return new Promise(() => {});
     }
     if (!response.ok && data.success === undefined) {
-      throw new Error(data.message || data.error || 'Something went wrong. Please try again.');
+      throw new Error(data.message || data.error || text.genericError);
     }
     return data;
   }
@@ -96,9 +97,9 @@
       if (data.success) {
         setCartCount(data.total_items);
         const cartUrl = document.body.dataset.cartUrl;
-        toast(`${escapeHtml(data.message)} <a href="${cartUrl}">View cart</a>`, 'success', { html: true });
+        toast(`${escapeHtml(data.message)} <a href="${cartUrl}">${escapeHtml(text.viewCart)}</a>`, 'success', { html: true });
       } else {
-        toast(data.message || 'Could not add to cart.', 'warning');
+        toast(data.message || text.cartError, 'warning');
       }
     } catch (error) {
       toast(error.message, 'error');
@@ -116,7 +117,7 @@
       const data = await api(url, { method: active ? 'POST' : 'GET' });
       if (data.success) {
         setWishlistState(button, !active);
-        toast(active ? 'Removed from your wishlist' : 'Saved to your wishlist', 'success');
+        toast(active ? text.removedFromWishlist : text.addedToWishlist, 'success');
         if (active && button.dataset.removeCard) {
           const card = button.closest(button.dataset.removeCard);
           if (card) {
@@ -130,7 +131,7 @@
           }
         }
       } else {
-        toast(data.message || 'Could not update wishlist.', 'warning');
+        toast(data.message || text.wishlistError, 'warning');
       }
     } catch (error) {
       toast(error.message, 'error');
@@ -145,7 +146,7 @@
     const icon = button.querySelector('i');
     if (icon) icon.className = `${active ? 'fa-solid' : 'fa-regular'} fa-heart`;
     const label = button.querySelector('[data-label]');
-    if (label) label.textContent = active ? 'Saved' : 'Save';
+    if (label) label.textContent = active ? text.saved : text.save;
   }
 
   function escapeHtml(text) {

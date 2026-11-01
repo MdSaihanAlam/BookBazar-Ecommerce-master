@@ -1,4 +1,5 @@
 {% extends 'eco/layout.html' %}
+{% load i18n %}
 
 {% block title %}{{ title }} — BookBazar{% endblock %}
 
@@ -6,7 +7,7 @@
 <div class="page">
   <div class="container container-sm">
     <div class="page-head">
-      <span class="eyebrow"><i class="fa-solid fa-screwdriver-wrench"></i> Staff</span>
+      <span class="eyebrow"><i class="fa-solid fa-screwdriver-wrench"></i> {% translate "Staff" %}</span>
       <h1>{{ title }}</h1>
     </div>
     <section class="card">
@@ -17,8 +18,8 @@
           {% include 'eco/partials/field.html' %}
         {% endfor %}
         <div class="row">
-          <button type="submit" class="btn btn-primary btn-lg">Save</button>
-          <a href="{% url 'eco:home' %}" class="btn btn-ghost btn-lg">Cancel</a>
+          <button type="submit" class="btn btn-primary btn-lg">{% translate "Save" %}</button>
+          <a href="{% url 'eco:home' %}" class="btn btn-ghost btn-lg">{% translate "Cancel" %}</a>
         </div>
       </form>
     </section>

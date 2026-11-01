@@ -9,6 +9,7 @@ from django.templatetags.static import static
 from django_countries.fields import CountryField
 from mptt.models import MPTTModel, TreeForeignKey
 from django.utils.html import format_html
+from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinValueValidator
 
 # ==================== BOOKSTORE-SPECIFIC CHOICES ====================
@@ -37,18 +38,18 @@ BOOK_GENRES = [
 ]
 
 BOOK_FORMATS = [
-    ('HARDCOVER', 'Hardcover'),
-    ('PAPERBACK', 'Paperback'),
-    ('EBOOK', 'E-Book'),
-    ('AUDIOBOOK', 'Audiobook'),
+    ('HARDCOVER', _('Hardcover')),
+    ('PAPERBACK', _('Paperback')),
+    ('EBOOK', _('E-Book')),
+    ('AUDIOBOOK', _('Audiobook')),
 ]
 
 BOOK_CONDITIONS = [
-    ('NEW', 'New'),
-    ('LIKE_NEW', 'Like New'),
-    ('VERY_GOOD', 'Very Good'),
-    ('GOOD', 'Good'),
-    ('ACCEPTABLE', 'Acceptable'),
+    ('NEW', _('New')),
+    ('LIKE_NEW', _('Like New')),
+    ('VERY_GOOD', _('Very Good')),
+    ('GOOD', _('Good')),
+    ('ACCEPTABLE', _('Acceptable')),
 ]
 
 LABEL_CHOICES = (

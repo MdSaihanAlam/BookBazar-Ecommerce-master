@@ -658,8 +658,8 @@ main { flex: 1; }
 .account-nav { position: sticky; top: calc(var(--header-h) + 24px); padding: 12px; }
 .account-user { display: flex; align-items: center; gap: 12px; padding: 10px 10px 18px; margin-bottom: 8px; border-bottom: 1px solid var(--border); }
 .account-user .avatar { width: 46px; height: 46px; font-size: 1.1rem; }
-.account-user strong { display: block; font-size: .95rem; }
-.account-user span { display: block; font-size: .78rem; color: var(--muted); word-break: break-all; }
+.account-user div > strong { display: block; font-size: .95rem; }
+.account-user div > span { display: block; font-size: .78rem; color: var(--muted); word-break: break-all; }
 .account-nav a { display: flex; align-items: center; gap: 12px; padding: 11px 12px; border-radius: 10px; font-size: .92rem; font-weight: 500; color: var(--text-2); }
 .account-nav a i { width: 18px; text-align: center; color: var(--muted); }
 .account-nav a:hover { background: var(--surface-2); color: var(--text); }
@@ -768,3 +768,12 @@ main { flex: 1; }
 
 .with-action { position: relative; }
 .with-action input { padding-right: 52px !important; }
+
+/* ---------- Bangla ---------- */
+:root:lang(bn) {
+  --font-sans: "Hind Siliguri", "Inter", system-ui, sans-serif;
+  --font-serif: "Noto Serif Bengali", "Fraunces", Georgia, serif;
+}
+:lang(bn) body { line-height: 1.75; }
+:lang(bn) h1, :lang(bn) h2, :lang(bn) h3, :lang(bn) h4 { line-height: 1.35; letter-spacing: 0; }
+:lang(bn) .eyebrow { letter-spacing: .04em; }

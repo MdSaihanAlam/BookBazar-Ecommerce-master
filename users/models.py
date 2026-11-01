@@ -50,11 +50,11 @@ class UserProfile(models.Model):
     promotions = models.BooleanField(default=False)
     
     LANGUAGE_CHOICES = [
-        ('en', 'English'),
-        ('es', 'Spanish'),
-        ('fr', 'French'),
-        ('de', 'German'),
-        ('bn', 'Bangla (বাংলা)'),
+        ('en', _('English')),
+        ('es', _('Spanish')),
+        ('fr', _('French')),
+        ('de', _('German')),
+        ('bn', _('Bangla (বাংলা)')),
     ]
     language = models.CharField(
         max_length=10, 
@@ -63,10 +63,10 @@ class UserProfile(models.Model):
     )
     
     CURRENCY_CHOICES = [
-        ('usd', 'USD ($)'),
-        ('eur', 'EUR (€)'),
-        ('gbp', 'GBP (£)'),
-        ('bdt', 'BDT (৳ Taka)'),
+        ('usd', _('USD ($)')),
+        ('eur', _('EUR (€)')),
+        ('gbp', _('GBP (£)')),
+        ('bdt', _('BDT (৳ Taka)')),
     ]
     currency = models.CharField(
         max_length=3, 

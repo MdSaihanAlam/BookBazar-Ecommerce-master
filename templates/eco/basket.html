@@ -1,23 +1,24 @@
 {% extends 'eco/layout.html' %}
+{% load i18n %}
 
-{% block title %}Your cart — BookBazar{% endblock %}
+{% block title %}{% translate "Your cart" %} — BookBazar{% endblock %}
 
 {% block content %}
 <div class="page">
   <div class="container">
     <div class="page-head row-between">
       <div>
-        <h1>Your cart</h1>
-        <p data-item-count>{{ cart.total_items }} item{{ cart.total_items|pluralize }}</p>
+        <h1>{% translate "Your cart" %}</h1>
+        <p data-item-count>{% blocktranslate count counter=cart.total_items %}{{ counter }} item{% plural %}{{ counter }} items{% endblocktranslate %}</p>
       </div>
-      <a href="{% url 'eco:product-list' %}" class="link-arrow"><i class="fa-solid fa-arrow-left"></i> Continue shopping</a>
+      <a href="{% url 'eco:product-list' %}" class="link-arrow"><i class="fa-solid fa-arrow-left"></i> {% translate "Continue shopping" %}</a>
     </div>
 
     <div id="cartEmpty" class="empty {% if cart_items %}hidden{% endif %}">
       <span class="icon"><i class="fa-solid fa-bag-shopping"></i></span>
-      <h3>Your cart is empty</h3>
-      <p>Looks like you haven't added any books yet. Let's find something great to read.</p>
-      <a href="{% url 'eco:product-list' %}" class="btn btn-primary">Start shopping</a>
+      <h3>{% translate "Your cart is empty" %}</h3>
+      <p>{% translate "Looks like you haven't added any books yet. Let's find something great to read." %}</p>
+      <a href="{% url 'eco:product-list' %}" class="btn btn-primary">{% translate "Start shopping" %}</a>
     </div>
 
     {% if cart_items %}
@@ -25,61 +26,61 @@
       <div class="cart-list">
         {% for item in cart_items %}
           <div class="cart-item" id="cartItem-{{ item.id }}">
-            <a href="{{ item.book.get_absolute_url }}" class="book-cover"><img src="{{ item.book.image_url }}" alt="Cover of {{ item.book.title }}"></a>
+            <a href="{{ item.book.get_absolute_url }}" class="book-cover"><img src="{{ item.book.image_url }}" alt="{% blocktranslate with title=item.book.title %}Cover of {{ title }}{% endblocktranslate %}"></a>
             <div>
               <h3><a href="{{ item.book.get_absolute_url }}">{{ item.book.title }}</a></h3>
-              <p class="muted text-sm">{{ item.book.author.name|default:"Unknown author" }} · {{ item.book.get_format_type_display }}</p>
+              <p class="muted text-sm">{{ item.book.author.name|default:_("Unknown author") }} · {{ item.book.get_format_type_display }}</p>
               <p class="text-sm" style="margin-top: 6px;">
-                ${{ item.book.final_price|floatformat:2 }} each
+                {% blocktranslate with price=item.book.final_price|floatformat:2 %}${{ price }} each{% endblocktranslate %}
                 {% if item.book.is_on_sale %}<span class="badge badge-success" style="margin-left: 6px;">−{{ item.book.discount_percentage }}%</span>{% endif %}
               </p>
               <div class="cart-item-actions">
                 <div class="qty qty-sm">
-                  <button type="button" data-cart-action="decrease" data-item="{{ item.id }}" aria-label="Decrease quantity"><i class="fa-solid fa-minus"></i></button>
+                  <button type="button" data-cart-action="decrease" data-item="{{ item.id }}" aria-label="{% translate 'Decrease quantity' %}"><i class="fa-solid fa-minus"></i></button>
                   <span id="qty-{{ item.id }}">{{ item.quantity }}</span>
-                  <button type="button" data-cart-action="increase" data-item="{{ item.id }}" aria-label="Increase quantity"><i class="fa-solid fa-plus"></i></button>
+                  <button type="button" data-cart-action="increase" data-item="{{ item.id }}" aria-label="{% translate 'Increase quantity' %}"><i class="fa-solid fa-plus"></i></button>
                 </div>
                 <button type="button" class="btn btn-ghost btn-sm {% if item.book.pk in wishlist_ids %}is-active{% endif %}" data-wishlist
                         data-add-url="{% url 'eco:add-to-wish' item.book.slug %}" data-remove-url="{% url 'eco:remove-from-wish' item.book.slug %}">
-                  <i class="{% if item.book.pk in wishlist_ids %}fa-solid{% else %}fa-regular{% endif %} fa-heart"></i> <span data-label>{% if item.book.pk in wishlist_ids %}Saved{% else %}Save{% endif %}</span>
+                  <i class="{% if item.book.pk in wishlist_ids %}fa-solid{% else %}fa-regular{% endif %} fa-heart"></i> <span data-label>{% if item.book.pk in wishlist_ids %}{% translate "Saved" %}{% else %}{% translate "Save" %}{% endif %}</span>
                 </button>
                 <button type="button" class="btn btn-ghost btn-sm" data-cart-action="remove" data-item="{{ item.id }}">
-                  <i class="fa-regular fa-trash-can"></i> Remove
+                  <i class="fa-regular fa-trash-can"></i> {% translate "Remove" %}
                 </button>
               </div>
             </div>
             <div class="cart-item-price">
               <div class="now" id="total-{{ item.id }}">${{ item.final_price|floatformat:2 }}</div>
-              {% if item.book.is_on_sale %}<div class="was" id="was-{{ item.id }}" data-unit="{{ item.book.price }}">${{ item.total_price|floatformat:2 }}</div>{% endif %}
+              {% if item.book.is_on_sale %}<div class="was" id="was-{{ item.id }}" data-unit="{{ item.book.price|stringformat:'s' }}">${{ item.total_price|floatformat:2 }}</div>{% endif %}
             </div>
           </div>
         {% endfor %}
       </div>
 
-      <aside class="card summary" data-coupon-amount="{% if coupon %}{{ coupon.amount }}{% else %}0{% endif %}">
-        <h2 class="card-title">Order summary</h2>
-        <div class="summary-row"><span>Subtotal</span><span data-subtotal>${{ cart.subtotal|floatformat:2 }}</span></div>
+      <aside class="card summary" data-coupon-amount="{% if coupon %}{{ coupon.amount|stringformat:'s' }}{% else %}0{% endif %}">
+        <h2 class="card-title">{% translate "Order summary" %}</h2>
+        <div class="summary-row"><span>{% translate "Subtotal" %}</span><span data-subtotal>${{ cart.subtotal|floatformat:2 }}</span></div>
         <div class="summary-row {% if not cart.total_discount %}hidden{% endif %}" data-discount-row>
-          <span>Book discounts</span><span class="save" data-discount>−${{ cart.total_discount|floatformat:2 }}</span>
+          <span>{% translate "Book discounts" %}</span><span class="save" data-discount>−${{ cart.total_discount|floatformat:2 }}</span>
         </div>
         <div class="summary-row {% if not coupon %}hidden{% endif %}" data-coupon-row>
-          <span>Promo <span class="badge badge-brand" data-coupon-code>{{ coupon.code }}</span></span>
+          <span>{% translate "Promo" %} <span class="badge badge-brand" data-coupon-code>{{ coupon.code }}</span></span>
           <span class="save" data-coupon>−${{ coupon_discount|floatformat:2 }}</span>
         </div>
-        <div class="summary-row"><span>Shipping</span><span class="text-success">Free</span></div>
-        <div class="summary-row total"><span>Total</span><span data-total>${{ order_total|floatformat:2 }}</span></div>
+        <div class="summary-row"><span>{% translate "Shipping" %}</span><span class="text-success">{% translate "Free" %}</span></div>
+        <div class="summary-row total"><span>{% translate "Total" %}</span><span data-total>${{ order_total|floatformat:2 }}</span></div>
 
         <form class="promo" id="promoForm">
-          <label class="sr-only" for="promoInput">Promo code</label>
-          <input id="promoInput" class="input" placeholder="Promo code" autocomplete="off" value="{{ coupon.code|default:'' }}">
-          <button type="submit" class="btn btn-secondary">Apply</button>
+          <label class="sr-only" for="promoInput">{% translate "Promo code" %}</label>
+          <input id="promoInput" class="input" placeholder="{% translate 'Promo code' %}" autocomplete="off" value="{{ coupon.code|default:'' }}">
+          <button type="submit" class="btn btn-secondary">{% translate "Apply" %}</button>
         </form>
         <div class="promo-msg" id="promoMsg"></div>
 
         <button type="button" class="btn btn-primary btn-lg btn-block" id="checkoutBtn" style="margin-top: 10px;">
-          Checkout <i class="fa-solid fa-arrow-right"></i>
+          {% translate "Checkout" %} <i class="fa-solid fa-arrow-right"></i>
         </button>
-        <p class="secure-note"><i class="fa-solid fa-lock"></i> Secure checkout powered by Stripe</p>
+        <p class="secure-note"><i class="fa-solid fa-lock"></i> {% translate "Secure checkout powered by Stripe" %}</p>
       </aside>
     </div>
     {% endif %}
@@ -94,6 +95,14 @@
     const summary = document.querySelector('.summary');
     if (!summary) return;
 
+    const text = {
+      removed: "{{ _('Removed from your cart')|escapejs }}",
+      updateError: "{{ _('Could not update your cart.')|escapejs }}",
+      enterCode: "{{ _('Enter a promo code first.')|escapejs }}",
+      needAddress: "{{ _('Add a shipping address to continue to checkout.')|escapejs }}",
+      oneItem: "{{ _('1 item')|escapejs }}",
+      manyItems: "{{ _('%(count)s items')|escapejs }}"
+    };
     const money = (value) => '$' + Number(value).toFixed(2);
     let couponAmount = parseFloat(summary.dataset.couponAmount) || 0;
 
@@ -104,7 +113,8 @@
       summary.querySelector('[data-discount-row]').classList.toggle('hidden', !data.total_discount);
       summary.querySelector('[data-coupon]').textContent = '−' + money(couponDiscount);
       summary.querySelector('[data-total]').textContent = money(data.final_total - couponDiscount);
-      document.querySelector('[data-item-count]').textContent = `${data.total_items} item${data.total_items === 1 ? '' : 's'}`;
+      document.querySelector('[data-item-count]').textContent =
+        data.total_items === 1 ? text.oneItem : text.manyItems.replace('%(count)s', data.total_items);
       setCartCount(data.total_items);
 
       if (!data.total_items) {
@@ -122,14 +132,14 @@
       try {
         const data = await api(`{% url 'eco:update-cart-item' 0 %}`.replace('0', id), { body: { action } });
         if (!data.success) {
-          toast(data.error || 'Could not update your cart.', 'warning');
+          toast(data.error || text.updateError, 'warning');
           return;
         }
         if (action === 'remove') {
           const row = document.getElementById(`cartItem-${id}`);
           row.classList.add('is-removing');
           setTimeout(() => row.remove(), 300);
-          toast('Removed from your cart', 'success');
+          toast(text.removed, 'success');
         } else {
           document.getElementById(`qty-${id}`).textContent = data.item_quantity;
           document.getElementById(`total-${id}`).textContent = money(data.item_total);
@@ -151,7 +161,7 @@
       const button = event.submitter;
       if (!input.value.trim()) {
         message.className = 'promo-msg text-danger';
-        message.textContent = 'Enter a promo code first.';
+        message.textContent = text.enterCode;
         return;
       }
       setLoading(button, true);
@@ -182,7 +192,7 @@
         if (data.has_shipping_address) {
           window.location.href = `{% url 'eco:checkout' %}`;
         } else {
-          toast('Add a shipping address to continue to checkout.', 'info');
+          toast(text.needAddress, 'info');
           setTimeout(() => { window.location.href = `{% url 'eco:shipping-address' %}?from_checkout=true`; }, 900);
         }
       } catch (error) {

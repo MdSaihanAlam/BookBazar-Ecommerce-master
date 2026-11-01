@@ -1,31 +1,32 @@
 {% extends 'eco/layout.html' %}
+{% load i18n %}
 
-{% block title %}{% if category %}{{ category.name }}{% else %}Categories{% endif %} — BookBazar{% endblock %}
+{% block title %}{% if category %}{{ category.name }}{% else %}{% translate "Categories" %}{% endif %} — BookBazar{% endblock %}
 
 {% block content %}
 <div class="page">
   <div class="container">
     {% if category %}
-      <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="{% url 'eco:home' %}">Home</a><i class="fa-solid fa-chevron-right"></i>
-        <a href="{% url 'eco:category-list' %}">Categories</a><i class="fa-solid fa-chevron-right"></i>
+      <nav class="breadcrumb" aria-label="{% translate 'Breadcrumb' %}">
+        <a href="{% url 'eco:home' %}">{% translate "Home" %}</a><i class="fa-solid fa-chevron-right"></i>
+        <a href="{% url 'eco:category-list' %}">{% translate "Categories" %}</a><i class="fa-solid fa-chevron-right"></i>
         <span>{{ category.name }}</span>
       </nav>
       <div class="page-head">
-        <span class="eyebrow">Category</span>
+        <span class="eyebrow">{% translate "Category" %}</span>
         <h1>{{ category.name }}</h1>
-        <p>{{ category.description|default:"Explore our hand-picked titles in this category." }}</p>
+        <p>{{ category.description|default:_("Explore our hand-picked titles in this category.") }}</p>
       </div>
     {% else %}
       <div class="page-head">
-        <span class="eyebrow">Explore</span>
-        <h1>Browse by category</h1>
-        <p>From timeless classics to page-turning thrillers, find your next read.</p>
+        <span class="eyebrow">{% translate "Explore" %}</span>
+        <h1>{% translate "Browse by category" %}</h1>
+        <p>{% translate "From timeless classics to page-turning thrillers, find your next read." %}</p>
       </div>
     {% endif %}
 
     <div class="chips" style="margin-bottom: 32px;">
-      <a href="{% url 'eco:category-list' %}" class="chip {% if not category %}is-active{% endif %}">All</a>
+      <a href="{% url 'eco:category-list' %}" class="chip {% if not category %}is-active{% endif %}">{% translate "All" %}</a>
       {% for item in categories %}
         <a href="{{ item.get_absolute_url }}" class="chip {% if category and item.pk == category.pk %}is-active{% endif %}">
           {{ item.name }} <small>{{ item.total_books }}</small>
@@ -40,12 +41,12 @@
             {% if item.image %}<img src="{{ item.image.url }}" alt="" loading="lazy">{% endif %}
             <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span>
             <h3>{{ item.name }}</h3>
-            <span>{{ item.total_books }} book{{ item.total_books|pluralize }}</span>
+            <span>{% blocktranslate count counter=item.total_books %}{{ counter }} book{% plural %}{{ counter }} books{% endblocktranslate %}</span>
           </a>
         {% endfor %}
       </div>
       <div class="section-head">
-        <h2>Everything in the shop</h2>
+        <h2>{% translate "Everything in the shop" %}</h2>
       </div>
     {% endif %}
 
@@ -59,9 +60,9 @@
     {% else %}
       <div class="empty">
         <span class="icon"><i class="fa-solid fa-book"></i></span>
-        <h3>No books here yet</h3>
-        <p>We're restocking this shelf. In the meantime, explore the rest of the shop.</p>
-        <a href="{% url 'eco:product-list' %}" class="btn btn-primary">Browse all books</a>
+        <h3>{% translate "No books here yet" %}</h3>
+        <p>{% translate "We're restocking this shelf. In the meantime, explore the rest of the shop." %}</p>
+        <a href="{% url 'eco:product-list' %}" class="btn btn-primary">{% translate "Browse all books" %}</a>
       </div>
     {% endif %}
   </div>

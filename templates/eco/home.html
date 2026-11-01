@@ -1,23 +1,24 @@
 {% extends 'eco/layout.html' %}
+{% load i18n %}
 
 {% block content %}
 <section class="hero">
   <div class="container hero-grid">
     <div>
-      <span class="eyebrow"><span class="dot"></span> New season, new stories</span>
-      <h1>Find the book that <em>finds you</em>.</h1>
-      <p class="hero-lead">Hand-picked classics, modern bestsellers and hidden gems, delivered to your door. Free shipping on every order.</p>
+      <span class="eyebrow"><span class="dot"></span> {% translate "New season, new stories" %}</span>
+      <h1>{% blocktranslate %}Find the book that <em>finds you</em>.{% endblocktranslate %}</h1>
+      <p class="hero-lead">{% translate "Hand-picked classics, modern bestsellers and hidden gems, delivered to your door. Free shipping on every order." %}</p>
 
       <form class="hero-search" action="{% url 'eco:product-list' %}" method="get" role="search">
-        <label class="sr-only" for="hero-search">Search books</label>
-        <input id="hero-search" class="input" type="search" name="q" placeholder="Search by title, author or category…">
-        <button class="btn btn-primary" type="submit"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+        <label class="sr-only" for="hero-search">{% translate "Search books" %}</label>
+        <input id="hero-search" class="input" type="search" name="q" placeholder="{% translate 'Search by title, author or category…' %}">
+        <button class="btn btn-primary" type="submit"><i class="fa-solid fa-magnifying-glass"></i> {% translate "Search" %}</button>
       </form>
 
       <div class="hero-stats">
-        <div><strong>{{ stats.books }}+</strong><span>Books in stock</span></div>
-        <div><strong>{{ stats.authors }}+</strong><span>Authors</span></div>
-        <div><strong>{{ stats.categories }}</strong><span>Categories</span></div>
+        <div><strong>{{ stats.books }}+</strong><span>{% translate "Books in stock" %}</span></div>
+        <div><strong>{{ stats.authors }}+</strong><span>{% translate "Authors" %}</span></div>
+        <div><strong>{{ stats.categories }}</strong><span>{% translate "Categories" %}</span></div>
       </div>
     </div>
 
@@ -27,7 +28,7 @@
       {% endfor %}
       <div class="float-card">
         <span class="icon"><i class="fa-solid fa-truck-fast"></i></span>
-        <div><strong>Free delivery</strong><br><span class="muted">On every order, no minimum</span></div>
+        <div><strong>{% translate "Free delivery" %}</strong><br><span class="muted">{% translate "On every order, no minimum" %}</span></div>
       </div>
     </div>
   </div>
@@ -35,10 +36,10 @@
 
 <section class="section" style="padding-top: 0;">
   <div class="container perks">
-    <div class="perk reveal"><span class="icon"><i class="fa-solid fa-truck-fast"></i></span><div><strong>Free shipping</strong><span>Delivered to your door</span></div></div>
-    <div class="perk reveal"><span class="icon"><i class="fa-solid fa-shield-halved"></i></span><div><strong>Secure checkout</strong><span>Payments by Stripe</span></div></div>
-    <div class="perk reveal"><span class="icon"><i class="fa-solid fa-tags"></i></span><div><strong>Weekly deals</strong><span>Save on top titles</span></div></div>
-    <div class="perk reveal"><span class="icon"><i class="fa-regular fa-heart"></i></span><div><strong>Wishlist</strong><span>Save books for later</span></div></div>
+    <div class="perk reveal"><span class="icon"><i class="fa-solid fa-truck-fast"></i></span><div><strong>{% translate "Free shipping" %}</strong><span>{% translate "Delivered to your door" %}</span></div></div>
+    <div class="perk reveal"><span class="icon"><i class="fa-solid fa-shield-halved"></i></span><div><strong>{% translate "Secure checkout" %}</strong><span>{% translate "Payments by Stripe" %}</span></div></div>
+    <div class="perk reveal"><span class="icon"><i class="fa-solid fa-tags"></i></span><div><strong>{% translate "Weekly deals" %}</strong><span>{% translate "Save on top titles" %}</span></div></div>
+    <div class="perk reveal"><span class="icon"><i class="fa-regular fa-heart"></i></span><div><strong>{% translate "Wishlist" %}</strong><span>{% translate "Save books for later" %}</span></div></div>
   </div>
 </section>
 
@@ -47,10 +48,10 @@
   <div class="container">
     <div class="section-head">
       <div>
-        <span class="eyebrow">Editor's picks</span>
-        <h2>Featured books</h2>
+        <span class="eyebrow">{% translate "Editor's picks" %}</span>
+        <h2>{% translate "Featured books" %}</h2>
       </div>
-      <a href="{% url 'eco:product-list' %}" class="link-arrow">Browse all <i class="fa-solid fa-arrow-right"></i></a>
+      <a href="{% url 'eco:product-list' %}" class="link-arrow">{% translate "Browse all" %} <i class="fa-solid fa-arrow-right"></i></a>
     </div>
     <div class="book-grid">
       {% for book in featured_books %}
@@ -66,10 +67,10 @@
   <div class="container">
     <div class="section-head">
       <div>
-        <span class="eyebrow">Explore</span>
-        <h2>Shop by category</h2>
+        <span class="eyebrow">{% translate "Explore" %}</span>
+        <h2>{% translate "Shop by category" %}</h2>
       </div>
-      <a href="{% url 'eco:category-list' %}" class="link-arrow">All categories <i class="fa-solid fa-arrow-right"></i></a>
+      <a href="{% url 'eco:category-list' %}" class="link-arrow">{% translate "All categories" %} <i class="fa-solid fa-arrow-right"></i></a>
     </div>
     <div class="category-grid">
       {% for category in categories %}
@@ -77,7 +78,7 @@
           {% if category.image %}<img src="{{ category.image.url }}" alt="" loading="lazy">{% endif %}
           <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span>
           <h3>{{ category.name }}</h3>
-          <span>{{ category.total_books }} book{{ category.total_books|pluralize }}</span>
+          <span>{% blocktranslate count counter=category.total_books %}{{ counter }} book{% plural %}{{ counter }} books{% endblocktranslate %}</span>
         </a>
       {% endfor %}
     </div>
@@ -90,13 +91,13 @@
   <div class="container">
     <div class="promo-banner reveal">
       <div>
-        <span class="eyebrow">Reader offer</span>
-        <h2>${{ promo.amount|floatformat:"-2" }} off your order</h2>
-        <p>Add a few books to your cart and enter the code on the cart page. Valid until {{ promo.valid_to|date:"F j, Y" }}.</p>
-        <a href="{% url 'eco:product-list' %}" class="btn btn-primary" style="margin-top: 22px;">Start shopping <i class="fa-solid fa-arrow-right"></i></a>
+        <span class="eyebrow">{% translate "Reader offer" %}</span>
+        <h2>{% blocktranslate with amount=promo.amount|floatformat:"-2" %}${{ amount }} off your order{% endblocktranslate %}</h2>
+        <p>{% blocktranslate with date=promo.valid_to|date:"F j, Y" %}Add a few books to your cart and enter the code on the cart page. Valid until {{ date }}.{% endblocktranslate %}</p>
+        <a href="{% url 'eco:product-list' %}" class="btn btn-primary" style="margin-top: 22px;">{% translate "Start shopping" %} <i class="fa-solid fa-arrow-right"></i></a>
       </div>
       <div class="code">
-        <span class="text-sm" style="opacity:.7">Use code</span>
+        <span class="text-sm" style="opacity:.7">{% translate "Use code" %}</span>
         <strong>{{ promo.code }}</strong>
       </div>
     </div>
@@ -109,10 +110,10 @@
   <div class="container">
     <div class="section-head">
       <div>
-        <span class="eyebrow">Just landed</span>
-        <h2>New arrivals</h2>
+        <span class="eyebrow">{% translate "Just landed" %}</span>
+        <h2>{% translate "New arrivals" %}</h2>
       </div>
-      <a href="{% url 'eco:product-list' %}" class="link-arrow">See more <i class="fa-solid fa-arrow-right"></i></a>
+      <a href="{% url 'eco:product-list' %}" class="link-arrow">{% translate "See more" %} <i class="fa-solid fa-arrow-right"></i></a>
     </div>
     <div class="scroller">
       {% for book in new_arrivals %}
@@ -128,9 +129,9 @@
   <div class="container">
     <div class="section-head">
       <div>
-        <span class="eyebrow">Limited time</span>
-        <h2>Deals of the week</h2>
-        <p>Great reads at even better prices.</p>
+        <span class="eyebrow">{% translate "Limited time" %}</span>
+        <h2>{% translate "Deals of the week" %}</h2>
+        <p>{% translate "Great reads at even better prices." %}</p>
       </div>
     </div>
     <div class="book-grid">

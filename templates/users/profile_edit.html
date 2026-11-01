@@ -1,11 +1,12 @@
 {% extends 'users/account_base.html' %}
+{% load i18n %}
 
-{% block title %}Edit profile — BookBazar{% endblock %}
+{% block title %}{% translate "Edit profile" %} — BookBazar{% endblock %}
 
 {% block account_content %}
 <div class="page-head" style="margin-bottom: 0;">
-  <h1 style="font-size: 2rem;">Edit profile</h1>
-  <p>Keep your details up to date.</p>
+  <h1 style="font-size: 2rem;">{% translate "Edit profile" %}</h1>
+  <p>{% translate "Keep your details up to date." %}</p>
 </div>
 
 <form method="post" enctype="multipart/form-data" class="stack" novalidate>
@@ -13,62 +14,63 @@
   <input type="hidden" name="remove_photo" id="remove_photo" value="false">
 
   <section class="card">
-    <h2 class="card-title">Profile photo</h2>
+    <h2 class="card-title">{% translate "Profile photo" %}</h2>
     <div class="photo-field">
       <span class="avatar avatar-lg" id="avatarPreview"{% if user.profile.profile_photo %} style="background-image:url('{{ user.profile.profile_photo.url }}')"{% endif %}>
         <span id="avatarInitial"{% if user.profile.profile_photo %} hidden{% endif %}>{{ user.email|first|upper }}</span>
       </span>
       <div class="stack" style="flex: 1;">
         <div class="row">
-          <label for="id_profile_photo" class="btn btn-secondary btn-sm"><i class="fa-solid fa-upload"></i> Upload photo</label>
+          <label for="id_profile_photo" class="btn btn-secondary btn-sm"><i class="fa-solid fa-upload"></i> {% translate "Upload photo" %}</label>
           <input type="file" name="profile_photo" id="id_profile_photo" accept="image/*" hidden>
           {% if user.profile.profile_photo %}
-            <button type="button" class="btn btn-ghost btn-sm text-danger" id="removePhoto"><i class="fa-regular fa-trash-can"></i> Remove</button>
+            <button type="button" class="btn btn-ghost btn-sm text-danger" id="removePhoto"><i class="fa-regular fa-trash-can"></i> {% translate "Remove" %}</button>
           {% endif %}
         </div>
-        <span class="muted text-sm">JPG, PNG, GIF or WebP, up to 5 MB.</span>
+        <span class="muted text-sm">{% translate "JPG, PNG, GIF or WebP, up to 5 MB." %}</span>
         {% for error in form.profile_photo.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
       </div>
     </div>
   </section>
 
   <section class="card">
-    <h2 class="card-title">Personal information</h2>
+    <h2 class="card-title">{% translate "Personal information" %}</h2>
     <div class="form-grid">
       <div class="form-grid-2">
-        {% include 'eco/partials/field.html' with field=form.first_name label="First name" %}
-        {% include 'eco/partials/field.html' with field=form.last_name label="Last name" %}
+        {% include 'eco/partials/field.html' with field=form.first_name %}
+        {% include 'eco/partials/field.html' with field=form.last_name %}
       </div>
       <div class="field">
-        <label for="email">Email</label>
+        <label for="email">{% translate "Email" %}</label>
         <input type="email" id="email" value="{{ user.email }}" disabled>
-        <span class="hint">Your email is used to sign in and can't be changed here.</span>
+        <span class="hint">{% translate "Your email is used to sign in and can't be changed here." %}</span>
       </div>
       <div class="form-grid-2">
-        {% include 'eco/partials/field.html' with field=form.phone label="Phone" %}
-        {% include 'eco/partials/field.html' with field=form.birthdate label="Birthday" %}
+        {% include 'eco/partials/field.html' with field=form.phone %}
+        {% include 'eco/partials/field.html' with field=form.birthdate %}
       </div>
     </div>
   </section>
 
   <section class="card">
-    <h2 class="card-title">Preferences</h2>
+    <h2 class="card-title">{% translate "Preferences" %}</h2>
     <div class="form-grid">
       <div class="stack">
-        {% include 'eco/partials/field.html' with field=form.newsletter label="Send me the BookBazar newsletter" %}
-        {% include 'eco/partials/field.html' with field=form.order_updates label="Email me updates about my orders" %}
-        {% include 'eco/partials/field.html' with field=form.promotions label="Tell me about deals and promotions" %}
+        {% include 'eco/partials/field.html' with field=form.newsletter %}
+        {% include 'eco/partials/field.html' with field=form.order_updates %}
+        {% include 'eco/partials/field.html' with field=form.promotions %}
       </div>
       <div class="form-grid-2">
         {% include 'eco/partials/field.html' with field=form.language %}
         {% include 'eco/partials/field.html' with field=form.currency %}
       </div>
+      <p class="hint muted text-sm">{% translate "The site is available in English and Bangla. Prices are shown in US dollars." %}</p>
     </div>
   </section>
 
   <div class="row">
-    <button type="submit" class="btn btn-primary btn-lg">Save changes</button>
-    <a href="{% url 'users:profile' %}" class="btn btn-ghost btn-lg">Cancel</a>
+    <button type="submit" class="btn btn-primary btn-lg">{% translate "Save changes" %}</button>
+    <a href="{% url 'users:profile' %}" class="btn btn-ghost btn-lg">{% translate "Cancel" %}</a>
   </div>
 </form>
 {% endblock %}
@@ -86,7 +88,7 @@
       const file = input.files[0];
       if (!file) return;
       if (file.size > 5 * 1024 * 1024) {
-        window.BookBazar.toast('That photo is larger than 5 MB.', 'warning');
+        window.BookBazar.toast("{{ _('That photo is larger than 5 MB.')|escapejs }}", 'warning');
         input.value = '';
         return;
       }

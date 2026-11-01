@@ -2,6 +2,7 @@ from django import forms
 from django_countries.widgets import CountrySelectWidget
 from .models import Address, Book, Category
 from django.template.defaultfilters import slugify
+from django.utils.translation import gettext_lazy as _
 
 
 class PaymentForm(forms.Form):
@@ -9,101 +10,54 @@ class PaymentForm(forms.Form):
 
 
 class ContactForm(forms.Form):
-    email = forms.EmailField(
-        required=True,
-        widget=forms.EmailInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Your email address'
-        })
-    )
     name = forms.CharField(
+        label=_("Your name"),
         max_length=100,
-        widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Your full name'
-        })
+        widget=forms.TextInput(attrs={'placeholder': _('Your full name')})
+    )
+    email = forms.EmailField(
+        label=_("Email address"),
+        widget=forms.EmailInput(attrs={'placeholder': _('Your email address')})
     )
     subject = forms.CharField(
-        required=True,
-        widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Subject of your message'
-        })
+        label=_("Subject"),
+        widget=forms.TextInput(attrs={'placeholder': _('What is this about?')})
     )
     message = forms.CharField(
-        widget=forms.Textarea(attrs={
-            'class': 'form-control',
-            'placeholder': 'Your message...',
-            'rows': 5
-        }),
-        required=True
+        label=_("Message"),
+        widget=forms.Textarea(attrs={'placeholder': _('Your message...'), 'rows': 5})
     )
 
     def clean_name(self):
         name = self.cleaned_data.get('name')
         if len(name.strip()) < 2:
-            raise forms.ValidationError("Name must be at least 2 characters long.")
+            raise forms.ValidationError(_("Name must be at least 2 characters long."))
         return name.strip()
 
     def clean_subject(self):
         subject = self.cleaned_data.get('subject')
         if len(subject.strip()) < 5:
-            raise forms.ValidationError("Subject must be at least 5 characters long.")
+            raise forms.ValidationError(_("Subject must be at least 5 characters long."))
         return subject.strip()
 
     def clean_message(self):
         message = self.cleaned_data.get('message')
         if len(message.strip()) < 10:
-            raise forms.ValidationError("Message must be at least 10 characters long.")
+            raise forms.ValidationError(_("Message must be at least 10 characters long."))
         return message.strip()
 
+
 class AddressForm(forms.ModelForm):
-    first_name = forms.CharField(
-        max_length=100,
-        widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'First Name'
-        })
-    )
-    last_name = forms.CharField(
-        max_length=100,
-        widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Last Name'
-        })
-    )
-    email = forms.EmailField(
-        widget=forms.EmailInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Email Address'
-        })
-    )
+    first_name = forms.CharField(label=_("First name"), max_length=100)
+    last_name = forms.CharField(label=_("Last name"), max_length=100)
+    email = forms.EmailField(label=_("Email"), widget=forms.EmailInput(attrs={'placeholder': 'you@example.com'}))
     phone_number = forms.CharField(
-        max_length=20,
-        widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Phone Number'
-        })
+        label=_("Phone number"), max_length=20,
+        widget=forms.TextInput(attrs={'placeholder': '+880 1XXX-XXXXXX'})
     )
-    alternate_email = forms.EmailField(
-        required=False,
-        widget=forms.EmailInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Alternate Email (Optional)'
-        })
-    )
-    is_business_address = forms.BooleanField(
-        required=False,
-        widget=forms.CheckboxInput(attrs={
-            'class': 'form-check-input'
-        })
-    )
-    city = forms.CharField(
-        widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'City'
-        })
-    )
+    alternate_email = forms.EmailField(label=_("Alternate email"), required=False)
+    is_business_address = forms.BooleanField(label=_("This is a business address"), required=False)
+    city = forms.CharField(label=_("City"))
 
     class Meta:
         model = Address
@@ -112,22 +66,18 @@ class AddressForm(forms.ModelForm):
             'city', 'zip_code', 'country', 'email', 'phone_number',
             'alternate_email', 'is_business_address', 'default'
         ]
+        labels = {
+            'street_address': _("Street address"),
+            'apartment_address': _("Apartment, suite, etc."),
+            'zip_code': _("Postal code"),
+            'country': _("Country"),
+            'default': _("Use as my default delivery address"),
+        }
         widgets = {
-            'street_address': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': '1234 Main St'
-            }),
-            'apartment_address': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Apartment or suite'
-            }),
-            'country': CountrySelectWidget(attrs={
-                'class': 'form-control'
-            }),
-            'zip_code': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Zip code'
-            }),
+            'street_address': forms.TextInput(attrs={'placeholder': _('House, road and area')}),
+            'apartment_address': forms.TextInput(attrs={'placeholder': _('Flat or floor (optional)')}),
+            'country': CountrySelectWidget(),
+            'zip_code': forms.TextInput(attrs={'placeholder': '1212'}),
         }
 
 
