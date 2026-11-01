@@ -8,6 +8,7 @@ from django.core.exceptions import ValidationError
 from django.views import generic
 from django.urls import reverse_lazy
 from django.utils.http import url_has_allowed_host_and_scheme
+from eco.models import Address, Order
 from .forms import CustomUserCreationForm, ProfileEditForm
 from .models import UserProfile
 
@@ -43,7 +44,6 @@ def login_view(request):
             if next_url and url_has_allowed_host_and_scheme(next_url, allowed_hosts={request.get_host()}):
                 return redirect(next_url)
             return redirect('eco:home')
-        messages.error(request, 'Invalid email or password.')
     else:
         form = AuthenticationForm()
 
@@ -60,7 +60,13 @@ def logout_view(request):
 @login_required
 def profile_view(request):
     UserProfile.objects.get_or_create(user=request.user)
-    return render(request, 'users/profile.html', {'user': request.user})
+    context = {
+        'user': request.user,
+        'orders': (Order.objects.filter(user=request.user, ordered=True)
+                   .select_related('payment').order_by('-ordered_date')[:10]),
+        'default_address': Address.objects.filter(user=request.user, address_type='S', default=True).first(),
+    }
+    return render(request, 'users/profile.html', context)
 
 
 @login_required

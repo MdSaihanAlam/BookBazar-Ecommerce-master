@@ -1,135 +1,100 @@
-{% extends "eco/base.html" %}
+{% extends 'eco/layout.html' %}
+
+{% block title %}Payment — BookBazar{% endblock %}
 
 {% block content %}
-<style>
-  .payment-container {
-    max-width: 560px;
-    margin: 0 auto;
-    padding: 2rem;
-  }
+<div class="page">
+  <div class="container">
+    <div class="steps" aria-label="Checkout progress">
+      <span class="step done"><b><i class="fa-solid fa-check"></i></b> Cart</span><span class="line"></span>
+      <span class="step done"><b><i class="fa-solid fa-check"></i></b> Review</span><span class="line"></span>
+      <span class="step active"><b>3</b> Payment</span>
+    </div>
 
-  .payment-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 2rem;
-    box-shadow: var(--shadow);
-  }
+    <div class="cart-layout">
+      <section class="card">
+        <h1 style="font-size: 1.8rem; margin-bottom: 6px;">Payment</h1>
+        <p class="muted" style="margin-bottom: 28px;">Enter your card details to complete your order.</p>
 
-  .payment-title {
-    text-align: center;
-    margin-bottom: 0.5rem;
-  }
+        <form action="" method="post" id="stripe-form" class="form-grid">
+          {% csrf_token %}
+          <div class="field">
+            <label for="card-element">Card details</label>
+            <div id="card-element"></div>
+            <div id="card-errors" class="field-error" role="alert"></div>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg btn-block" id="payButton">
+            <i class="fa-solid fa-lock"></i> Pay ${{ order_total|floatformat:2 }}
+          </button>
+        </form>
 
-  .payment-amount {
-    text-align: center;
-    color: var(--gray);
-    margin-bottom: 2rem;
-  }
+        <div class="alert alert-info" style="margin-top: 20px;">
+          <i class="fa-solid fa-flask" style="margin-top: 3px;"></i>
+          <span>Test mode: use card <strong>4242 4242 4242 4242</strong> with any future expiry date and any CVC.</span>
+        </div>
+      </section>
 
-  #stripeBtnLabel {
-    display: block;
-    font-weight: 500;
-    margin-bottom: 0.75rem;
-  }
-
-  #card-element {
-    background: white;
-    padding: 12px 14px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-  }
-
-  #card-errors {
-    color: #ef4444;
-    min-height: 1.5rem;
-    margin-top: 0.5rem;
-    font-size: 0.9rem;
-  }
-
-  #stripeBtn {
-    width: 100%;
-    margin-top: 1rem;
-    padding: 0.9rem;
-    border: none;
-    border-radius: 8px;
-    background: var(--gradient-primary);
-    color: white;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-  }
-
-  #stripeBtn:disabled {
-    opacity: 0.7;
-    cursor: wait;
-  }
-
-  .payment-note {
-    text-align: center;
-    color: var(--gray);
-    font-size: 0.85rem;
-    margin-top: 1rem;
-  }
-</style>
-
-<div class="payment-container">
-  <div class="payment-card">
-    <h2 class="payment-title">Payment</h2>
-    <p class="payment-amount">Order total: <strong>${{ order_total|floatformat:2 }}</strong></p>
-
-    <form action="" method="post" id="stripe-form">
-      {% csrf_token %}
-      <label for="card-element" id="stripeBtnLabel">Credit or debit card</label>
-      <div id="card-element"></div>
-      <div id="card-errors" role="alert"></div>
-      <button type="submit" id="stripeBtn">Pay ${{ order_total|floatformat:2 }}</button>
-    </form>
-
-    <p class="payment-note">Test mode: use card 4242 4242 4242 4242 with any future date and CVC.</p>
+      <aside class="card summary">
+        <h2 class="card-title">Order summary</h2>
+        {% for item in order.items.all %}
+          <div class="mini-item">
+            <span class="book-cover"><img src="{{ item.book.image_url }}" alt=""></span>
+            <div><strong>{{ item.book.title }}</strong><span>Qty {{ item.quantity }}</span></div>
+            <strong>${{ item.get_final_price|floatformat:2 }}</strong>
+          </div>
+        {% endfor %}
+        {% if order.coupon %}
+          <div class="summary-row" style="margin-top: 10px;"><span>Promo <span class="badge badge-brand">{{ order.coupon.code }}</span></span><span class="save">−${{ order.coupon.amount|floatformat:2 }}</span></div>
+        {% endif %}
+        <div class="summary-row"><span>Shipping</span><span class="text-success">Free</span></div>
+        <div class="summary-row total"><span>Total</span><span>${{ order_total|floatformat:2 }}</span></div>
+        <p class="secure-note"><i class="fa-solid fa-shield-halved"></i> Card details never touch our servers</p>
+      </aside>
+    </div>
   </div>
 </div>
+{% endblock %}
 
+{% block scripts %}
 <script src="https://js.stripe.com/v3/"></script>
 <script>
-  const stripe = Stripe('{{ STRIPE_PUBLIC_KEY }}');
-  const card = stripe.elements().create('card', {
-    style: {
-      base: {
-        color: '#32325d',
-        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-        fontSize: '16px',
-        '::placeholder': { color: '#aab7c4' }
-      },
-      invalid: { color: '#fa755a', iconColor: '#fa755a' }
-    }
-  });
-  card.mount('#card-element');
-
-  const errorElement = document.getElementById('card-errors');
-  card.on('change', function(event) {
-    errorElement.textContent = event.error ? event.error.message : '';
-  });
-
-  const form = document.getElementById('stripe-form');
-  const payButton = document.getElementById('stripeBtn');
-  form.addEventListener('submit', function(event) {
-    event.preventDefault();
-    payButton.disabled = true;
-
-    stripe.createToken(card).then(function(result) {
-      if (result.error) {
-        errorElement.textContent = result.error.message;
-        payButton.disabled = false;
-        return;
+  (function () {
+    const stripe = Stripe('{{ STRIPE_PUBLIC_KEY }}');
+    const card = stripe.elements().create('card', {
+      style: {
+        base: {
+          color: '#1c1917',
+          fontFamily: 'Inter, system-ui, sans-serif',
+          fontSize: '16px',
+          '::placeholder': { color: '#a8a29e' }
+        },
+        invalid: { color: '#dc2626', iconColor: '#dc2626' }
       }
-      const tokenInput = document.createElement('input');
-      tokenInput.type = 'hidden';
-      tokenInput.name = 'stripeToken';
-      tokenInput.value = result.token.id;
-      form.appendChild(tokenInput);
-      form.submit();
     });
-  });
+    card.mount('#card-element');
+
+    const errors = document.getElementById('card-errors');
+    card.on('change', (event) => { errors.textContent = event.error ? event.error.message : ''; });
+
+    const form = document.getElementById('stripe-form');
+    const button = document.getElementById('payButton');
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      window.BookBazar.setLoading(button, true);
+      stripe.createToken(card).then((result) => {
+        if (result.error) {
+          errors.textContent = result.error.message;
+          window.BookBazar.setLoading(button, false);
+          return;
+        }
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'stripeToken';
+        input.value = result.token.id;
+        form.appendChild(input);
+        form.submit();
+      });
+    });
+  })();
 </script>
-{% endblock content %}
+{% endblock %}

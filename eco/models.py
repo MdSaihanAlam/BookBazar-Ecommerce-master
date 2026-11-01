@@ -279,6 +279,10 @@ class Book(models.Model):
     @property
     def final_price(self):
         return self.discount_price if self.is_on_sale else self.price
+
+    @property
+    def savings(self):
+        return self.price - self.discount_price if self.is_on_sale else 0
     
     @property
     def image_preview(self):

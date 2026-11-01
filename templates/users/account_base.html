@@ -1,0 +1,34 @@
+{% extends 'eco/layout.html' %}
+
+{% block content %}
+{% with current=request.resolver_match.url_name %}
+<div class="page">
+  <div class="container account-layout">
+    <aside class="card account-nav">
+      <div class="account-user">
+        <span class="avatar"{% if user.profile.profile_photo %} style="background-image:url('{{ user.profile.profile_photo.url }}')"{% endif %}>
+          {% if not user.profile.profile_photo %}{{ user.email|first|upper }}{% endif %}
+        </span>
+        <div>
+          <strong>{{ user.profile.get_full_name }}</strong>
+          <span>{{ user.email }}</span>
+        </div>
+      </div>
+      <nav aria-label="Account">
+        <a href="{% url 'users:profile' %}" class="{% if current == 'profile' %}is-active{% endif %}"><i class="fa-regular fa-user"></i> Overview</a>
+        <a href="{% url 'users:profile_edit' %}" class="{% if current == 'profile_edit' %}is-active{% endif %}"><i class="fa-regular fa-pen-to-square"></i> Edit profile</a>
+        <a href="{% url 'users:change_password' %}" class="{% if current == 'change_password' %}is-active{% endif %}"><i class="fa-solid fa-key"></i> Password</a>
+        <a href="{% url 'eco:shipping-address' %}"><i class="fa-solid fa-location-dot"></i> Addresses</a>
+        <a href="{% url 'eco:wish-summary' %}"><i class="fa-regular fa-heart"></i> Wishlist</a>
+        <a href="{% url 'eco:cart' %}"><i class="fa-solid fa-bag-shopping"></i> Cart</a>
+        <a href="{% url 'users:logout' %}"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sign out</a>
+      </nav>
+    </aside>
+
+    <div class="stack">
+      {% block account_content %}{% endblock %}
+    </div>
+  </div>
+</div>
+{% endwith %}
+{% endblock %}

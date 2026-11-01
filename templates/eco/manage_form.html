@@ -1,68 +1,27 @@
-{% extends 'eco/base_common.html' %}
+{% extends 'eco/layout.html' %}
 
-{% block title %}{{ title }} - BookBazar{% endblock %}
-
-{% block extra_css %}
-  .manage-form {
-    max-width: 720px;
-    margin: 2rem auto;
-    padding: 2rem;
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    box-shadow: var(--shadow);
-  }
-
-  .manage-form .form-group {
-    margin-bottom: 1.25rem;
-  }
-
-  .manage-form label {
-    display: block;
-    font-weight: 500;
-    margin-bottom: 0.4rem;
-  }
-
-  .manage-form .form-control {
-    width: 100%;
-    padding: 0.6rem 0.8rem;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: var(--bg-color);
-    color: var(--text-color);
-  }
-
-  .manage-form .errorlist {
-    color: #ef4444;
-    list-style: none;
-    padding: 0;
-    margin: 0.3rem 0 0;
-    font-size: 0.9rem;
-  }
-
-  .manage-form .helptext {
-    color: var(--gray);
-    font-size: 0.85rem;
-  }
-{% endblock %}
+{% block title %}{{ title }} — BookBazar{% endblock %}
 
 {% block content %}
-<div class="manage-form">
-  <h2>{{ title }}</h2>
-
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.non_field_errors }}
-    {% for field in form %}
-      <div class="form-group">
-        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-        {{ field }}
-        {% if field.help_text %}<div class="helptext">{{ field.help_text }}</div>{% endif %}
-        {{ field.errors }}
-      </div>
-    {% endfor %}
-    <button type="submit" class="btn btn-primary">Save</button>
-    <a href="{% url 'eco:home' %}" class="btn">Cancel</a>
-  </form>
+<div class="page">
+  <div class="container container-sm">
+    <div class="page-head">
+      <span class="eyebrow"><i class="fa-solid fa-screwdriver-wrench"></i> Staff</span>
+      <h1>{{ title }}</h1>
+    </div>
+    <section class="card">
+      <form method="post" enctype="multipart/form-data" class="form-grid" novalidate>
+        {% csrf_token %}
+        {% if form.non_field_errors %}<div class="alert alert-error">{{ form.non_field_errors|join:" " }}</div>{% endif %}
+        {% for field in form %}
+          {% include 'eco/partials/field.html' %}
+        {% endfor %}
+        <div class="row">
+          <button type="submit" class="btn btn-primary btn-lg">Save</button>
+          <a href="{% url 'eco:home' %}" class="btn btn-ghost btn-lg">Cancel</a>
+        </div>
+      </form>
+    </section>
+  </div>
 </div>
 {% endblock %}

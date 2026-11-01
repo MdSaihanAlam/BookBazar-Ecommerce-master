@@ -89,16 +89,25 @@ def get_default_shipping_address(user):
 # ==================== HOME & BROWSE ====================
 
 def home(request):
-    featured_books = Book.objects.filter(
-        featured=True,
-        is_available=True
-    ).select_related('author', 'category')[:6]
+    available = Book.objects.filter(is_available=True).select_related('author', 'category')
+    featured_books = available.filter(featured=True)[:8]
 
     context = {
         'featured_books': featured_books,
-        'categories': category_list(),
+        'hero_books': featured_books[:3],
+        'new_arrivals': available.order_by('-created_at')[:10],
+        'deals': available.filter(discount_price__isnull=False, discount_price__lt=F('price'))[:4],
+        'categories': category_list().order_by('-total_books')[:6],
+        'promo': Coupon.objects.filter(
+            active=True, valid_from__lte=timezone.now(), valid_to__gte=timezone.now()
+        ).order_by('-amount').first(),
+        'stats': {
+            'books': available.count(),
+            'authors': available.exclude(author=None).values('author').distinct().count(),
+            'categories': Category.objects.count(),
+        },
     }
-    return render(request, 'eco/base.html', context)
+    return render(request, 'eco/home.html', context)
 
 
 def browse_books(request):
@@ -133,9 +142,14 @@ class SearchView(View):
 @login_required
 def cart_view(request):
     cart, _ = Cart.objects.get_or_create(user=request.user)
+    coupon = get_session_coupon(request)
+    coupon_discount = min(float(coupon.amount), cart.final_total) if coupon else 0
     context = {
         'cart': cart,
-        'cart_items': cart.items.select_related('book').all(),
+        'cart_items': cart.items.select_related('book', 'book__author').all(),
+        'coupon': coupon,
+        'coupon_discount': coupon_discount,
+        'order_total': cart.final_total - coupon_discount,
     }
     return render(request, 'eco/basket.html', context)
 
@@ -270,7 +284,7 @@ class EcoIndex(ListView):
     model = Book
     template_name = 'eco/category.html'
     context_object_name = 'queryset'
-    paginate_by = 6
+    paginate_by = 12
 
     def get_queryset(self):
         return Book.objects.select_related('author', 'category')
@@ -291,7 +305,10 @@ class EcoDetail(DetailView):
         book = self.object
         user = self.request.user
         context['categories'] = category_list()
-        context['related_items'] = Book.objects.filter(category=book.category).exclude(pk=book.pk)[:3]
+        context['related_items'] = (
+            Book.objects.filter(category=book.category, is_available=True)
+            .exclude(pk=book.pk).select_related('author')[:5]
+        )
         context['in_wishlist'] = user.is_authenticated and Wishlist.objects.filter(user=user, book=book).exists()
         context['in_cart'] = user.is_authenticated and CartItem.objects.filter(cart__user=user, book=book).exists()
         return context
@@ -300,10 +317,10 @@ class EcoDetail(DetailView):
 class CategoryDetail(DetailView, MultipleObjectMixin):
     model = Category
     template_name = 'eco/category.html'
-    paginate_by = 6
+    paginate_by = 12
 
     def get_context_data(self, **kwargs):
-        object_list = Book.objects.filter(category=self.object)
+        object_list = Book.objects.filter(category=self.object).select_related('author')
         context = super().get_context_data(object_list=object_list, **kwargs)
         context['categories'] = category_list()
         return context
