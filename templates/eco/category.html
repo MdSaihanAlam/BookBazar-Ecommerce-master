@@ -12,7 +12,7 @@
         <div class="category-card" onclick="location.href='{% url 'eco:category-detail' category.slug %}'">
             <div class="category-image">
                 {% if category.image %}
-                    <img src="{{ category.image.url }}" alt="{{ category.name }}">
+                    <img src="{{ category.image_url }}" alt="{{ category.name }}">
                 {% else %}
                     <!-- Default images based on category name -->
                     {% if "fiction" in category.name|lower or "literature" in category.name|lower %}

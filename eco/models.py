@@ -152,6 +152,12 @@ class Category(MPTTModel):
     def book_count(self):
         return self.books.count()
 
+    @property
+    def image_url(self):
+        if self.image:
+            return self.image.url
+        return static('eco/img/placeholder-book.svg')
+
     class MPTTMeta:
         order_insertion_by = ['name']
 

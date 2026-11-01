@@ -340,7 +340,7 @@
                 </button>
             </div>
 
-            <img src="{{ item.book.cover_image.url }}" alt="{{ item.book.title }}" class="wishlist-book-image">
+            <img src="{{ item.book.image_url }}" alt="{{ item.book.title }}" class="wishlist-book-image">
 
             <h3 class="wishlist-book-title">
                 <a href="{% url 'eco:product-detail' item.book.slug %}">{{ item.book.title }}</a>
