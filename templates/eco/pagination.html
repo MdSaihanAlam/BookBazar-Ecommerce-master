@@ -11,7 +11,7 @@
   <p class="loadMore"><a href="" class="btn btn-primary btn-lg"><i class="fa fa-chevron-down"></i> No more items </a></p>
   <nav aria-label="Page navigation example" class="d-flex justify-content-center">
 
-      {% endif %}   
+      {% endif %}
 
       <ul class="pagination">
         {% if page_obj.has_previous %}
@@ -23,9 +23,9 @@
         <li class="page-item">
           <a href="?page={{ page_obj.previous_page_number }}" class="page-link">&lt;</a>
 
-        </li>   
+        </li>
         {% endif %}
-        
+
         {% for n in page_obj.paginator.page_range %}
           {% if page_obj.number == n %}
             <li class="page-item active">
@@ -37,7 +37,7 @@
             </li>
           {% endif %}
         {% endfor %}
-        
+
         {% if page_obj.has_next %}
           <li class="page-item">
             <a href="?page={{ page_obj.next_page_number }}" class="page-link">&gt;</a>
@@ -48,7 +48,7 @@
                 <span aria-hidden="true">&raquo;</span></a>
 
           </li>
-          {% endif %}   
+          {% endif %}
     </ul>
 
     </nav>

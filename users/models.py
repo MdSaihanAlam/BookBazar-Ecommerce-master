@@ -1,6 +1,5 @@
 from django.db import models
 from django.db.models.signals import post_save
-from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 from .managers import CustomUserManager
@@ -122,21 +121,8 @@ class UserProfile(models.Model):
         return timesince(self.user.date_joined).split(',')[0]
 
 
-def create_user_profile(sender, instance, created, **kwargs):
-    """
-    Signal to automatically create a UserProfile when a new CustomUser is created
-    """
-    if created:
-        UserProfile.objects.create(user=instance)
+def create_or_save_user_profile(sender, instance, created, **kwargs):
+    UserProfile.objects.get_or_create(user=instance)
 
 
-def save_user_profile(sender, instance, **kwargs):
-    """
-    Signal to save UserProfile when CustomUser is saved
-    """
-    instance.profile.save()
-
-
-# Connect the signals
-post_save.connect(create_user_profile, sender=CustomUser)
-post_save.connect(save_user_profile, sender=CustomUser)
+post_save.connect(create_or_save_user_profile, sender=CustomUser)

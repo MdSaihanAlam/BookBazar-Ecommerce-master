@@ -325,25 +325,25 @@
         .shipping-address-container {
             padding: 1rem;
         }
-        
+
         .shipping-title {
             font-size: 1.75rem;
         }
-        
+
         .shipping-content {
             grid-template-columns: 1fr;
             gap: 1rem;
         }
-        
+
         .form-row {
             grid-template-columns: 1fr;
             gap: 0;
         }
-        
+
         .form-section, .addresses-section {
             padding: 1.5rem;
         }
-        
+
         .address-actions {
             flex-direction: column;
         }
@@ -398,7 +398,7 @@
             <!-- Shipping Address Form -->
             <form method="POST" id="shippingForm">
                 {% csrf_token %}
-                
+
                 <!-- Debug messages for form errors -->
                 {% if form.errors %}
                 <div class="alert alert-error" style="margin-bottom: 2rem;">
@@ -415,11 +415,11 @@
                     </ul>
                 </div>
                 {% endif %}
-                
+
                 <!-- Address Section -->
                 <div class="form-section">
                     <h3 class="section-title">Enter your name and address:</h3>
-                    
+
                     <div class="form-row">
                         <div class="form-group">
                             <label class="form-label" for="{{ form.first_name.id_for_label }}">
@@ -512,7 +512,7 @@
                 <!-- Contact Information Section -->
                 <div class="form-section">
                     <h3 class="section-title">Contact Information</h3>
-                    
+
                     <div class="form-group">
                         <label class="form-label" for="{{ form.email.id_for_label }}">
                             Email Address
@@ -557,24 +557,12 @@
                 <!-- Address Options -->
                 <div class="address-options">
                     <h4 class="address-options-title">Address Options</h4>
-                    
+
                     <div class="checkbox-group">
                         {{ form.default }}
                         <label class="checkbox-label" for="{{ form.default.id_for_label }}">
                             Set as default shipping address
                         </label>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label" for="{{ form.address_type.id_for_label }}">
-                            Address Type
-                        </label>
-                        {{ form.address_type }}
-                        {% if form.address_type.errors %}
-                            <div class="error-message" style="color: #dc2626; font-size: 0.875rem; margin-top: 0.25rem;">
-                                {{ form.address_type.errors }}
-                            </div>
-                        {% endif %}
                     </div>
                 </div>
 
@@ -593,14 +581,14 @@
         <!-- Right column: Saved addresses -->
         <div class="addresses-section">
             <h3 class="section-title">Your Shipping Addresses</h3>
-            
+
             {% if shipping_addresses %}
                 {% for address in shipping_addresses %}
                 <div class="address-card {% if address.default %}default{% endif %}" data-address-id="{{ address.id }}">
                     {% if address.default %}
                         <span class="default-badge">Default</span>
                     {% endif %}
-                    
+
                     <div class="address-details">
                         <p><strong>{{ address.street_address }}</strong></p>
                         {% if address.apartment_address %}
@@ -609,7 +597,7 @@
                         <p>{{ address.city }}, {{ address.zip_code }}</p>
                         <p>{{ address.country.name }}</p>
                         <p>Type: {{ address.get_address_type_display }}</p>
-                        
+
                         <div class="address-actions">
                             <button class="btn-edit" onclick="editAddress({{ address.id }})">
                                 <i class="fas fa-edit"></i> Edit
@@ -647,34 +635,34 @@
         // Redirect to edit address page
         window.location.href = "{% url 'eco:edit-address' 0 %}".replace('0', addressId);
     }
-    
+
     function setDefaultAddress(addressId) {
         // Create a form and submit it immediately (no confirmation)
         const form = document.createElement('form');
         form.method = 'POST';
         form.action = "{% url 'eco:set-default-address' 0 %}".replace('0', addressId);
-        
+
         const csrfInput = document.createElement('input');
         csrfInput.type = 'hidden';
         csrfInput.name = 'csrfmiddlewaretoken';
         csrfInput.value = '{{ csrf_token }}';
-        
+
         form.appendChild(csrfInput);
         document.body.appendChild(form);
         form.submit();
     }
-    
+
     function deleteAddress(addressId) {
         // Create a form and submit it immediately (no confirmation)
         const form = document.createElement('form');
         form.method = 'POST';
         form.action = "{% url 'eco:delete-address' 0 %}".replace('0', addressId);
-        
+
         const csrfInput = document.createElement('input');
         csrfInput.type = 'hidden';
         csrfInput.name = 'csrfmiddlewaretoken';
         csrfInput.value = '{{ csrf_token }}';
-        
+
         form.appendChild(csrfInput);
         document.body.appendChild(form);
         form.submit();
@@ -697,7 +685,7 @@
         // Add real-time validation for phone number and email (visual only)
         const phoneInput = document.getElementById('{{ form.phone_number.id_for_label }}');
         const emailInput = document.getElementById('{{ form.email.id_for_label }}');
-        
+
         function validatePhoneNumber(input) {
             // More flexible phone number validation
             const phoneRegex = /^[\+]?[1-9][\d\s\-\(\)]{8,}$/;
@@ -707,7 +695,7 @@
                 input.style.borderColor = '#10b981';
             }
         }
-        
+
         function validateEmail(input) {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (input.value && !emailRegex.test(input.value)) {
@@ -716,13 +704,13 @@
                 input.style.borderColor = '#10b981';
             }
         }
-        
+
         if (phoneInput) {
             phoneInput.addEventListener('blur', function() {
                 validatePhoneNumber(this);
             });
         }
-        
+
         if (emailInput) {
             emailInput.addEventListener('blur', function() {
                 validateEmail(this);

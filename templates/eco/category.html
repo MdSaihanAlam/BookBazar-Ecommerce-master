@@ -47,10 +47,10 @@
                     {% else %}📚{% endif %}
                 </span>
             </div>
-            
+
             <div class="category-content">
                 <h3 class="category-title">{{ category.name }}</h3>
-                
+
                 <!-- Dynamic description based on category -->
                 <p class="category-description">
                     {% if "fiction" in category.name|lower or "literature" in category.name|lower %}
@@ -73,7 +73,7 @@
                     Discover amazing books in {{ category.name }} category.
                     {% endif %}
                 </p>
-                
+
                 <!-- Dynamic book count - REAL VALUE FROM DATABASE -->
                 <span class="category-count">{{ category.book_count }}+ Books</span>
             </div>
@@ -251,16 +251,16 @@
     .categories-section {
         padding: 2rem 1rem;
     }
-    
+
     .section-title {
         font-size: 2.2rem;
     }
-    
+
     .categories-grid {
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         gap: 1.5rem;
     }
-    
+
     .category-content {
         padding: 1rem;
     }

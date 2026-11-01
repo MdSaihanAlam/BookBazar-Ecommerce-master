@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Browse Books - BookBazar</title>
     {% load static %}
-    
-    <!-- Add CSRF Token -->
-    {% csrf_token %}
-    
+    <meta name="csrf-token" content="{{ csrf_token }}">
+
     <style>
         :root {
             --primary: #2563eb;
@@ -526,56 +524,56 @@
                 gap: 1rem;
                 padding: 1rem;
             }
-            
+
             .nav-links {
                 gap: 0.5rem;
                 flex-wrap: wrap;
                 justify-content: center;
             }
-            
+
             .nav-links a {
                 padding: 0.5rem 1rem;
                 font-size: 0.9rem;
             }
-            
+
             .main-content {
                 padding: 1rem;
                 margin-top: 120px;
             }
-            
+
             .dark-mode-btn {
                 width: 40px;
                 height: 40px;
                 font-size: 1rem;
             }
-            
+
             .books-header {
                 padding: 40px 20px;
             }
-            
+
             .books-header h2 {
                 font-size: 2.2rem;
             }
-            
+
             .books-header p {
                 font-size: 1.1rem;
             }
-            
+
             .books-grid {
                 grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
                 gap: 15px;
                 padding: 15px;
             }
-            
+
             .book-card {
                 padding: 0.8rem;
             }
-            
+
             .search-form {
                 flex-direction: column;
                 border-radius: 20px;
             }
-            
+
             .search-input,
             .search-button {
                 border-radius: 20px;
@@ -591,36 +589,7 @@
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-<nav class="navbar">
-    <div class="nav-container">
-        <div class="logo">BookBazar</div>
-        <ul class="nav-links">
-            <li><a href="/">Home</a></li>
-            <li><a href="/products/">Browse Books</a></li>
-            <li><a href="/order-summary/">Cart</a></li>
-            
-            <!-- Smart Account link - shows profile if logged in, login if not -->
-            <li>
-                {% if user.is_authenticated %}
-                    <a href="/users/profile/">Account ({{ user.email }})</a>
-                {% else %}
-                    <a href="/users/login/">Account</a>
-                {% endif %}
-            </li>
-            
-            <li><a href="/contact/">Contact</a></li>
-            
-            <!-- Dark Mode Toggle -->
-            <li>
-                <button id="darkModeToggle" class="dark-mode-btn" title="Toggle dark mode">
-                    <span class="dark-mode-icon">🌙</span>
-                    <span class="light-mode-icon">☀️</span>
-                </button>
-            </li>
-        </ul>
-    </div>
-</nav>
+    {% include 'eco/navbar.html' %}
 
     <!-- Main Content -->
     <div class="main-content">
@@ -628,23 +597,24 @@
         <div class="books-header">
             <h2>All Books</h2>
             <p>Discover Your Next Favorite Read</p>
-            
+
             <!-- Search Bar -->
             <div class="search-container">
-                <div class="search-form">
-                    <input type="text" 
-                           id="searchInput"
-                           class="search-input" 
-                           placeholder="Search books by title, author, or genre..."
+                <form class="search-form" method="get" action="{% url 'eco:product-list' %}">
+                    <input type="text"
+                           name="q"
+                           value="{{ query }}"
+                           class="search-input"
+                           placeholder="Search books by title, author, or category..."
                            aria-label="Search books">
-                    <button type="button" class="search-button">
+                    <button type="submit" class="search-button">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                             <circle cx="11" cy="11" r="8"></circle>
                             <path d="m21 21-4.3-4.3"></path>
                         </svg>
                         Search
                     </button>
-                </div>
+                </form>
             </div>
         </div>
 
@@ -655,31 +625,31 @@
                 <!-- Book Cover Image -->
                 <div class="book-image-container">
                     {% if item.cover_image %}
-                        <img src="{{ item.cover_image.url }}" 
-                             alt="{{ item.title }}" 
+                        <img src="{{ item.cover_image.url }}"
+                             alt="{{ item.title }}"
                              class="book-cover"
-                             onerror="this.src='{% static 'images/placeholder-book.jpg' %}'">
+                             onerror="this.src='{% static 'eco/img/placeholder-book.svg' %}'">
                     {% else %}
                         <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; background: linear-gradient(45deg, #667eea, #764ba2);">
                             <span>No Image</span>
                         </div>
                     {% endif %}
                 </div>
-                
+
                 <h3 class="book-title">{{ item.title }}</h3>
-                
+
                 <!-- Author Information -->
                 {% if item.author %}
                 <p class="book-author">
                     By {{ item.author.name }}
                 </p>
                 {% endif %}
-                
+
                 <!-- Book Description -->
                 <p class="book-description">
                     {{ item.description|truncatewords:15 }}
                 </p>
-                
+
                 <!-- Price Section -->
                 <div class="price-section">
                     {% if item.is_on_sale %}
@@ -694,7 +664,7 @@
                         <span class="book-price">${{ item.price }}</span>
                     {% endif %}
                 </div>
-                
+
                 <!-- Stock Status -->
                 <div class="stock-status">
                     {% if item.is_available %}
@@ -707,13 +677,13 @@
                         </span>
                     {% endif %}
                 </div>
-                
+
                 <!-- Action Buttons -->
                 <div class="action-buttons">
                     <a href="{% url 'eco:product-detail' item.slug %}" class="btn">
                         View Details
                     </a>
-                    
+
                     {% if item.is_available %}
                         {% if user.is_authenticated %}
                             <button onclick="addToCart('{{ item.slug }}')" class="btn btn-secondary">
@@ -728,21 +698,21 @@
                         <button disabled class="btn">Out of Stock</button>
                     {% endif %}
                 </div>
-                
+
                 <!-- Quick Actions -->
                 <div class="quick-actions">
                     {% if user.is_authenticated %}
-                        <a href="{% url 'eco:add-to-wish' item.slug %}" 
+                        <a href="{% url 'eco:add-to-wish' item.slug %}"
                            style="color: var(--gray); text-decoration: none; display: flex; align-items: center; gap: 0.3rem;">
                             ♡ Wishlist
                         </a>
                     {% else %}
-                        <a href="{% url 'users:login' %}?next={{ request.path }}" 
+                        <a href="{% url 'users:login' %}?next={{ request.path }}"
                            style="color: var(--gray); text-decoration: none; display: flex; align-items: center; gap: 0.3rem;">
                             ♡ Login to Wishlist
                         </a>
                     {% endif %}
-                    
+
                     {% if item.category %}
                     <span class="category-badge">
                         {{ item.category.name }}
@@ -752,33 +722,31 @@
             </div>
             {% empty %}
             <div class="empty-state">
+                {% if query %}
+                <h3>No books found matching "{{ query }}"</h3>
+                <p>Try different keywords or browse all categories</p>
+                <a href="{% url 'eco:product-list' %}" class="btn btn-primary" style="margin-top: 1rem;">Clear Search</a>
+                {% else %}
                 <h3>No books available</h3>
                 <p>Check back later for new arrivals!</p>
-                <a href="{% url 'eco:product-list' %}" class="btn btn-primary" style="margin-top: 1rem;">Browse All Books</a>
+                {% endif %}
             </div>
             {% endfor %}
-        </div>
-
-        <!-- No Results Message (Hidden by default) -->
-        <div id="noResults" class="no-results">
-            <h3>No books found matching your search</h3>
-            <p>Try different keywords or browse all categories</p>
-            <button onclick="clearSearch()" class="btn btn-primary" style="margin-top: 1rem;">Clear Search</button>
         </div>
 
         <!-- Pagination -->
         {% if is_paginated %}
         <div class="pagination">
             {% if page_obj.has_previous %}
-                <a href="?page={{ page_obj.previous_page_number }}" class="btn" style="margin-right: 1rem;">Previous</a>
+                <a href="?{% if query %}q={{ query|urlencode }}&{% endif %}page={{ page_obj.previous_page_number }}" class="btn" style="margin-right: 1rem;">Previous</a>
             {% endif %}
-            
+
             <span style="color: var(--gray); margin: 0 1rem;">
                 Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
             </span>
-            
+
             {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}" class="btn" style="margin-left: 1rem;">Next</a>
+                <a href="?{% if query %}q={{ query|urlencode }}&{% endif %}page={{ page_obj.next_page_number }}" class="btn" style="margin-left: 1rem;">Next</a>
             {% endif %}
         </div>
         {% endif %}
@@ -790,17 +758,16 @@
     <script>
     // Add to cart function for browse books page
     function addToCart(productSlug) {
-        console.log('Adding to cart:', productSlug);
-        
+
         // Get CSRF token
         const csrfToken = getCSRFToken();
-        
+
         // Show loading state on the button
         const button = event.target;
         const originalText = button.textContent;
         button.textContent = 'Adding...';
         button.disabled = true;
-        
+
         fetch(`/cart/add/${productSlug}/`, {
             method: 'POST',
             headers: {
@@ -810,7 +777,7 @@
             }
         })
         .then(response => {
-            // Check if response is JSON
+            if (response.status === 401) { response.json().then(d => { window.location.href = d.login_url; }); return new Promise(() => {}); }
             const contentType = response.headers.get('content-type');
             if (contentType && contentType.includes('application/json')) {
                 return response.json();
@@ -821,12 +788,11 @@
             }
         })
         .then(data => {
-            console.log('Response data:', data);
-            
+
             if (data.success) {
                 // Update cart count in navbar
                 updateCartCount(data.total_items);
-                
+
                 // Show success message (stays on current page)
                 showCartMessage(data.message || 'Product added to cart!', 'success');
             } else {
@@ -848,7 +814,7 @@
     function updateCartCount(count) {
         const cartCountElements = document.querySelectorAll('.cart-count');
         cartCountElements.forEach(element => {
-            element.textContent = `(${count})`;
+            element.textContent = count;
             // Add animation
             element.style.transform = 'scale(1.3)';
             setTimeout(() => {
@@ -864,19 +830,19 @@
         if (csrfTokenMeta) {
             return csrfTokenMeta.getAttribute('content');
         }
-        
+
         // Try to get from hidden input field
         const csrfTokenInput = document.querySelector('[name=csrfmiddlewaretoken]');
         if (csrfTokenInput) {
             return csrfTokenInput.value;
         }
-        
+
         // Fallback: try to get from cookie
         const cookieValue = document.cookie
             .split('; ')
             .find(row => row.startsWith('csrftoken='))
             ?.split('=')[1];
-        
+
         return cookieValue || '';
     }
 
@@ -885,13 +851,13 @@
         // Remove any existing messages
         const existingMessages = document.querySelectorAll('.cart-message');
         existingMessages.forEach(msg => msg.remove());
-        
+
         // Create message
         const messageDiv = document.createElement('div');
         messageDiv.className = `cart-message cart-${type}`;
         messageDiv.textContent = (type === 'success' ? '✅ ' : '❌ ') + message;
         document.body.appendChild(messageDiv);
-        
+
         // Remove after 3 seconds
         setTimeout(() => {
             messageDiv.style.animation = 'slideOut 0.3s ease';
@@ -901,93 +867,22 @@
         }, 3000);
     }
 
-    // Search functionality
     document.addEventListener('DOMContentLoaded', function() {
-        const searchInput = document.getElementById('searchInput');
-        const searchButton = document.querySelector('.search-button');
-        const productCards = document.querySelectorAll('.book-card');
-        const productsGrid = document.getElementById('productsGrid');
-        const noResults = document.getElementById('noResults');
-        const pagination = document.querySelector('.pagination');
-
-        function performSearch() {
-            const searchTerm = searchInput.value.toLowerCase().trim();
-            let hasVisibleItems = false;
-
-            productCards.forEach(card => {
-                const title = card.getAttribute('data-title') || '';
-                const author = card.getAttribute('data-author') || '';
-                const category = card.getAttribute('data-category') || '';
-                
-                if (searchTerm === '' || 
-                    title.includes(searchTerm) || 
-                    author.includes(searchTerm) || 
-                    category.includes(searchTerm)) {
-                    card.style.display = 'block';
-                    hasVisibleItems = true;
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-
-            // Show/hide no results message
-            if (searchTerm !== '' && !hasVisibleItems) {
-                noResults.style.display = 'block';
-                if (pagination) pagination.style.display = 'none';
-            } else {
-                noResults.style.display = 'none';
-                if (pagination) pagination.style.display = 'block';
-            }
-        }
-
-        function clearSearch() {
-            searchInput.value = '';
-            performSearch();
-            searchInput.focus();
-        }
-
-        // Event listeners
-        searchButton.addEventListener('click', performSearch);
-        
-        searchInput.addEventListener('input', function() {
-            // Real-time search with slight delay for performance
-            clearTimeout(this.searchTimeout);
-            this.searchTimeout = setTimeout(performSearch, 300);
-        });
-
-        // Search on Enter key
-        searchInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                performSearch();
-            }
-        });
-
-        // Clear search when input is empty
-        searchInput.addEventListener('input', function() {
-            if (this.value === '') {
-                performSearch();
-            }
-        });
-
-        // Make window.clearSearch available
-        window.clearSearch = clearSearch;
-
-        // Dark Mode Functionality
         const darkModeToggle = document.getElementById('darkModeToggle');
         const currentTheme = localStorage.getItem('theme');
-        
+
         // Check for saved theme or prefer-color-scheme
-        if (currentTheme === 'dark' || 
+        if (currentTheme === 'dark' ||
             (currentTheme === null && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.setAttribute('data-theme', 'dark');
         } else {
             document.documentElement.setAttribute('data-theme', 'light');
         }
-        
+
         // Toggle dark mode
         darkModeToggle.addEventListener('click', function() {
             const currentTheme = document.documentElement.getAttribute('data-theme');
-            
+
             if (currentTheme === 'light') {
                 document.documentElement.setAttribute('data-theme', 'dark');
                 localStorage.setItem('theme', 'dark');

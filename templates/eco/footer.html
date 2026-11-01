@@ -26,9 +26,16 @@
 
   .bookbazar-footer-content {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1.5fr;
-    gap: 20px;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
     margin-bottom: 15px;
+  }
+
+  /* Left Column - Company Info */
+  .bookbazar-footer-left {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
   }
 
   .bookbazar-footer-logo h3 {
@@ -98,6 +105,25 @@
     color: white;
     transform: translateY(-2px);
     box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+  }
+
+  /* Right Column - Vertical Stack */
+  .bookbazar-footer-right {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+
+  /* Stack Container for bottom-up sections */
+  .bookbazar-vertical-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+
+  /* Individual Sections in Vertical Stack */
+  .bookbazar-footer-section-inner {
+    width: 100%;
   }
 
   .bookbazar-footer-heading {
@@ -336,8 +362,19 @@
   /* Responsive Design */
   @media (max-width: 1024px) {
     .bookbazar-footer-content {
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+
+    .bookbazar-footer-left,
+    .bookbazar-footer-right {
+      width: 100%;
+    }
+
+    .bookbazar-vertical-stack {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
     }
 
     .bookbazar-newsletter-content {
@@ -361,9 +398,9 @@
       padding: 15px 0 8px;
     }
 
-    .bookbazar-footer-content {
+    .bookbazar-vertical-stack {
       grid-template-columns: 1fr;
-      gap: 20px;
+      gap: 25px;
     }
 
     .bookbazar-back-to-top {
@@ -388,7 +425,7 @@
     }
 
     .bookbazar-company-social-links {
-      justify-content: center;
+      justify-content: flex-start;
     }
   }
 
@@ -420,13 +457,13 @@
 <footer class="bookbazar-footer-section">
   <div class="bookbazar-footer-container">
     <div class="bookbazar-footer-content">
-      <!-- Company Info with Social Links -->
-      <div class="bookbazar-footer-about">
+      <!-- Left Column - Company Info -->
+      <div class="bookbazar-footer-left">
         <div class="bookbazar-footer-logo">
           <h3>BookBazar</h3>
           <p>
             Your trusted partner for quality books and educational resources.
-            Discover your next favorite read with us.https://www.facebook.com/share/16Pfn5VSLN/
+            Discover your next favorite read with us.
           </p>
         </div>
         <div class="bookbazar-company-social">
@@ -456,82 +493,87 @@
         </div>
       </div>
 
-      <!-- Quick Links -->
-      <div class="bookbazar-footer-section-inner">
-        <h4 class="bookbazar-footer-heading">Quick Links</h4>
-        <ul class="bookbazar-footer-links">
-          <li>
-            <a href="/"><i class="fas fa-home"></i> Home</a>
-          </li>
-          <li>
-            <a href="/products/"><i class="fas fa-book"></i> All Books</a>
-          </li>
-          <li>
-            <a href="/about/"><i class="fas fa-info-circle"></i> About Us</a>
-          </li>
-          <li>
-            <a href="/contact/"><i class="fas fa-envelope"></i> Contact</a>
-          </li>
-        </ul>
-      </div>
-
-      <!-- Categories -->
-      <div class="bookbazar-footer-section-inner">
-        <h4 class="bookbazar-footer-heading">Categories</h4>
-        <ul class="bookbazar-footer-links">
-          <li>
-            <a href="#"><i class="fas fa-graduation-cap"></i> Academic</a>
-          </li>
-          <li>
-            <a href="#"><i class="fas fa-heart"></i> Fiction</a>
-          </li>
-          <li>
-            <a href="#"><i class="fas fa-chart-line"></i> Business</a>
-          </li>
-          <li>
-            <a href="#"><i class="fas fa-laptop-code"></i> Technology</a>
-          </li>
-        </ul>
-      </div>
-
-      <!-- Contact Info -->
-      <div class="bookbazar-footer-section-inner">
-        <h4 class="bookbazar-footer-heading">Contact Info</h4>
-        <ul class="bookbazar-contact-info">
-          <li>
-            <i class="fas fa-map-marker-alt"></i>
-            <span>Block A, Gulshan Square, Gulshan 2, Dhaka 1200</span>
-          </li>
-          <li>
-            <i class="fas fa-phone"></i>
-            <span>+8809658306642</span>
-          </li>
-          <li>
-            <i class="fas fa-envelope"></i>
-            <span>support@bookbazar.com</span>
-          </li>
-        </ul>
-      </div>
-
-      <!-- Newsletter Section -->
-      <div class="bookbazar-newsletter-full">
-        <div class="bookbazar-newsletter-content">
-          <div class="bookbazar-newsletter-text">
-            <h4>Stay Updated</h4>
-            <p>Subscribe to get the latest books and exclusive offers</p>
+      <!-- Right Column - Vertical Stack (Bottom Up) -->
+      <div class="bookbazar-footer-right">
+        <div class="bookbazar-vertical-stack">
+          <!-- Contact Info (Bottom) -->
+          <div class="bookbazar-footer-section-inner">
+            <h4 class="bookbazar-footer-heading">Contact Info</h4>
+            <ul class="bookbazar-contact-info">
+              <li>
+                <i class="fas fa-map-marker-alt"></i>
+                <span>Block A, Gulshan Square, Gulshan 2, Dhaka 1200</span>
+              </li>
+              <li>
+                <i class="fas fa-phone"></i>
+                <span>+8809658306642</span>
+              </li>
+              <li>
+                <i class="fas fa-envelope"></i>
+                <span>support@bookbazar.com</span>
+              </li>
+            </ul>
           </div>
-          <form class="bookbazar-newsletter-form">
-            <input
-              type="email"
-              class="bookbazar-newsletter-input"
-              placeholder="Your email address"
-              required
-            />
-            <button type="submit" class="bookbazar-newsletter-btn">
-              Subscribe
-            </button>
-          </form>
+
+          <!-- Categories (Middle) -->
+          <div class="bookbazar-footer-section-inner">
+            <h4 class="bookbazar-footer-heading">Categories</h4>
+            <ul class="bookbazar-footer-links">
+              <li>
+                <a href="#"><i class="fas fa-graduation-cap"></i> Academic</a>
+              </li>
+              <li>
+                <a href="#"><i class="fas fa-heart"></i> Fiction</a>
+              </li>
+              <li>
+                <a href="#"><i class="fas fa-chart-line"></i> Business</a>
+              </li>
+              <li>
+                <a href="#"><i class="fas fa-laptop-code"></i> Technology</a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Quick Links (Top) -->
+          <div class="bookbazar-footer-section-inner">
+            <h4 class="bookbazar-footer-heading">Quick Links</h4>
+            <ul class="bookbazar-footer-links">
+              <li>
+                <a href="{% url 'eco:home' %}"><i class="fas fa-home"></i> Home</a>
+              </li>
+              <li>
+                <a href="{% url 'eco:product-list' %}"><i class="fas fa-book"></i> All Books</a>
+              </li>
+              <li>
+                <a href="{% url 'eco:category-list' %}"><i class="fas fa-th-large"></i> Categories</a>
+              </li>
+              <li>
+                <a href="{% url 'eco:contact' %}"><i class="fas fa-envelope"></i> Contact</a>
+              </li>
+            </ul>
+          </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Newsletter Section -->
+    <div class="bookbazar-newsletter-full">
+      <div class="bookbazar-newsletter-content">
+        <div class="bookbazar-newsletter-text">
+          <h4>Stay Updated</h4>
+          <p>Subscribe to get the latest books and exclusive offers</p>
+        </div>
+        <form class="bookbazar-newsletter-form">
+          <input
+            type="email"
+            class="bookbazar-newsletter-input"
+            placeholder="Your email address"
+            required
+          />
+          <button type="submit" class="bookbazar-newsletter-btn">
+            Subscribe
+          </button>
+        </form>
       </div>
     </div>
   </div>
@@ -592,7 +634,7 @@
             successMsg.innerHTML = '✅ Thank you for subscribing!';
             successMsg.style.cssText = 'color: #10b981; font-size: 0.8rem; margin-top: 8px; text-align: center;';
             this.appendChild(successMsg);
-            
+
             // Reset form
             emailInput.value = '';
             submitBtn.innerHTML = originalText;

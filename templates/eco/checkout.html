@@ -346,17 +346,18 @@
                     <h2 class="section-title">Shipping Address</h2>
                 </div>
 
-                {% if default_address %}
+                {% with address=default_shipping_address %}
                 <div class="address-display">
                     <div class="address-name">
-                        {{ default_address.street_address }}
+                        {{ address.first_name }} {{ address.last_name }}
                         <span class="default-badge">DEFAULT</span>
                     </div>
-                    <div class="address-line">{{ default_address.apartment_address }}</div>
-                    <div class="address-line">{{ default_address.city }}, {{ default_address.state }} {{ default_address.zip_code }}</div>
-                    <div class="address-line">{{ default_address.country }}</div>
+                    <div class="address-line">{{ address.street_address }}{% if address.apartment_address %}, {{ address.apartment_address }}{% endif %}</div>
+                    <div class="address-line">{{ address.city }} {{ address.zip_code }}</div>
+                    <div class="address-line">{{ address.country.name }}</div>
+                    {% if address.phone_number %}<div class="address-line">{{ address.phone_number }}</div>{% endif %}
                 </div>
-                {% endif %}
+                {% endwith %}
 
                 <a href="{% url 'eco:shipping-address' %}?from_checkout=true" class="change-address-btn">
                     <i class="fas fa-edit"></i>
@@ -372,17 +373,9 @@
                 </div>
 
                 <div class="payment-methods">
-                    <div class="payment-method selected" data-method="card">
+                    <div class="payment-method selected">
                         <div class="payment-icon">💳</div>
-                        <div class="payment-name">Credit Card</div>
-                    </div>
-                    <div class="payment-method" data-method="paypal">
-                        <div class="payment-icon">🔵</div>
-                        <div class="payment-name">PayPal</div>
-                    </div>
-                    <div class="payment-method" data-method="stripe">
-                        <div class="payment-icon">⚡</div>
-                        <div class="payment-name">Stripe</div>
+                        <div class="payment-name">Credit / Debit Card (Stripe)</div>
                     </div>
                 </div>
             </div>
@@ -412,30 +405,39 @@
                     <span>Subtotal</span>
                     <span>${{ cart.subtotal|floatformat:2 }}</span>
                 </div>
-                
+
                 {% if cart.total_discount > 0 %}
                 <div class="summary-line">
                     <span>Discount</span>
                     <span style="color: var(--success);">-${{ cart.total_discount|floatformat:2 }}</span>
                 </div>
                 {% endif %}
-                
+
+                {% if coupon %}
+                <div class="summary-line">
+                    <span>Promo code ({{ coupon.code }})</span>
+                    <span style="color: var(--success);">-${{ coupon_discount|floatformat:2 }}</span>
+                </div>
+                {% endif %}
+
                 <div class="summary-line">
                     <span>Shipping</span>
                     <span>FREE</span>
                 </div>
-                
+
                 <div class="summary-line total">
                     <span>Total</span>
-                    <span>${{ cart.grand_total|floatformat:2 }}</span>
+                    <span>${{ order_total|floatformat:2 }}</span>
                 </div>
             </div>
 
-            <!-- Pay Now Button -->
-            <button class="pay-now-btn" id="payNowButton">
-                <i class="fas fa-lock"></i>
-                Pay Now - ${{ cart.grand_total|floatformat:2 }}
-            </button>
+            <form method="post" action="{% url 'eco:checkout' %}" id="checkoutForm">
+                {% csrf_token %}
+                <button type="submit" class="pay-now-btn" id="payNowButton">
+                    <i class="fas fa-lock"></i>
+                    Continue to Payment - ${{ order_total|floatformat:2 }}
+                </button>
+            </form>
 
             <div class="security-badge">
                 <i class="fas fa-shield-alt"></i>
@@ -450,42 +452,10 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Payment method selection
-        const paymentMethods = document.querySelectorAll('.payment-method');
-        
-        paymentMethods.forEach(method => {
-            method.addEventListener('click', function() {
-                // Remove selected class from all methods
-                paymentMethods.forEach(m => m.classList.remove('selected'));
-                // Add selected class to clicked method
-                this.classList.add('selected');
-            });
-        });
-
-        // Pay Now button handler
-        const payNowButton = document.getElementById('payNowButton');
-        payNowButton.addEventListener('click', function() {
-            // Add loading state
-            const originalText = this.innerHTML;
-            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing Payment...';
-            this.disabled = true;
-
-            // Get selected payment method
-            const selectedMethod = document.querySelector('.payment-method.selected');
-            const methodType = selectedMethod ? selectedMethod.getAttribute('data-method') : 'card';
-            
-            // Simulate payment processing
-            setTimeout(() => {
-                alert(`Payment processed successfully via ${methodType.toUpperCase()}! Thank you for your purchase.`);
-                // In real implementation, redirect to order confirmation
-                // window.location.href = '/order-confirmation/';
-                
-                // Reset button (for demo)
-                this.innerHTML = originalText;
-                this.disabled = false;
-            }, 2000);
-        });
+    document.getElementById('checkoutForm').addEventListener('submit', function() {
+        const button = document.getElementById('payNowButton');
+        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+        button.disabled = true;
     });
 </script>
 {% endblock %}

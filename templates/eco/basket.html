@@ -18,7 +18,7 @@
         --meta-text: #6c757d;
         --discount-color: #e74c3c;
         --promo-bg: #f5f7fb;
-        --button-text-color: #2c3e50; /* ← ADD THIS LINE - Black in light mode */
+        --button-text-color: #2c3e50;
     }
 
     [data-theme="dark"] {
@@ -33,7 +33,7 @@
         --meta-text: #b0b3b8;
         --discount-color: #ff6b6b;
         --promo-bg: #2d3440;
-        --button-text-color: #ffffff; /* ← ADD THIS LINE - White in dark mode */
+        --button-text-color: #ffffff;
     }
 
     /* Breadcrumb */
@@ -366,7 +366,7 @@
 
  .promo-input button {
     background: var(--primary-color);
-    color: var(--button-text-color); /* ← ADD THIS LINE */
+    color: var(--button-text-color);
     border: none;
     padding: 0 20px;
     border-radius: 0 8px 8px 0;
@@ -377,7 +377,7 @@
 
 .promo-input button:hover {
     background: var(--primary-dark);
-    color: var(--button-text-color); /* ← ADD THIS LINE FOR HOVER STATE TOO */
+    color: var(--button-text-color);
 }
 
 
@@ -551,31 +551,31 @@
         .cart-container {
             flex-direction: column;
         }
-        
+
         .cart-summary {
             width: 100%;
         }
-        
+
         .cart-item {
             flex-direction: column;
         }
-        
+
         .item-image {
             width: 100%;
             height: 200px;
             margin-right: 0;
             margin-bottom: 15px;
         }
-        
+
         .item-details {
             padding-right: 0;
         }
-        
+
         .item-controls {
             flex-direction: column;
             align-items: flex-start;
         }
-        
+
         .item-pricing {
             align-items: flex-start;
             margin-top: 15px;
@@ -670,7 +670,7 @@
                                     <i class="fas fa-tag"></i> {{ item.book.category.name|default:"General" }}
                                 </div>
                                 <div class="meta-item">
-                                    <i class="fas fa-box"></i> 
+                                    <i class="fas fa-box"></i>
                                     {% if item.book.stock_quantity > 0 %}In Stock{% else %}Out of Stock{% endif %}
                                 </div>
                                 <div class="meta-item">
@@ -717,31 +717,30 @@
         {% if cart_items %}
         <div class="cart-summary">
             <h3 class="summary-title">Order Summary</h3>
-            
+
             <div class="summary-row">
                 <span class="summary-label">Subtotal ({{ cart.total_items }} item{{ cart.total_items|pluralize }})</span>
                 <span class="summary-value" id="subtotal">${{ cart.subtotal|floatformat:2 }}</span>
             </div>
-            
+
             {% if cart.total_discount > 0 %}
             <div class="summary-row">
                 <span class="summary-label">Discount <span class="discount-badge">SAVE ${{ cart.total_discount|floatformat:2 }}</span></span>
                 <span class="summary-value" id="totalDiscount">-${{ cart.total_discount|floatformat:2 }}</span>
             </div>
             {% endif %}
-            
+
             <div class="summary-row">
                 <span class="summary-label">Shipping</span>
                 <span class="summary-value">FREE</span>
             </div>
-            
-            <!-- REMOVED TAX ROW -->
-            
+
+
             <div class="summary-total">
                 <span class="summary-label">Total</span>
                 <span class="summary-value" id="finalTotal">${{ cart.grand_total|floatformat:2 }}</span>
             </div>
-            
+
           <div class="promo-section">
     <p>Have a promo code?</p>
     <div class="promo-input">
@@ -750,12 +749,11 @@
     </div>
     <div id="promoMessage" style="margin-top: 10px; font-size: 14px;"></div>
 </div>
-            
-            <!-- UPDATED CHECKOUT BUTTON -->
+
             <button class="checkout-btn" id="checkoutButton" onclick="proceedToCheckout()">
                 Proceed to Checkout <i class="fas fa-arrow-right"></i>
             </button>
-            
+
             <div class="secure-checkout">
                 <i class="fas fa-lock"></i> Secure checkout guaranteed
             </div>
@@ -795,7 +793,7 @@
             });
 
             const data = await response.json();
-            
+
             if (data.has_shipping_address) {
                 // Redirect to checkout page
                 window.location.href = '{% url "eco:checkout" %}';
@@ -804,11 +802,11 @@
                 alert('Please set up your shipping address before checkout.');
                 window.location.href = '{% url "eco:shipping-address" %}?from_checkout=true';
             }
-            
+
         } catch (error) {
             console.error('Error:', error);
             alert('An error occurred. Please try again.');
-            
+
             // Reset button
             const checkoutBtn = document.getElementById('checkoutButton');
             checkoutBtn.innerHTML = originalText;
@@ -819,8 +817,7 @@
 
     // Update cart item quantity
     async function updateCartItem(itemId, action) {
-        console.log('Updating cart item:', itemId, action);
-        
+
         try {
             const response = await fetch(`/cart/update/${itemId}/`, {
                 method: 'POST',
@@ -836,8 +833,7 @@
             }
 
             const data = await response.json();
-            console.log('Response data:', data);
-            
+
             if (data.success) {
                 if (data.removed || action === 'remove') {
                     // Remove item from DOM
@@ -855,16 +851,16 @@
                     // Update quantity and price
                     const quantityElement = document.getElementById(`quantity-${itemId}`);
                     const totalElement = document.getElementById(`itemTotal-${itemId}`);
-                    
+
                     if (quantityElement) quantityElement.textContent = data.item_quantity;
                     if (totalElement) totalElement.textContent = `$${data.item_total.toFixed(2)}`;
-                    
+
                     updateCartDisplay(data);
                 }
-                
+
                 // Show success message
                // showMessage('Cart updated successfully!', 'success');
-            } 
+            }
         } catch (error) {
             console.error('Error:', error);
             showMessage('An error occurred. Please try again.', 'error');
@@ -873,14 +869,13 @@
 
     // Update cart display after changes
     function updateCartDisplay(data) {
-        console.log('Updating cart display with:', data);
-        
+
         // Update summary
         const subtotalElement = document.getElementById('subtotal');
         const totalDiscountElement = document.getElementById('totalDiscount');
         const finalTotalElement = document.getElementById('finalTotal');
         const itemCountElement = document.getElementById('itemCount');
-        
+
 
         if (subtotalElement) subtotalElement.textContent = `$${data.subtotal.toFixed(2)}`;
         if (totalDiscountElement && data.total_discount > 0) {
@@ -888,8 +883,8 @@
         }
         if (finalTotalElement) finalTotalElement.textContent = `$${data.final_total.toFixed(2)}`;
         if (itemCountElement) itemCountElement.textContent = `${data.total_items} item${data.total_items !== 1 ? 's' : ''}`;
-        
-       
+
+
 
         // Update cart count in navbar
         const cartCountElements = document.querySelectorAll('.cart-count');
@@ -926,8 +921,7 @@
 
 // Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Cart page loaded, initializing everything...');
-    
+
     // ===== COUPON FUNCTIONALITY =====
     const applyPromoBtn = document.getElementById('applyPromoBtn');
     const promoCodeInput = document.getElementById('promoCodeInput');
@@ -935,7 +929,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (applyPromoBtn) {
         applyPromoBtn.addEventListener('click', applyPromoCode);
-        
+
         // Also allow Enter key to apply promo code
         promoCodeInput.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
@@ -946,7 +940,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     async function applyPromoCode() {
         const promoCode = promoCodeInput.value.trim();
-        
+
         if (!promoCode) {
             showPromoMessage('Please enter a promo code', 'error');
             return;
@@ -967,12 +961,11 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             const data = await response.json();
-            console.log('Coupon response:', data);
 
             if (data.success) {
                 showPromoMessage(data.message, 'success');
                 promoCodeInput.value = '';
-                
+
                 // Update cart totals if provided
                 if (data.cart_data) {
                     updateCartDisplay(data.cart_data);
@@ -992,7 +985,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function showPromoMessage(message, type) {
         if (!promoMessage) return;
-        
+
         promoMessage.textContent = message;
         promoMessage.className = type;
     }
@@ -1002,31 +995,27 @@ document.addEventListener('DOMContentLoaded', function() {
     const cartContainer = document.getElementById('cartItemsContainer');
     if (cartContainer) {
         cartContainer.addEventListener('click', function(e) {
-            console.log('Click event:', e.target);
-            
+
             // Handle remove button - NO CONFIRMATION
             const removeBtn = e.target.closest('.remove-btn');
             if (removeBtn) {
                 const itemId = removeBtn.getAttribute('data-item-id');
-                console.log('Remove clicked for item:', itemId);
                 updateCartItem(itemId, 'remove');
                 return;
             }
-            
+
             // Handle increase button
             const increaseBtn = e.target.closest('.increase-btn');
             if (increaseBtn) {
                 const itemId = increaseBtn.getAttribute('data-item-id');
-                console.log('Increase clicked for item:', itemId);
                 updateCartItem(itemId, 'increase');
                 return;
             }
-            
+
             // Handle decrease button
             const decreaseBtn = e.target.closest('.decrease-btn');
             if (decreaseBtn) {
                 const itemId = decreaseBtn.getAttribute('data-item-id');
-                console.log('Decrease clicked for item:', itemId);
                 updateCartItem(itemId, 'decrease');
                 return;
             }
@@ -1051,6 +1040,7 @@ document.addEventListener('DOMContentLoaded', function() {
             method: 'GET',
             headers: {
                 'X-CSRFToken': getCSRFToken(),
+                'X-Requested-With': 'XMLHttpRequest'
             }
         })
         .then(response => response.json())
@@ -1075,13 +1065,13 @@ document.addEventListener('DOMContentLoaded', function() {
         opacity: 0.6;
         pointer-events: none;
     }
-    
+
     .quantity-btn.loading::after,
     .remove-btn.loading::after {
         content: '...';
         animation: loading 1s infinite;
     }
-    
+
     @keyframes loading {
         0%, 100% { content: '.'; }
         33% { content: '..'; }

@@ -58,7 +58,7 @@
         }
 
         body {
-            background: 
+            background:
                 linear-gradient(135deg, rgba(43, 57, 88, 0.9) 0%, rgba(43, 57, 88, 0.9) 100%),
                 url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1950&q=80') center/cover;
             min-height: 100vh;
@@ -71,7 +71,7 @@
         }
 
         [data-theme="dark"] body {
-            background: 
+            background:
                 linear-gradient(135deg, rgba(43, 57, 88, 0.9) 0%, rgba(43, 57, 88, 0.9) 100%),
                 url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1950&q=80') center/cover;
         }
@@ -83,7 +83,7 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
             padding: 3rem 2.5rem;
             border-radius: 24px;
-            box-shadow: 
+            box-shadow:
                 var(--shadow-xl),
                 0 0 0 1px rgba(255, 255, 255, 0.1);
             width: 100%;
@@ -447,11 +447,11 @@
                 margin: 1rem;
                 backdrop-filter: blur(15px);
             }
-            
+
             .auth-title {
                 font-size: 1.5rem;
             }
-            
+
             .logo {
                 font-size: 2rem;
             }
@@ -470,7 +470,7 @@
             .register-container {
                 padding: 1.5rem 1rem;
             }
-            
+
             .theme-toggle {
                 top: 1rem;
                 right: 1rem;
@@ -514,16 +514,16 @@
         <!-- Register Form -->
         <form method="POST" action=".">
             {% csrf_token %}
-            
+
             <div class="form-group">
                 <label for="id_email" class="form-label">Email Address</label>
-                <input 
-                    type="email" 
-                    name="email" 
-                    id="id_email" 
-                    class="form-input" 
+                <input
+                    type="email"
+                    name="email"
+                    id="id_email"
+                    class="form-input"
                     placeholder="Enter your email"
-                    required 
+                    required
                     autofocus
                 >
                 {% if form.email.errors %}
@@ -534,11 +534,11 @@
             <div class="form-row">
                 <div class="form-group">
                     <label for="id_first_name" class="form-label">First Name</label>
-                    <input 
-                        type="text" 
-                        name="first_name" 
-                        id="id_first_name" 
-                        class="form-input" 
+                    <input
+                        type="text"
+                        name="first_name"
+                        id="id_first_name"
+                        class="form-input"
                         placeholder="First name"
                         required
                     >
@@ -549,11 +549,11 @@
 
                 <div class="form-group">
                     <label for="id_last_name" class="form-label">Last Name</label>
-                    <input 
-                        type="text" 
-                        name="last_name" 
-                        id="id_last_name" 
-                        class="form-input" 
+                    <input
+                        type="text"
+                        name="last_name"
+                        id="id_last_name"
+                        class="form-input"
                         placeholder="Last name"
                         required
                     >
@@ -566,11 +566,11 @@
             <div class="form-group">
                 <label for="id_password1" class="form-label">Password</label>
                 <div class="password-input-container">
-                    <input 
-                        type="password" 
-                        name="password1" 
-                        id="id_password1" 
-                        class="form-input" 
+                    <input
+                        type="password"
+                        name="password1"
+                        id="id_password1"
+                        class="form-input"
                         placeholder="Create a password"
                         required
                     >
@@ -586,11 +586,11 @@
             <div class="form-group">
                 <label for="id_password2" class="form-label">Confirm Password</label>
                 <div class="password-input-container">
-                    <input 
-                        type="password" 
-                        name="password2" 
-                        id="id_password2" 
-                        class="form-input" 
+                    <input
+                        type="password"
+                        name="password2"
+                        id="id_password2"
+                        class="form-input"
                         placeholder="Confirm your password"
                         required
                     >
@@ -611,8 +611,8 @@
         <!-- Footer -->
         <div class="auth-footer">
             <p class="login-link">
-                Already have an account? 
-                <a href="/users/login/">Login here</a>
+                Already have an account?
+                <a href="{% url 'users:login' %}">Login here</a>
             </p>
         </div>
     </div>
@@ -622,19 +622,19 @@
         document.addEventListener('DOMContentLoaded', function() {
             const themeToggle = document.getElementById('themeToggle');
             const currentTheme = localStorage.getItem('theme');
-            
+
             // Check for saved theme or prefer-color-scheme
-            if (currentTheme === 'dark' || 
+            if (currentTheme === 'dark' ||
                 (currentTheme === null && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                 document.documentElement.setAttribute('data-theme', 'dark');
             } else {
                 document.documentElement.setAttribute('data-theme', 'light');
             }
-            
+
             // Toggle theme
             themeToggle.addEventListener('click', function() {
                 const currentTheme = document.documentElement.getAttribute('data-theme');
-                
+
                 if (currentTheme === 'light') {
                     document.documentElement.setAttribute('data-theme', 'dark');
                     localStorage.setItem('theme', 'dark');
@@ -649,13 +649,13 @@
             const password1Input = document.getElementById('id_password1');
             const password2Toggle = document.getElementById('password2Toggle');
             const password2Input = document.getElementById('id_password2');
-            
+
             function togglePassword(input, toggle) {
                 const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
                 input.setAttribute('type', type);
                 toggle.textContent = type === 'password' ? '👁️' : '🔒';
             }
-            
+
             password1Toggle.addEventListener('click', function() {
                 togglePassword(password1Input, password1Toggle);
             });

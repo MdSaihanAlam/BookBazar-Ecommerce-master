@@ -415,47 +415,47 @@
         .contact-hero {
             padding: 80px 0 60px 0;
         }
-        
+
         .contact-hero .section-title {
             font-size: 2.2rem;
         }
-        
+
         .contact-form, .contact-info {
             padding: 30px 25px;
         }
-        
+
         .contact-item {
             flex-direction: column;
             text-align: center;
             padding: 25px 20px;
         }
-        
+
         .contact-icon {
             margin-right: 0;
             margin-bottom: 15px;
             width: 50px;
             height: 50px;
         }
-        
+
         .section-title {
             font-size: 2rem;
         }
-        
+
         .faq-section {
             margin-top: 60px;
             padding: 40px 0;
             border-radius: 20px;
         }
-        
+
         .map-container {
             margin-top: 30px;
             padding: 15px;
         }
-        
+
         .contact-info .section-title {
             text-align: center;
         }
-        
+
         .contact-info .section-title::after {
             left: 50%;
             transform: translateX(-50%);
@@ -466,20 +466,20 @@
         .contact-hero .section-title {
             font-size: 1.8rem;
         }
-        
+
         .contact-form, .contact-info {
             padding: 25px 20px;
         }
-        
+
         .btn-contact {
             width: 100%;
             padding: 18px 20px;
         }
-        
+
         .social-links {
             gap: 10px;
         }
-        
+
         .social-link {
             width: 45px;
             height: 45px;
@@ -539,7 +539,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Contact Information -->
             <div class="col-lg-4 mb-4">
                 <div class="contact-card h-100 fade-in-up stagger-delay-3">
@@ -582,7 +582,7 @@
                                     <p>Monday - Friday: 9AM - 6PM<br>Saturday: 10AM - 4PM</p>
                                 </div>
                             </div>
-                            
+
                             <div class="social-links">
                                 <a href="https://www.facebook.com/share/16Pfn5VSLN/" class="social-link facebook" title="Facebook">
                                     <i class="fab fa-facebook-f"></i>
@@ -602,18 +602,18 @@
                 </div>
             </div>
         </div>
-        
+
        <!-- Map Section -->
 <div class="row">
     <div class="col-12">
         <div class="map-container fade-in-up stagger-delay-4">
-            <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3581.6977316670564!2d90.41113548057906!3d23.79635422691705!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c70847c3b119%3A0x37a66ea61ac1ed39!2sLandmark%20JKH%20Complex!5e0!3m2!1sen!2sbd!4v1761552816254!5m2!1sen!2sbd" 
-                width="100%" 
-                height="450" 
-                style="border:0; border-radius: 15px;" 
-                allowfullscreen="" 
-                loading="lazy" 
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3581.6977316670564!2d90.41113548057906!3d23.79635422691705!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c70847c3b119%3A0x37a66ea61ac1ed39!2sLandmark%20JKH%20Complex!5e0!3m2!1sen!2sbd!4v1761552816254!5m2!1sen!2sbd"
+                width="100%"
+                height="450"
+                style="border:0; border-radius: 15px;"
+                allowfullscreen=""
+                loading="lazy"
                 referrerpolicy="no-referrer-when-downgrade"
                 title="BookBazar Location - Landmark JKH Complex, Bangladesh">
             </iframe>
@@ -683,45 +683,45 @@
             question.addEventListener('click', () => {
                 const faqItem = question.parentElement;
                 const isActive = faqItem.classList.contains('active');
-                
+
                 // Close all FAQ items
                 document.querySelectorAll('.faq-item').forEach(item => {
                     item.classList.remove('active');
                 });
-                
+
                 // Open clicked item if it wasn't active
                 if (!isActive) {
                     faqItem.classList.add('active');
                 }
             });
         });
-        
+
         // Contact form submission handling
         const contactForm = document.querySelector('form');
         if (contactForm) {
             contactForm.addEventListener('submit', function(e) {
                 e.preventDefault();
-                
+
                 const submitBtn = this.querySelector('button[type="submit"]');
-                
+
                 // Simple form validation
                 const name = document.getElementById('name').value.trim();
                 const email = document.getElementById('email').value.trim();
                 const subject = document.getElementById('subject').value.trim();
                 const message = document.getElementById('message').value.trim();
-                
+
                 if (!name || !email || !subject || !message) {
                     this.submit(); // Let Django handle the validation
                     return;
                 }
-                
+
                 // Email validation
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 if (!emailRegex.test(email)) {
                     this.submit(); // Let Django handle the validation
                     return;
                 }
-                
+
                 // If all validations pass, submit the form
                 this.submit();
             });
@@ -737,7 +737,7 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('fade-in-up');
-                } 
+                }
             });
         }, observerOptions);
 
@@ -764,11 +764,11 @@
                     <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
                 </div>
             `;
-            
+
             toastContainer.appendChild(toastEl);
             const toast = new bootstrap.Toast(toastEl);
             toast.show();
-            
+
             // Remove toast from DOM after it's hidden
             toastEl.addEventListener('hidden.bs.toast', () => {
                 toastEl.remove();

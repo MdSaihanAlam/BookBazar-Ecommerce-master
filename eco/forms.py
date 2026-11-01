@@ -1,111 +1,11 @@
 from django import forms
-from django_countries.fields import CountryField
 from django_countries.widgets import CountrySelectWidget
-from .models import Address, UserProfile, Book, Category
+from .models import Address, Book, Category
 from django.template.defaultfilters import slugify
-
-PAYMENT_CHOICES = (
-    ('S', 'Stripe'),
-    ('P', 'PayPal')
-)
-
-ADDRESS_CHOICES = (
-    ('B', 'Billing'),
-    ('S', 'Shipping'),
-)
-
-class CheckoutForm(forms.Form):
-    shipping_address = forms.CharField(required=False)
-    shipping_address2 = forms.CharField(required=False)
-    shipping_country = CountryField(blank_label='(select country)').formfield(
-        required=False,
-        widget=CountrySelectWidget(attrs={
-            'class': 'custom-select d-block w-100',
-        }))
-    shipping_zip_code = forms.CharField(required=False)
-
-    billing_address = forms.CharField(required=False)
-    billing_address2 = forms.CharField(required=False)
-    billing_country = CountryField(blank_label='(select country)').formfield(
-        required=False,
-        widget=CountrySelectWidget(attrs={
-            'class': 'custom-select d-block w-100',
-        }))
-    billing_zip_code = forms.CharField(required=False)
-
-    same_billing_address = forms.BooleanField(required=False)
-    set_default_shipping = forms.BooleanField(required=False)
-    use_default_shipping = forms.BooleanField(required=False)
-    set_default_billing = forms.BooleanField(required=False)
-    use_default_billing = forms.BooleanField(required=False)
-
-    payment_option = forms.ChoiceField(
-        widget=forms.RadioSelect, choices=PAYMENT_CHOICES)
-
-    def clean(self):
-        cleaned_data = super().clean()
-        same_billing_address = cleaned_data.get('same_billing_address')
-        use_default_shipping = cleaned_data.get('use_default_shipping')
-        use_default_billing = cleaned_data.get('use_default_billing')
-
-        # Validate shipping address
-        if not use_default_shipping:
-            shipping_address = cleaned_data.get('shipping_address')
-            shipping_country = cleaned_data.get('shipping_country')
-            shipping_zip_code = cleaned_data.get('shipping_zip_code')
-            
-            if not shipping_address:
-                self.add_error('shipping_address', 'This field is required')
-            if not shipping_country:
-                self.add_error('shipping_country', 'This field is required')
-            if not shipping_zip_code:
-                self.add_error('shipping_zip_code', 'This field is required')
-
-        # Validate billing address
-        if not same_billing_address and not use_default_billing:
-            billing_address = cleaned_data.get('billing_address')
-            billing_country = cleaned_data.get('billing_country')
-            billing_zip_code = cleaned_data.get('billing_zip_code')
-            
-            if not billing_address:
-                self.add_error('billing_address', 'This field is required')
-            if not billing_country:
-                self.add_error('billing_country', 'This field is required')
-            if not billing_zip_code:
-                self.add_error('billing_zip_code', 'This field is required')
-
-        return cleaned_data
-
-
-class CouponForm(forms.Form):
-    code = forms.CharField(widget=forms.TextInput(attrs={
-        'class': 'form-control',
-        'placeholder': 'Promo code',
-        'aria-label': 'Recipient\'s username',
-        'aria-describedby': 'basic-addon2'
-    }))
-
-    def clean_code(self):
-        code = self.cleaned_data.get('code')
-        if code and len(code) < 4:
-            raise forms.ValidationError("Promo code must be at least 4 characters long.")
-        return code
 
 
 class PaymentForm(forms.Form):
-    stripeToken = forms.CharField(required=False)
-    save = forms.BooleanField(required=False)
-    use_default = forms.BooleanField(required=False)
-
-    def clean(self):
-        cleaned_data = super().clean()
-        stripeToken = cleaned_data.get('stripeToken')
-        use_default = cleaned_data.get('use_default')
-
-        if not use_default and not stripeToken:
-            raise forms.ValidationError("Please provide a payment method or use your default card.")
-
-        return cleaned_data
+    stripeToken = forms.CharField()
 
 
 class ContactForm(forms.Form):
@@ -158,7 +58,6 @@ class ContactForm(forms.Form):
         return message.strip()
 
 class AddressForm(forms.ModelForm):
-    # ADD THESE NEW FIELDS
     first_name = forms.CharField(
         max_length=100,
         widget=forms.TextInput(attrs={
@@ -169,7 +68,7 @@ class AddressForm(forms.ModelForm):
     last_name = forms.CharField(
         max_length=100,
         widget=forms.TextInput(attrs={
-            'class': 'form-control', 
+            'class': 'form-control',
             'placeholder': 'Last Name'
         })
     )
@@ -210,8 +109,8 @@ class AddressForm(forms.ModelForm):
         model = Address
         fields = [
             'first_name', 'last_name', 'street_address', 'apartment_address',
-            'city', 'zip_code', 'country', 'email', 'phone_number', 
-            'alternate_email', 'is_business_address', 'address_type', 'default'
+            'city', 'zip_code', 'country', 'email', 'phone_number',
+            'alternate_email', 'is_business_address', 'default'
         ]
         widgets = {
             'street_address': forms.TextInput(attrs={
@@ -226,32 +125,9 @@ class AddressForm(forms.ModelForm):
                 'class': 'form-control'
             }),
             'zip_code': forms.TextInput(attrs={
-                'class': 'form-control', 
+                'class': 'form-control',
                 'placeholder': 'Zip code'
             }),
-            'address_type': forms.Select(attrs={
-                'class': 'form-control'
-            }),
-        }
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # Make fields required
-        self.fields['first_name'].required = True
-        self.fields['last_name'].required = True
-        self.fields['email'].required = True
-        self.fields['phone_number'].required = True
-        self.fields['city'].required = True
-
-
-class UserProfileForm(forms.ModelForm):
-    class Meta:
-        model = UserProfile
-        fields = ['one_click_purchasing']
-        widgets = {
-            'one_click_purchasing': forms.CheckboxInput(attrs={
-                'class': 'form-check-input'
-            })
         }
 
 
@@ -291,9 +167,8 @@ class ProductForm(forms.ModelForm):
                 'class': 'form-control',
                 'placeholder': 'Enter book title'
             }),
-            'author': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Enter primary author name'
+            'author': forms.Select(attrs={
+                'class': 'form-control'
             }),
             'additional_authors': forms.TextInput(attrs={
                 'class': 'form-control',
@@ -310,9 +185,8 @@ class ProductForm(forms.ModelForm):
             'category': forms.Select(attrs={
                 'class': 'form-control'
             }),
-            'genre': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Enter genre'
+            'genre': forms.Select(attrs={
+                'class': 'form-control'
             }),
             'format_type': forms.Select(attrs={
                 'class': 'form-control'
@@ -320,9 +194,8 @@ class ProductForm(forms.ModelForm):
             'condition': forms.Select(attrs={
                 'class': 'form-control'
             }),
-            'publisher': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Enter publisher name'
+            'publisher': forms.Select(attrs={
+                'class': 'form-control'
             }),
             'publication_date': forms.DateInput(attrs={
                 'class': 'form-control',
@@ -388,7 +261,7 @@ class ProductForm(forms.ModelForm):
             }),
             'slug': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'auto-generated-slug'
+                'placeholder': 'Leave blank to generate from title'
             }),
         }
         labels = {
@@ -399,17 +272,9 @@ class ProductForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Make essential fields required
-        self.fields['title'].required = True
         self.fields['author'].required = True
         self.fields['category'].required = True
-        self.fields['price'].required = True
-        
-        # Add empty choice for label fields
-        for field in ['label1', 'label2', 'label3']:
-            self.fields[field].empty_label = "Select label"
-        
-        # Style the image fields
+        self.fields['slug'].required = False
         self.fields['cover_image'].widget.attrs.update({
             'class': 'form-control',
             'accept': 'image/*'
@@ -421,19 +286,9 @@ class ProductForm(forms.ModelForm):
 
     def clean_title(self):
         title = self.cleaned_data.get('title')
-        if not title:
-            raise forms.ValidationError("Title is required.")
         if len(title.strip()) < 2:
             raise forms.ValidationError("Title must be at least 2 characters long.")
         return title.strip()
-
-    def clean_author(self):
-        author = self.cleaned_data.get('author')
-        if not author:
-            raise forms.ValidationError("Author is required.")
-        if len(author.strip()) < 2:
-            raise forms.ValidationError("Author name must be at least 2 characters long.")
-        return author.strip()
 
     def clean_isbn(self):
         isbn = self.cleaned_data.get('isbn')
@@ -456,13 +311,13 @@ class ProductForm(forms.ModelForm):
     def clean_discount_price(self):
         discount_price = self.cleaned_data.get('discount_price')
         price = self.cleaned_data.get('price')
-        
+
         if discount_price:
             if discount_price <= 0:
                 raise forms.ValidationError("Discount price must be greater than 0.")
             if price and discount_price >= price:
                 raise forms.ValidationError("Discount price must be less than regular price.")
-        
+
         return discount_price
 
     def clean_stock_quantity(self):
@@ -479,33 +334,15 @@ class ProductForm(forms.ModelForm):
 
     def clean_description(self):
         description = self.cleaned_data.get('description')
-        if not description:
-            raise forms.ValidationError("Description is required.")
         if len(description.strip()) < 10:
             raise forms.ValidationError("Description must be at least 10 characters long.")
         return description.strip()
 
-    def save(self, commit=True):
-        instance = super().save(commit=False)
-        
-        # Generate slug from title if slug field exists and is empty
-        if instance.title and not instance.slug:
-            base_slug = slugify(instance.title)
-            slug = base_slug
-            counter = 1
-            
-            # Ensure slug is unique
-            while Book.objects.filter(slug=slug).exclude(pk=instance.pk).exists():
-                slug = f"{base_slug}-{counter}"
-                counter += 1
-            
-            instance.slug = slug
-        
-        if commit:
-            instance.save()
-            self.save_m2m()
-        
-        return instance
+    def clean_slug(self):
+        slug = self.cleaned_data.get('slug')
+        if slug and Book.objects.filter(slug=slug).exclude(pk=self.instance.pk).exists():
+            raise forms.ValidationError("A book with this slug already exists.")
+        return slug
 
 class CategoryForm(forms.ModelForm):
     class Meta:
@@ -524,114 +361,23 @@ class CategoryForm(forms.ModelForm):
         }
 
     def clean_name(self):
-        name = self.cleaned_data.get('name')
-        if not name:
-            raise forms.ValidationError("Category name is required.")
-        if len(name.strip()) < 2:
+        name = self.cleaned_data.get('name').strip()
+        if len(name) < 2:
             raise forms.ValidationError("Category name must be at least 2 characters long.")
-        return name.strip()
+        return name
 
     def save(self, commit=True):
         instance = super().save(commit=False)
-        
-        # Generate slug from name
-        if instance.name:
+        if not instance.slug:
             base_slug = slugify(instance.name)
             slug = base_slug
             counter = 1
-            
-            # Ensure slug is unique
             while Category.objects.filter(slug=slug).exclude(pk=instance.pk).exists():
                 slug = f"{base_slug}-{counter}"
                 counter += 1
-            
             instance.slug = slug
-        
+
         if commit:
             instance.save()
-        
+
         return instance
-
-
-class ProductSearchForm(forms.Form):
-    query = forms.CharField(
-        required=False,
-        widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Search books...',
-            'aria-label': 'Search'
-        })
-    )
-    
-    category = forms.ModelChoiceField(
-        queryset=Category.objects.all(),
-        required=False,
-        empty_label="All Categories",
-        widget=forms.Select(attrs={
-            'class': 'form-control'
-        })
-    )
-    
-    min_price = forms.DecimalField(
-        required=False,
-        min_value=0,
-        decimal_places=2,
-        widget=forms.NumberInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Min price',
-            'step': '0.01'
-        })
-    )
-    
-    max_price = forms.DecimalField(
-        required=False,
-        min_value=0,
-        decimal_places=2,
-        widget=forms.NumberInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Max price',
-            'step': '0.01'
-        })
-    )
-
-    def clean(self):
-        cleaned_data = super().clean()
-        min_price = cleaned_data.get('min_price')
-        max_price = cleaned_data.get('max_price')
-        
-        if min_price and max_price and min_price > max_price:
-            raise forms.ValidationError("Minimum price cannot be greater than maximum price.")
-        
-        return cleaned_data
-
-
-class ReviewForm(forms.Form):
-    RATING_CHOICES = [
-        (1, '1 Star'),
-        (2, '2 Stars'),
-        (3, '3 Stars'),
-        (4, '4 Stars'),
-        (5, '5 Stars'),
-    ]
-    
-    rating = forms.ChoiceField(
-        choices=RATING_CHOICES,
-        widget=forms.RadioSelect(attrs={
-            'class': 'form-check-input'
-        })
-    )
-    
-    comment = forms.CharField(
-        widget=forms.Textarea(attrs={
-            'class': 'form-control',
-            'rows': 3,
-            'placeholder': 'Share your thoughts about this book...'
-        }),
-        required=False
-    )
-
-    def clean_rating(self):
-        rating = self.cleaned_data.get('rating')
-        if not rating:
-            raise forms.ValidationError("Please select a rating.")
-        return int(rating)

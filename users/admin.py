@@ -55,7 +55,7 @@ class CustomUserAdmin(UserAdmin):
         'is_staff', 
         'is_active', 
         'date_joined',
-        'is_superuser',  # Added superuser filter
+        'is_superuser',
     )
     
     # Fields for editing user
@@ -70,11 +70,11 @@ class CustomUserAdmin(UserAdmin):
                 'groups', 
                 'user_permissions'
             ),
-            'classes': ('collapse',)  # Make permissions collapsible
+            'classes': ('collapse',)
         }),
         (_('Important dates'), {
             'fields': ('last_login', 'date_joined'),
-            'classes': ('collapse',)  # Make dates collapsible
+            'classes': ('collapse',)
         }),
     )
     
@@ -101,13 +101,10 @@ class CustomUserAdmin(UserAdmin):
     
     def get_full_name(self, obj):
         """Display full name from profile in admin list"""
-        # Use try-except to handle cases where profile might not exist
         try:
             return obj.profile.get_full_name()
         except UserProfile.DoesNotExist:
-            # Create profile if it doesn't exist (safety fallback)
-            UserProfile.objects.create(user=obj)
-            return obj.profile.get_full_name()
+            return obj.email
     get_full_name.short_description = 'Full Name'
     
     def get_inline_instances(self, request, obj=None):
@@ -155,7 +152,7 @@ class UserProfileAdmin(admin.ModelAdmin):
         'created_at',
         'updated_at',
         'profile_photo_preview',
-        'user',  # Make user read-only to prevent accidental changes
+        'user',
     )
     
     fieldsets = (
@@ -192,7 +189,6 @@ class UserProfileAdmin(admin.ModelAdmin):
         }),
     )
     
-    # Add some useful admin actions
     actions = ['enable_newsletter', 'disable_newsletter']
     
     def enable_newsletter(self, request, queryset):
@@ -230,6 +226,4 @@ class UserProfileAdmin(admin.ModelAdmin):
         return super().get_queryset(request).select_related('user')
 
 
-# Register CustomUser with the enhanced admin
-# Note: We don't need to register CustomUser again if it's already registered in the class
-# admin.site.register(CustomUser, CustomUserAdmin)  # This line is redundant
+admin.site.register(CustomUser, CustomUserAdmin)

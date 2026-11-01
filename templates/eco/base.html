@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BookBazar - Modern Book Store</title>
-     {% csrf_token %}
+    <meta name="csrf-token" content="{{ csrf_token }}">
     <style>
         :root {
             --primary: #2563eb;
@@ -711,56 +711,56 @@
                 gap: 1rem;
                 padding: 1rem;
             }
-            
+
             .nav-links {
                 gap: 0.5rem;
                 flex-wrap: wrap;
                 justify-content: center;
             }
-            
+
             .nav-links a {
                 padding: 0.5rem 1rem;
                 font-size: 0.9rem;
             }
-            
+
             .hero {
                 padding: 5rem 1rem;
             }
-            
+
             .hero h1 {
                 font-size: 2.5rem;
             }
-            
+
             .hero p {
                 font-size: 1.1rem;
             }
-            
+
             .main-content {
                 padding: 1rem;
                 margin-top: 120px;
             }
-            
+
             .dark-mode-btn {
                 width: 40px;
                 height: 40px;
                 font-size: 1rem;
             }
-            
+
             .section-title {
                 font-size: 2.2rem;
             }
-            
+
             .categories-grid {
                 grid-template-columns: 1fr;
                 gap: 1.5rem;
                 padding: 1rem;
             }
-            
+
             .category-card {
                 margin: 0 auto;
                 max-width: 400px;
             }
-            
+
             .category-image-container {
                 height: 200px;
             }
@@ -788,7 +788,7 @@
                 gap: 1rem;
                 align-items: flex-start;
             }
-            
+
             .category-stats {
                 align-self: flex-end;
             }
@@ -806,7 +806,7 @@
     <div id="message-container" style="position: fixed; top: 100px; right: 20px; z-index: 10000; max-width: 400px;">
         {% if messages %}
             {% for message in messages %}
-                <div class="message-alert message-{{ message.tags }}" 
+                <div class="message-alert message-{{ message.tags }}"
                      style="background: {% if message.tags == 'success' %}#10b981{% elif message.tags == 'error' %}#ef4444{% elif message.tags == 'warning' %}#f59e0b{% elif message.tags == 'info' %}#3b82f6{% else %}#6b7280{% endif %};
                             color: white;
                             padding: 15px 20px;
@@ -839,7 +839,7 @@
                             </div>
                         </div>
                     </div>
-                    <button type="button" class="message-close-btn" 
+                    <button type="button" class="message-close-btn"
                             style="background: none; border: none; color: white; font-size: 1.5rem; margin-left: 15px; cursor: pointer; padding: 0; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">
                         ×
                     </button>
@@ -848,36 +848,7 @@
         {% endif %}
     </div>
 
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="logo">BookBazar</div>
-            <ul class="nav-links">
-                <li><a href="/">Home</a></li>
-                <li><a href="/products/">Browse Books</a></li>
-                <li><a href="/order-summary/">Cart</a></li>
-                
-                <!-- Smart Account link - shows profile if logged in, login if not -->
-                <li>
-                    {% if user.is_authenticated %}
-                        <a href="/users/profile/">Account ({{ user.email }})</a>
-                    {% else %}
-                        <a href="/users/login/">Account</a>
-                    {% endif %}
-                </li>
-                
-                <li><a href="/contact/">Contact</a></li>
-                
-                <!-- Dark Mode Toggle -->
-                <li>
-                    <button id="darkModeToggle" class="dark-mode-btn" title="Toggle dark mode">
-                        <span class="dark-mode-icon">🌙</span>
-                        <span class="light-mode-icon">☀️</span>
-                    </button>
-                </li>
-            </ul>
-        </div>
-    </nav>
+    {% include 'eco/navbar.html' %}
 
     <!-- Main Content -->
     <div class="main-content">
@@ -887,7 +858,7 @@
             <div class="hero-content">
                 <h1>Welcome to BookBazar</h1>
                 <p>Discover the future of reading with our curated collection of books</p>
-                <a href="/products/" class="btn btn-primary">Explore Now</a>
+                <a href="{% url 'eco:product-list' %}" class="btn btn-primary">Explore Now</a>
             </div>
         </section>
 
@@ -897,26 +868,26 @@
             <div class="categories-grid">
                 <!-- Dynamic Categories - Show first 3 categories -->
                 {% for category in categories|slice:":3" %}
-                <div class="category-card {% if forloop.first %}featured{% endif %}" 
+                <div class="category-card {% if forloop.first %}featured{% endif %}"
                      onclick="location.href='{% url 'eco:category-detail' category.slug %}'">
-                    
+
                     {% if forloop.first %}
                     <div class="featured-badge">Featured</div>
                     {% endif %}
-                    
+
                     <div class="category-image-container">
                         {% if category.image %}
                             <img src="{{ category.image.url }}" alt="{{ category.name }}" class="category-image">
                         {% else %}
                             <!-- Fallback placeholder image -->
-                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
                                  alt="{{ category.name }}" class="category-image">
                         {% endif %}
-                        
+
                         <div class="category-overlay">
                             <button class="explore-btn">Explore Now</button>
                         </div>
-                        
+
                         <div class="category-badge">
                             {% if category.icon %}
                                 {{ category.icon }}
@@ -925,7 +896,7 @@
                             {% endif %}
                         </div>
                     </div>
-                    
+
                     <div class="category-content">
                         <div>
                             <h3 class="category-title">{{ category.name }}</h3>
@@ -937,7 +908,7 @@
                                 {% endif %}
                             </p>
                         </div>
-                        
+
                         <div class="category-footer">
                             <span class="category-count">{{ category.total_books }}+ Books</span>
                             <div class="category-stats">
@@ -959,7 +930,7 @@
 
             <!-- View All Categories Button -->
             <div class="category-actions">
-                <a href="/categories/" class="btn btn-outline">View All Categories</a>
+                <a href="{% url 'eco:category-list' %}" class="btn btn-outline">View All Categories</a>
             </div>
         </section>
 
@@ -983,7 +954,7 @@
                                 Unknown Author
                             {% endif %}
                         </p>
-                        
+
                         <!-- Price Section -->
                         <div class="book-pricing">
                             {% if book.is_on_sale %}
@@ -998,7 +969,7 @@
                                 <span class="book-price">${{ book.price }}</span>
                             {% endif %}
                         </div>
-                        
+
                         <!-- Book Actions with both buttons -->
                         <div class="book-actions">
                             <a href="{{ book.get_absolute_url }}" class="btn btn-outline">
@@ -1029,19 +1000,19 @@
         document.addEventListener('DOMContentLoaded', function() {
             const darkModeToggle = document.getElementById('darkModeToggle');
             const currentTheme = localStorage.getItem('theme');
-            
+
             // Check for saved theme or prefer-color-scheme
-            if (currentTheme === 'dark' || 
+            if (currentTheme === 'dark' ||
                 (currentTheme === null && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                 document.documentElement.setAttribute('data-theme', 'dark');
             } else {
                 document.documentElement.setAttribute('data-theme', 'light');
             }
-            
+
             // Toggle dark mode
             darkModeToggle.addEventListener('click', function() {
                 const currentTheme = document.documentElement.getAttribute('data-theme');
-                
+
                 if (currentTheme === 'light') {
                     document.documentElement.setAttribute('data-theme', 'dark');
                     localStorage.setItem('theme', 'dark');
@@ -1050,7 +1021,7 @@
                     localStorage.setItem('theme', 'light');
                 }
             });
-            
+
             // Listen for system theme changes
             window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
                 if (!localStorage.getItem('theme')) {
@@ -1089,13 +1060,13 @@
 
             // Message dismissal functionality
             const messages = document.querySelectorAll('.message-alert');
-            
+
             messages.forEach(message => {
                 // Auto dismiss after 5 seconds
                 const autoDismiss = setTimeout(() => {
                     dismissMessage(message);
                 }, 5000);
-                
+
                 // Close button functionality
                 const closeBtn = message.querySelector('.message-close-btn');
                 if (closeBtn) {
@@ -1104,7 +1075,7 @@
                         dismissMessage(message);
                     });
                 }
-                
+
                 // Also dismiss on click anywhere on the message
                 message.addEventListener('click', function(e) {
                     if (e.target === message) {
@@ -1113,7 +1084,7 @@
                     }
                 });
             });
-            
+
             function dismissMessage(messageElement) {
                 messageElement.style.animation = 'fadeOut 0.3s ease forwards';
                 setTimeout(() => {
@@ -1122,15 +1093,15 @@
                     }
                 }, 300);
             }
-            
+
             // Enhanced category card animations
             const categoryCards = document.querySelectorAll('.category-card');
-            
+
             // Add staggered animation on page load
             categoryCards.forEach((card, index) => {
                 card.style.animation = `fadeInUp 0.6s ease ${index * 0.1}s both`;
             });
-            
+
             // Add click effect
             categoryCards.forEach(card => {
                 card.addEventListener('click', function() {
@@ -1140,8 +1111,7 @@
                     }, 150);
                 });
             });
-            
-            // Remove all messages when navigating away (optional)
+
             window.addEventListener('beforeunload', function() {
                 messages.forEach(message => {
                     message.remove();
@@ -1151,12 +1121,10 @@
 
         // Add to cart function for home page
         function addToCart(productSlug) {
-            console.log('Adding to cart:', productSlug);
-            
+
             // Get CSRF token
             const csrfToken = getCSRFToken();
-            console.log('CSRF Token:', csrfToken ? 'Found' : 'Not found');
-            
+
             fetch(`/cart/add/${productSlug}/`, {
                 method: 'POST',
                 headers: {
@@ -1164,17 +1132,16 @@
                     'X-CSRFToken': csrfToken,
                     'X-Requested-With': 'XMLHttpRequest'
                 },
-                body: JSON.stringify({}) // Empty body since we're not sending data
+                body: JSON.stringify({})
             })
             .then(response => {
-                console.log('Response status:', response.status);
+                if (response.status === 401) { response.json().then(d => { window.location.href = d.login_url; }); return new Promise(() => {}); }
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 return response.json();
             })
             .then(data => {
-                console.log('Response data:', data);
                 if (data.success) {
                     // Update cart count in navbar
                     const cartCountElements = document.querySelectorAll('.cart-count');
@@ -1186,7 +1153,7 @@
                             element.style.transform = 'scale(1)';
                         }, 300);
                     });
-                    
+
                     // Show success message
                     showSuccessMessage(data.message || 'Product added to cart!');
                 } else {
@@ -1199,26 +1166,25 @@
             });
         }
 
-        // Improved CSRF token function
         function getCSRFToken() {
             // Try to get CSRF token from meta tag
             const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
             if (csrfTokenMeta) {
                 return csrfTokenMeta.getAttribute('content');
             }
-            
+
             // Try to get from hidden input field
             const csrfTokenInput = document.querySelector('[name=csrfmiddlewaretoken]');
             if (csrfTokenInput) {
                 return csrfTokenInput.value;
             }
-            
+
             // Fallback: try to get from cookie
             const cookieValue = document.cookie
                 .split('; ')
                 .find(row => row.startsWith('csrftoken='))
                 ?.split('=')[1];
-            
+
             return cookieValue || '';
         }
 
@@ -1240,7 +1206,7 @@
             `;
             successDiv.textContent = message;
             document.body.appendChild(successDiv);
-            
+
             // Remove after 3 seconds
             setTimeout(() => {
                 successDiv.remove();
@@ -1265,7 +1231,7 @@
             `;
             errorDiv.textContent = message;
             document.body.appendChild(errorDiv);
-            
+
             // Remove after 3 seconds
             setTimeout(() => {
                 errorDiv.remove();
@@ -1287,19 +1253,6 @@
             }
         `;
         document.head.appendChild(style);
-
-        // CSRF token function
-        function getCSRFToken() {
-            // Try to get CSRF token from meta tag
-            const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
-            if (csrfTokenMeta) {
-                return csrfTokenMeta.getAttribute('content');
-            }
-            
-            // Fallback: try to get from form input
-            const csrfTokenInput = document.querySelector('[name=csrfmiddlewaretoken]');
-            return csrfTokenInput ? csrfTokenInput.value : '';
-        }
     </script>
 </body>
 </html>

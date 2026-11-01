@@ -5,11 +5,9 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('users/', include('users.urls')),  # MOVE THIS BEFORE empty path
-    path('accounts/', include('django.contrib.auth.urls')),
-    path('', include('eco.urls', namespace='eco')),  # ADD namespace='eco' HERE
+    path('users/', include('users.urls')),
+    path('', include('eco.urls', namespace='eco')),
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -4,14 +4,12 @@ from datetime import timedelta
 from django.db.models.signals import post_save
 from django.conf import settings
 from django.template.defaultfilters import slugify
-from django.template.defaultfilters import truncatechars
-from django.db.models import Sum
-from django.shortcuts import reverse
+from django.urls import reverse
+from django.templatetags.static import static
 from django_countries.fields import CountryField
 from mptt.models import MPTTModel, TreeForeignKey
-from django.utils.html import mark_safe
+from django.utils.html import format_html
 from django.core.validators import MinValueValidator
-from decimal import Decimal
 
 # ==================== BOOKSTORE-SPECIFIC CHOICES ====================
 
@@ -85,7 +83,7 @@ class Cart(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Cart ({self.user.username})"
+        return f"Cart ({self.user.email})"
 
     @property
     def total_items(self):
@@ -103,11 +101,9 @@ class Cart(models.Model):
     def final_total(self):
         return self.subtotal - self.total_discount
 
-  
-
     @property
     def grand_total(self):
-        return self.final_total 
+        return self.final_total
 
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='items')
@@ -171,9 +167,6 @@ class Author(models.Model):
     def __str__(self):
         return self.name
     
-    def get_absolute_url(self):
-        return reverse("eco:author-detail", kwargs={'slug': self.slug})
-    
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name)
@@ -182,7 +175,7 @@ class Author(models.Model):
     @property
     def image_preview(self):
         if self.image:
-            return mark_safe(f'<img src="{self.image.url}" width="50" height="50" style="object-fit: cover;" />')
+            return format_html('<img src="{}" width="50" height="50" style="object-fit: cover;" />', self.image.url)
         return "No image"
 
 class Publisher(models.Model):
@@ -218,7 +211,6 @@ class Book(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     discount_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
 
-   # NEW FIELD: Featured Book
     featured = models.BooleanField(default=False, help_text="Mark this book as featured on homepage")
     
     # Labels & Status
@@ -226,7 +218,7 @@ class Book(models.Model):
     label2 = models.CharField(choices=LABEL_CHOICES, max_length=1, blank=True)
     label3 = models.CharField(choices=LABEL_CHOICES, max_length=1, blank=True)
     
-    # Media & Content - UPDATED IMAGE FIELDS
+    # Media & Content
     cover_image = models.ImageField(upload_to='book_covers/', blank=True, null=True, help_text="Main book cover image")
     additional_images = models.ImageField(upload_to='book_images/', blank=True, null=True, help_text="Additional book images")
     description = models.TextField()
@@ -257,7 +249,7 @@ class Book(models.Model):
         return reverse("eco:add-to-cart", kwargs={'slug': self.slug})
     
     def get_remove_from_cart_url(self):
-        return reverse("eco:remove-from-cart", kwargs={'slug': self.slug})
+        return reverse("eco:remove-from-cart-legacy", kwargs={'slug': self.slug})
     
     def get_remove_from_single_cart_url(self):
         return reverse("eco:remove-single-item-from-cart", kwargs={'slug': self.slug})
@@ -286,15 +278,15 @@ class Book(models.Model):
     def image_preview(self):
         """HTML preview for admin"""
         if self.cover_image:
-            return mark_safe(f'<img src="{self.cover_image.url}" width="50" height="50" style="object-fit: cover;" />')
+            return format_html('<img src="{}" width="50" height="50" style="object-fit: cover;" />', self.cover_image.url)
         return "No image"
     
     @property
     def image_url(self):
         """Returns image URL for templates with fallback"""
-        if self.cover_image and hasattr(self.cover_image, 'url'):
+        if self.cover_image:
             return self.cover_image.url
-        return '/static/images/placeholder-book.jpg'
+        return static('eco/img/placeholder-book.svg')
     
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -348,7 +340,7 @@ class BookReview(models.Model):
         unique_together = ['book', 'user']
     
     def __str__(self):
-        return f"Review for {self.book.title} by {self.user.username}"
+        return f"Review for {self.book.title} by {self.user.email}"
     
     @property
     def stars(self):
@@ -360,7 +352,7 @@ class Wishlist(models.Model):
     added_date = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return f"{self.user.username}'s wishlist: {self.book.title}"
+        return f"{self.user.email}'s wishlist: {self.book.title}"
     
     class Meta:
         unique_together = ['user', 'book']
@@ -390,8 +382,6 @@ class OrderItem(models.Model):
     def get_final_price(self):
         return self.get_total_discount_item_price()
     
-    def get_final_price_list(self):
-        return self.get_final_price()
 
 class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -415,26 +405,22 @@ class Order(models.Model):
     refund_granted = models.BooleanField(default=False)
     
     def __str__(self):
-        return f"Order {self.ref_code} - {self.user.username}"
+        return f"Order {self.ref_code} - {self.user.email}"
     
     def get_total(self):
         total = sum(item.get_final_price() for item in self.items.all())
         if self.coupon:
             total -= float(self.coupon.amount)
-        return total
+        return max(total, 0)
     
-    def get_total_full(self):
-        return self.get_total()
-
 class Address(models.Model):
-
     first_name = models.CharField(max_length=100, blank=True)
     last_name = models.CharField(max_length=100, blank=True)
     email = models.EmailField(blank=True)
     phone_number = models.CharField(max_length=20, blank=True)
     alternate_email = models.EmailField(blank=True)
     is_business_address = models.BooleanField(default=False)
-    city = models.CharField(max_length=100, blank=True) 
+    city = models.CharField(max_length=100, blank=True)
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     street_address = models.CharField(max_length=100)
@@ -459,11 +445,15 @@ class Payment(models.Model):
     def __str__(self):
         return self.stripe_charge_id
 
+def default_coupon_expiry():
+    return timezone.now() + timedelta(days=30)
+
+
 class Coupon(models.Model):
     code = models.CharField(max_length=15, unique=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     valid_from = models.DateTimeField(default=timezone.now)
-    valid_to = models.DateTimeField(default=timezone.now() + timedelta(days=30))  # 30 days default
+    valid_to = models.DateTimeField(default=default_coupon_expiry)
     active = models.BooleanField(default=True)
     
     def __str__(self):

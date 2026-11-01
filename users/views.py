@@ -1,176 +1,115 @@
-# users/views.py
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
+from django.contrib.auth import login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.password_validation import validate_password
+from django.contrib import messages
+from django.core.exceptions import ValidationError
 from django.views import generic
 from django.urls import reverse_lazy
+from django.utils.http import url_has_allowed_host_and_scheme
 from .forms import CustomUserCreationForm, ProfileEditForm
 from .models import UserProfile
 
 
-# Class-based view for registration (keep your existing one)
 class RegisterView(generic.CreateView):
     template_name = 'users/register.html'
     form_class = CustomUserCreationForm
     success_url = reverse_lazy('eco:home')
-    
-    def form_valid(self, form):
-        response = super().form_valid(form)
-        user = form.save()
-        login(self.request, user)
-        messages.success(self.request, f'Welcome {user.email}! Your account has been created successfully.')
-        return response
-    
+
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect('eco:home')
         return super().dispatch(request, *args, **kwargs)
 
-# Function-based views for other authentication
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        login(self.request, self.object)
+        messages.success(self.request, f'Welcome {self.object.email}! Your account has been created successfully.')
+        return response
+
+
 def login_view(request):
-    """User login view using built-in AuthenticationForm"""
     if request.user.is_authenticated:
         return redirect('eco:home')
-    
+
+    next_url = request.POST.get('next') or request.GET.get('next')
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get('username')  # This will be email
-            password = form.cleaned_data.get('password')
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                messages.success(request, f'Welcome back, {user.email}!')
-                return redirect('eco:home')
-            else:
-                messages.error(request, 'Invalid email or password.')
-        else:
-            messages.error(request, 'Invalid email or password.')
+            user = form.get_user()
+            login(request, user)
+            messages.success(request, f'Welcome back, {user.email}!')
+            if next_url and url_has_allowed_host_and_scheme(next_url, allowed_hosts={request.get_host()}):
+                return redirect(next_url)
+            return redirect('eco:home')
+        messages.error(request, 'Invalid email or password.')
     else:
         form = AuthenticationForm()
-    
-    return render(request, 'users/login.html', {'form': form})
+
+    return render(request, 'users/login.html', {'form': form, 'next': next_url or ''})
+
 
 def logout_view(request):
-    """User logout view"""
     if request.user.is_authenticated:
         messages.info(request, 'You have been logged out.')
     logout(request)
     return redirect('eco:home')
 
+
 @login_required
 def profile_view(request):
-    """User profile view"""
-    # Get or create user profile
-    profile, created = UserProfile.objects.get_or_create(user=request.user)
-    
-    context = {
-        'user': request.user,
-        'categories': [],  # Add empty categories to avoid template errors
-        'featured_books': [],  # Add empty featured_books to avoid template errors
-    }
-    return render(request, 'users/profile.html', context)
+    UserProfile.objects.get_or_create(user=request.user)
+    return render(request, 'users/profile.html', {'user': request.user})
+
 
 @login_required
 def profile_edit_view(request):
-    """Edit user profile view with photo upload"""
-    # Get or create user profile
-    profile, created = UserProfile.objects.get_or_create(user=request.user)
-    
+    profile, _ = UserProfile.objects.get_or_create(user=request.user)
+
     if request.method == 'POST':
         form = ProfileEditForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
-            # Handle photo removal
-            if request.POST.get('remove_photo') == 'true':
-                if profile.profile_photo:
-                    profile.profile_photo.delete(save=False)
-                    profile.profile_photo = None
-            
+            if request.POST.get('remove_photo') == 'true' and profile.profile_photo:
+                profile.profile_photo.delete(save=False)
+                profile.profile_photo = None
             form.save()
             messages.success(request, 'Profile updated successfully!')
             return redirect('users:profile')
-        else:
-            messages.error(request, 'Please correct the errors below.')
+        messages.error(request, 'Please correct the errors below.')
     else:
         form = ProfileEditForm(instance=profile)
-    
-    context = {
-        'user': request.user,
-        'categories': [],
-        'featured_books': [],
-        'form': form,
-    }
-    return render(request, 'users/profile_edit.html', context)
+
+    return render(request, 'users/profile_edit.html', {'user': request.user, 'form': form})
+
 
 @login_required
 def change_password_view(request):
-    """Change password view with proper form handling"""
     if request.method == 'POST':
         current_password = request.POST.get('current_password')
         new_password = request.POST.get('new_password')
         confirm_password = request.POST.get('confirm_password')
-        
-        # Validate that all fields are provided
+
+        error = None
         if not all([current_password, new_password, confirm_password]):
-            messages.error(request, "All fields are required.")
-            return render(request, 'users/change_password.html', {
-                'user': request.user,
-                'categories': [],
-                'featured_books': [],
-            })
-        
-        # Check if new passwords match
-        if new_password != confirm_password:
-            messages.error(request, "New passwords don't match.")
-            return render(request, 'users/change_password.html', {
-                'user': request.user,
-                'categories': [],
-                'featured_books': [],
-            })
-        
-        # Check current password
-        if not request.user.check_password(current_password):
-            messages.error(request, "Current password is incorrect.")
-            return render(request, 'users/change_password.html', {
-                'user': request.user,
-                'categories': [],
-                'featured_books': [],
-            })
-        
-        # Validate password strength (optional but recommended)
-        if len(new_password) < 8:
-            messages.error(request, "Password must be at least 8 characters long.")
-            return render(request, 'users/change_password.html', {
-                'user': request.user,
-                'categories': [],
-                'featured_books': [],
-            })
-        
-        # Change the password
-        try:
+            error = "All fields are required."
+        elif new_password != confirm_password:
+            error = "New passwords don't match."
+        elif not request.user.check_password(current_password):
+            error = "Current password is incorrect."
+        else:
+            try:
+                validate_password(new_password, request.user)
+            except ValidationError as e:
+                error = " ".join(e.messages)
+
+        if error:
+            messages.error(request, error)
+        else:
             request.user.set_password(new_password)
             request.user.save()
-            
-            # Update session to prevent logout
             update_session_auth_hash(request, request.user)
-            
             messages.success(request, "Password changed successfully!")
             return redirect('users:profile')
-            
-        except Exception as e:
-            messages.error(request, "An error occurred while changing your password.")
-            return render(request, 'users/change_password.html', {
-                'user': request.user,
-                'categories': [],
-                'featured_books': [],
-            })
-    
-    # GET request - just render the template
-    context = {
-        'user': request.user,
-        'categories': [],
-        'featured_books': [],
-    }
-    return render(request, 'users/change_password.html', context)
+
+    return render(request, 'users/change_password.html', {'user': request.user})

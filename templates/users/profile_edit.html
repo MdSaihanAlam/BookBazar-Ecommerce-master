@@ -497,11 +497,11 @@
         .profile-grid {
             grid-template-columns: 1fr;
         }
-        
+
         .sidebar {
             order: 2;
         }
-        
+
         .content-area {
             order: 1;
         }
@@ -515,13 +515,13 @@
         .profile-container {
             padding: 1rem;
         }
-        
+
         .profile-header {
             flex-direction: column;
             text-align: center;
             gap: 1rem;
         }
-        
+
         .content-area {
             padding: 2rem 1.5rem;
         }
@@ -586,7 +586,7 @@
 <div class="profile-container">
     <!-- Profile Header -->
     <div class="profile-header">
-        <div class="avatar-large {% if user.profile.profile_photo %}has-photo{% endif %}" 
+        <div class="avatar-large {% if user.profile.profile_photo %}has-photo{% endif %}"
              id="avatarUpload"
              style="{% if user.profile.profile_photo %}background-image: url('{{ user.profile.profile_photo.url }}');{% endif %}">
             <div class="avatar-edit-overlay">📷</div>
@@ -705,7 +705,7 @@
 
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                
+
                 <!-- Profile Picture Section -->
                 <div class="form-section">
                     <h3 class="section-title">Profile Picture</h3>
@@ -761,7 +761,7 @@
                             <label for="id_first_name" class="form-label">
                                 First Name
                             </label>
-                            <input type="text" name="first_name" id="id_first_name" class="form-input" 
+                            <input type="text" name="first_name" id="id_first_name" class="form-input"
                                    value="{{ form.first_name.value|default:'' }}" placeholder="Enter your first name">
                             {% if form.first_name.errors %}
                                 <div class="form-text" style="color: #dc2626;">
@@ -774,7 +774,7 @@
                             <label for="id_last_name" class="form-label">
                                 Last Name
                             </label>
-                            <input type="text" name="last_name" id="id_last_name" class="form-input" 
+                            <input type="text" name="last_name" id="id_last_name" class="form-input"
                                    value="{{ form.last_name.value|default:'' }}" placeholder="Enter your last name">
                             {% if form.last_name.errors %}
                                 <div class="form-text" style="color: #dc2626;">
@@ -793,7 +793,7 @@
 
                         <div class="form-group">
                             <label for="id_phone" class="form-label">Phone Number</label>
-                            <input type="tel" name="phone" id="id_phone" class="form-input" 
+                            <input type="tel" name="phone" id="id_phone" class="form-input"
                                    value="{{ form.phone.value|default:'' }}" placeholder="+1 (555) 000-0000">
                             {% if form.phone.errors %}
                                 <div class="form-text" style="color: #dc2626;">
@@ -804,7 +804,7 @@
 
                         <div class="form-group">
                             <label for="id_birthdate" class="form-label">Date of Birth</label>
-                            <input type="date" name="birthdate" id="id_birthdate" class="form-input" 
+                            <input type="date" name="birthdate" id="id_birthdate" class="form-input"
                                    value="{{ form.birthdate.value|date:'Y-m-d'|default:'' }}">
                             {% if form.birthdate.errors %}
                                 <div class="form-text" style="color: #dc2626;">
@@ -822,17 +822,17 @@
                         <div class="form-group full-width">
                             <label class="form-label">Email Notifications</label>
                             <div class="checkbox-group">
-                                <input type="checkbox" name="newsletter" id="id_newsletter" class="checkbox" 
+                                <input type="checkbox" name="newsletter" id="id_newsletter" class="checkbox"
                                        {% if form.newsletter.value %}checked{% endif %}>
                                 <label for="id_newsletter" class="checkbox-label">Book recommendations and newsletters</label>
                             </div>
                             <div class="checkbox-group">
-                                <input type="checkbox" name="order_updates" id="id_order_updates" class="checkbox" 
+                                <input type="checkbox" name="order_updates" id="id_order_updates" class="checkbox"
                                        {% if form.order_updates.value %}checked{% endif %}>
                                 <label for="id_order_updates" class="checkbox-label">Order updates and shipping notifications</label>
                             </div>
                             <div class="checkbox-group">
-                                <input type="checkbox" name="promotions" id="id_promotions" class="checkbox" 
+                                <input type="checkbox" name="promotions" id="id_promotions" class="checkbox"
                                        {% if form.promotions.value %}checked{% endif %}>
                                 <label for="id_promotions" class="checkbox-label">Special offers and promotions</label>
                             </div>
@@ -885,7 +885,7 @@
         const avatarInput = document.getElementById('id_profile_photo');
         const fileName = document.getElementById('fileName');
         const removePhotoBtn = document.getElementById('removePhotoBtn');
-        
+
         avatarUpload.addEventListener('click', function() {
             avatarInput.click();
         });
@@ -894,7 +894,7 @@
             if (e.target.files && e.target.files[0]) {
                 const file = e.target.files[0];
                 fileName.textContent = `Selected: ${file.name}`;
-                
+
                 // Preview the image
                 const reader = new FileReader();
                 reader.onload = function(e) {
@@ -915,7 +915,7 @@
                     hiddenInput.name = 'remove_photo';
                     hiddenInput.value = 'true';
                     document.querySelector('form').appendChild(hiddenInput);
-                    
+
                     // Remove preview
                     avatarUpload.style.backgroundImage = '';
                     avatarUpload.classList.remove('has-photo');
@@ -932,13 +932,13 @@
         const userEmail = '{{ user.email }}';
         const username = getUsernameFromEmail(userEmail);
         const displayNameElement = document.getElementById('displayName');
-        
+
         if (displayNameElement && username) {
             const formattedUsername = username
                 .replace(/[^a-zA-Z0-9]/g, ' ')
                 .replace(/\b\w/g, l => l.toUpperCase())
                 .trim();
-            
+
             if (formattedUsername && !displayNameElement.textContent.includes('Edit')) {
                 displayNameElement.textContent = `Edit ${formattedUsername}'s Profile`;
             }

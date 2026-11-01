@@ -160,7 +160,7 @@
         color: var(--text-color);
     }
 
-    /* Product Details - FIXED FOR DARK MODE */
+    /* Product Details */
     .product-details {
         background: var(--card-bg);
         border: 1px solid var(--border);
@@ -192,7 +192,7 @@
         color: var(--text-color);
     }
 
-    /* Add to Cart Section - FIXED FOR DARK MODE */
+    /* Add to Cart Section */
     .purchase-box {
         background: var(--card-bg);
         border: 1px solid var(--border);
@@ -434,7 +434,7 @@
         font-weight: 600;
     }
 
-    /* Modal - FIXED FOR DARK MODE */
+    /* Modal */
     .modal {
         display: none;
         position: fixed;
@@ -582,9 +582,9 @@
 <div class="book-detail-container">
     <!-- Breadcrumb -->
     <nav class="breadcrumb">
-        <a href="/">Home</a> > 
-        <a href="/products/">Books</a> > 
-        <a href="/categories/{{ item.category.slug }}/">{{ item.category.name }}</a> > 
+        <a href="{% url 'eco:home' %}">Home</a> >
+        <a href="{% url 'eco:product-list' %}">Books</a> >
+        {% if item.category %}<a href="{{ item.category.get_absolute_url }}">{{ item.category.name }}</a> >{% endif %}
         <span>{{ item.title|truncatewords:4 }}</span>
     </nav>
 
@@ -592,7 +592,7 @@
         <!-- Book Cover -->
         <div class="book-cover-container">
             <img src="{{ item.cover_image.url }}" alt="{{ item.title }}" class="book-cover">
-            
+
             <!-- Mobile Actions (hidden on desktop) -->
             <div class="book-actions-mobile">
                 <div class="purchase-box">
@@ -600,7 +600,7 @@
                         <div class="price">${{ item.price }}</div>
                     </div>
                     <div class="action-buttons">
-                        <button class="btn-add-to-cart" id="addToCartBtnMobile" 
+                        <button class="btn-add-to-cart" id="addToCartBtnMobile"
                                 {% if not item.is_available or item.stock_quantity == 0 %}disabled{% endif %}>
                             Add to Cart
                         </button>
@@ -695,7 +695,7 @@
                 </div>
 
                 <div class="action-buttons">
-                    <button class="btn-add-to-cart" id="addToCartBtn" 
+                    <button class="btn-add-to-cart" id="addToCartBtn"
                             {% if not item.is_available or item.stock_quantity == 0 %}disabled{% endif %}>
                         Add to Cart
                     </button>
@@ -749,7 +749,7 @@
         <p>"{{ item.title }}" was added to your shopping cart.</p>
         <div class="modal-actions">
             <button class="btn-continue-shopping">Continue Shopping</button>
-            <a href="/cart/" class="btn-view-cart">View Cart</a>
+            <a href="{% url 'eco:cart' %}" class="btn-view-cart">View Cart</a>
         </div>
     </div>
 </div>
@@ -782,7 +782,6 @@
         const continueShoppingBtn = document.querySelector('.btn-continue-shopping');
         const loadingOverlay = document.getElementById('loadingOverlay');
 
-        console.log('Book Detail Page Loaded - All functionality ready');
 
         // Quantity controls
         function adjustQuantity(change) {
@@ -800,7 +799,7 @@
         // Stock validation function
         function checkStockStatus() {
             const isInStock = {% if item.is_available and item.stock_quantity > 0 %}true{% else %}false{% endif %};
-            
+
             if (!isInStock) {
                 alert('Sorry, this item is currently out of stock.');
                 return false;
@@ -810,21 +809,19 @@
 
         // Add to Cart functionality
         async function addToCart() {
-            console.log('Add to Cart button clicked');
-            
+
             // Check stock status
             if (!checkStockStatus()) {
                 return;
             }
-            
+
             const quantity = parseInt(quantityInput.value);
-            console.log('Quantity selected:', quantity);
-            
+
             // Check if user is logged in
             {% if not user.is_authenticated %}
                 showToast('Please log in to add items to cart', 'error');
                 setTimeout(() => {
-                    window.location.href = '/login/';
+                    window.location.href = '{% url 'users:login' %}?next={{ request.path|urlencode }}';
                 }, 2000);
                 return;
             {% endif %}
@@ -834,8 +831,7 @@
 
             try {
                 const url = `/cart/add/{{ item.slug }}/`;
-                console.log('Making AJAX request to:', url);
-                
+
                 const response = await fetch(url, {
                     method: 'POST',
                     headers: {
@@ -848,16 +844,13 @@
                     })
                 });
 
-                console.log('Response status:', response.status);
 
                 const data = await response.json();
-                console.log('Response data:', data);
 
                 if (data.success) {
-                    console.log('Success! Book added to cart');
                     successModal.style.display = 'block';
                     updateCartCount(data.total_items);
-                    
+
                     // Show success toast
                     showToast('Book added to cart!', 'success');
                 } else {
@@ -874,13 +867,12 @@
 
         // Add to Wishlist functionality
         async function addToWishlist(bookSlug, button) {
-            console.log('Add to Wishlist button clicked for:', bookSlug);
-            
+
             // Check if user is logged in
             {% if not user.is_authenticated %}
                 showToast('Please log in to add items to your wishlist', 'error');
                 setTimeout(() => {
-                    window.location.href = '/login/';
+                    window.location.href = '{% url 'users:login' %}?next={{ request.path|urlencode }}';
                 }, 2000);
                 return;
             {% endif %}
@@ -892,8 +884,7 @@
 
             try {
                 const url = `/add-to-wish/${bookSlug}/`;
-                console.log('Making wishlist request to:', url);
-                
+
                 const response = await fetch(url, {
                     method: 'GET',
                     headers: {
@@ -902,26 +893,25 @@
                     }
                 });
 
-                console.log('Wishlist response status:', response.status);
 
                 if (response.ok) {
                     // Show success message
                     showToast('Book added to your wishlist!', 'success');
-                    
+
                     // Update wishlist count
                     updateWishlistCount();
-                    
+
                     // Update button state
                     button.innerHTML = '<i class="fas fa-heart"></i> In Wishlist';
                     button.classList.add('added');
-                    
+
                 } else {
                     throw new Error('Failed to add to wishlist');
                 }
             } catch (error) {
                 console.error('Wishlist fetch error:', error);
                 showToast('Failed to add to wishlist. Please try again.', 'error');
-                
+
                 // Reset button
                 button.innerHTML = originalText;
                 button.disabled = false;
@@ -935,7 +925,7 @@
                 console.error('Toast container not found');
                 return;
             }
-            
+
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
             toast.innerHTML = `
@@ -944,12 +934,12 @@
                     <span>${message}</span>
                 </div>
             `;
-            
+
             toastContainer.appendChild(toast);
-            
+
             // Show toast with animation
             setTimeout(() => toast.classList.add('show'), 100);
-            
+
             // Remove toast after duration
             setTimeout(() => {
                 toast.classList.remove('show');
@@ -986,7 +976,6 @@
 
         // Update cart count
         function updateCartCount(count) {
-            console.log('Updating cart count to:', count);
             const cartCountElements = document.querySelectorAll('.cart-count');
             cartCountElements.forEach(element => {
                 element.textContent = count;
@@ -1017,7 +1006,7 @@
         if (addToCartBtn) {
             addToCartBtn.addEventListener('click', addToCart);
         }
-        
+
         if (addToCartBtnMobile) {
             addToCartBtnMobile.addEventListener('click', addToCart);
         }
@@ -1056,9 +1045,6 @@
         });
 
         // Debug info
-        console.log('Current book:', '{{ item.title }}');
-        console.log('Book slug:', '{{ item.slug }}');
-        console.log('User authenticated:', {% if user.is_authenticated %}true{% else %}false{% endif %});
     });
 </script>
 {% endblock %}

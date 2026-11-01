@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+env/
+myenv/
+venv/
+.venv/
+
+# Local settings / secrets
+.env
+
+# Django
+staticfiles/
