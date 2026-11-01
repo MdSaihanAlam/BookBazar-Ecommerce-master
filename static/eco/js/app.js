@@ -96,8 +96,12 @@
       const data = await api(button.dataset.addToCart, { body: { quantity } });
       if (data.success) {
         setCartCount(data.total_items);
-        const cartUrl = document.body.dataset.cartUrl;
-        toast(`${escapeHtml(data.message)} <a href="${cartUrl}">${escapeHtml(text.viewCart)}</a>`, 'success', { html: true });
+        if (cartDrawer) {
+          openCartDrawer();
+        } else {
+          const cartUrl = document.body.dataset.cartUrl;
+          toast(`${escapeHtml(data.message)} <a href="${cartUrl}">${escapeHtml(text.viewCart)}</a>`, 'success', { html: true });
+        }
       } else {
         toast(data.message || text.cartError, 'warning');
       }
@@ -165,8 +169,248 @@
     return div.innerHTML;
   }
 
+  /* ---------- Modal dialogs ---------- */
+  function openDialog(dialog) {
+    if (dialog.open) return;
+    dialog.showModal();
+    document.body.classList.add('has-dialog');
+  }
+
+  function closeDialog(dialog) {
+    if (!dialog.open) return;
+    dialog.classList.add('is-closing');
+    setTimeout(() => {
+      dialog.classList.remove('is-closing');
+      dialog.close();
+    }, 180);
+  }
+
+  document.querySelectorAll('dialog').forEach((dialog) => {
+    dialog.addEventListener('close', () => document.body.classList.remove('has-dialog'));
+    dialog.addEventListener('cancel', (event) => {
+      event.preventDefault();
+      closeDialog(dialog);
+    });
+    // A click on the backdrop lands on the dialog element itself
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) closeDialog(dialog);
+    });
+  });
+
+  /* ---------- Search palette ---------- */
+  const palette = document.getElementById('searchPalette');
+  const paletteInput = palette && palette.querySelector('input');
+  const paletteResults = palette && palette.querySelector('.palette-results');
+  let paletteRequest = 0;
+  let paletteTimer = null;
+
+  function openPalette() {
+    if (!palette) return;
+    openDialog(palette);
+    paletteInput.select();
+    if (!paletteResults.childElementCount) loadSuggestions('');
+  }
+
+  async function loadSuggestions(query) {
+    const request = ++paletteRequest;
+    const url = `${palette.dataset.suggestUrl}?q=${encodeURIComponent(query)}`;
+    try {
+      const data = await api(url, { method: 'GET' });
+      if (request === paletteRequest) renderSuggestions(data, query);
+    } catch (error) {
+      if (request === paletteRequest) paletteResults.innerHTML = `<p class="palette-empty">${escapeHtml(error.message)}</p>`;
+    }
+  }
+
+  function renderSuggestions(data, query) {
+    const shopUrl = (window.BookBazarUrls || {}).shop || '/products/';
+    let html = '';
+    if (data.books.length) {
+      html += `<p class="palette-label">${escapeHtml(query ? text.books : text.popular)}</p>`;
+      html += data.books.map((book) => `
+        <a class="palette-item" role="option" href="${book.url}">
+          <img src="${book.cover}" alt="" loading="lazy">
+          <span class="palette-text"><strong>${escapeHtml(book.title)}</strong><small>${escapeHtml(book.author)}</small></span>
+          <span class="palette-meta">${escapeHtml(formatMoney(book.price))}</span>
+        </a>`).join('');
+    }
+    if (data.categories.length) {
+      html += `<p class="palette-label">${escapeHtml(text.categories)}</p>`;
+      html += data.categories.map((category) => `
+        <a class="palette-item" role="option" href="${category.url}">
+          <span class="palette-icon"><i class="fa-solid fa-layer-group"></i></span>
+          <span class="palette-text"><strong>${escapeHtml(category.name)}</strong><small>${escapeHtml(text.bookCount.replace('{count}', category.count))}</small></span>
+          <i class="fa-solid fa-arrow-right palette-meta"></i>
+        </a>`).join('');
+    }
+    if (query) {
+      if (!data.books.length && !data.categories.length) {
+        html += `<p class="palette-empty">${escapeHtml(text.noResults.replace('{query}', query))}</p>`;
+      }
+      html += `
+        <a class="palette-item" role="option" href="${shopUrl}?q=${encodeURIComponent(query)}">
+          <span class="palette-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+          <span class="palette-text"><strong>${escapeHtml(text.seeAll.replace('{query}', query))}</strong></span>
+          <i class="fa-solid fa-arrow-right palette-meta"></i>
+        </a>`;
+    }
+    paletteResults.innerHTML = html;
+    setPaletteActive(0);
+  }
+
+  function paletteItems() {
+    return Array.from(paletteResults.querySelectorAll('.palette-item'));
+  }
+
+  function setPaletteActive(index) {
+    const items = paletteItems();
+    items.forEach((item, i) => item.setAttribute('aria-selected', i === index ? 'true' : 'false'));
+    if (items[index]) items[index].scrollIntoView({ block: 'nearest' });
+  }
+
+  if (palette) {
+    paletteInput.addEventListener('input', () => {
+      clearTimeout(paletteTimer);
+      paletteTimer = setTimeout(() => loadSuggestions(paletteInput.value.trim()), 140);
+    });
+    paletteInput.addEventListener('keydown', (event) => {
+      const items = paletteItems();
+      const current = items.findIndex((item) => item.getAttribute('aria-selected') === 'true');
+      if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+        event.preventDefault();
+        const step = event.key === 'ArrowDown' ? 1 : -1;
+        setPaletteActive((current + step + items.length) % items.length);
+      } else if (event.key === 'Enter' && items[current]) {
+        event.preventDefault();
+        items[current].click();
+      }
+    });
+    paletteResults.addEventListener('mousemove', (event) => {
+      const item = event.target.closest('.palette-item');
+      if (item) setPaletteActive(paletteItems().indexOf(item));
+    });
+  }
+
+  // Show the platform's own shortcut on the search button
+  if (/Mac|iPhone|iPad/.test(navigator.platform)) {
+    document.querySelectorAll('[data-shortcut]').forEach((kbd) => { kbd.textContent = '⌘ K'; });
+  }
+
+  /* ---------- Cart drawer ---------- */
+  const cartDrawer = document.getElementById('cartDrawer');
+
+  async function openCartDrawer() {
+    openDialog(cartDrawer);
+    try {
+      renderCartDrawer(await api(cartDrawer.dataset.miniCartUrl, { method: 'GET' }));
+    } catch (error) {
+      toast(error.message, 'error');
+    }
+  }
+
+  function renderCartDrawer(data) {
+    const body = cartDrawer.querySelector('[data-drawer-items]');
+    const shopUrl = (window.BookBazarUrls || {}).shop || '/products/';
+    cartDrawer.querySelector('[data-drawer-count]').textContent = data.total_items || '';
+    cartDrawer.querySelector('[data-drawer-foot]').classList.toggle('hidden', !data.items.length);
+    cartDrawer.querySelector('[data-drawer-subtotal]').textContent = formatMoney(data.final_total);
+    setCartCount(data.total_items);
+
+    if (!data.items.length) {
+      body.innerHTML = `<div class="empty"><span class="icon"><i class="fa-solid fa-bag-shopping"></i></span>
+        <h3>${escapeHtml(text.cartEmpty)}</h3><p>${escapeHtml(text.cartEmptyHint)}</p>
+        <a href="${shopUrl}" class="btn btn-primary">${escapeHtml(text.startShopping)}</a></div>`;
+      return;
+    }
+    body.innerHTML = data.items.map((item) => `
+      <div class="drawer-item">
+        <a href="${item.url}" class="book-cover"><img src="${item.cover}" alt=""></a>
+        <div>
+          <a href="${item.url}" class="drawer-item-title">${escapeHtml(item.title)}</a>
+          <span class="muted text-sm">${escapeHtml(item.author)}</span>
+          <div class="drawer-item-row">
+            <span class="text-sm">${escapeHtml(text.qty.replace('{count}', item.quantity))}</span>
+            <button type="button" class="link-muted text-sm" data-drawer-remove="${item.id}">${escapeHtml(text.remove)}</button>
+          </div>
+        </div>
+        <strong>${escapeHtml(formatMoney(item.total))}</strong>
+      </div>`).join('');
+  }
+
+  async function removeFromDrawer(button) {
+    const row = button.closest('.drawer-item');
+    row.classList.add('is-removing');
+    try {
+      const url = cartDrawer.dataset.updateUrl.replace('0', button.dataset.drawerRemove);
+      const data = await api(url, { body: { action: 'remove' } });
+      if (data.success) renderCartDrawer(await api(cartDrawer.dataset.miniCartUrl, { method: 'GET' }));
+    } catch (error) {
+      row.classList.remove('is-removing');
+      toast(error.message, 'error');
+    }
+  }
+
+  /* ---------- Cover morph between pages ---------- */
+  // Name only the clicked cover, so the browser's cross-page view transition can morph it into the book page
+  document.addEventListener('click', (event) => {
+    const link = event.target.closest('a[href]');
+    const card = link && link.closest('.book-card, .palette-item, .hero-books');
+    if (!card || event.metaKey || event.ctrlKey || event.shiftKey) return;
+    const img = link.querySelector('img') || card.querySelector('.book-cover img');
+    if (!img) return;
+    // Two elements with the same name would cancel the transition, so release the book page's own cover first
+    document.querySelectorAll('.product-media img').forEach((cover) => { cover.style.viewTransitionName = 'none'; });
+    img.style.viewTransitionName = 'book-cover';
+  }, true);
+  window.addEventListener('pageshow', () => {
+    document.querySelectorAll('img[style*="view-transition-name"]').forEach((img) => { img.style.viewTransitionName = ''; });
+  });
+
+  /* ---------- Sticky buy bar ---------- */
+  const buyBar = document.querySelector('.buy-bar');
+  const buyBox = document.querySelector('.buy-box');
+  if (buyBar && buyBox && 'IntersectionObserver' in window) {
+    new IntersectionObserver(([entry]) => {
+      buyBar.classList.toggle('is-visible', !entry.isIntersecting && entry.boundingClientRect.top < 0);
+    }).observe(buyBox);
+  }
+
   /* ---------- Event delegation ---------- */
   document.addEventListener('click', (event) => {
+    if (event.target.closest('[data-search-open]')) {
+      event.preventDefault();
+      openPalette();
+      return;
+    }
+
+    const cartLink = event.target.closest('[data-cart-open]');
+    if (cartLink && cartDrawer && !event.metaKey && !event.ctrlKey) {
+      event.preventDefault();
+      openCartDrawer();
+      return;
+    }
+
+    if (event.target.closest('[data-drawer-close]')) {
+      closeDialog(cartDrawer);
+      return;
+    }
+
+    const copyButton = event.target.closest('[data-copy]');
+    if (copyButton) {
+      navigator.clipboard.writeText(copyButton.dataset.copy).then(() => {
+        copyButton.classList.add('is-copied');
+        toast(copyButton.dataset.copied, 'success', { timeout: 2000 });
+        setTimeout(() => copyButton.classList.remove('is-copied'), 1500);
+      }).catch(() => {});
+      return;
+    }
+
+    const drawerRemove = event.target.closest('[data-drawer-remove]');
+    if (drawerRemove) {
+      removeFromDrawer(drawerRemove);
+      return;
+    }
+
     const addButton = event.target.closest('[data-add-to-cart]');
     if (addButton) {
       event.preventDefault();
@@ -213,6 +457,12 @@
   });
 
   document.addEventListener('keydown', (event) => {
+    const typing = /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName) || document.activeElement.isContentEditable;
+    if ((event.key === 'k' && (event.metaKey || event.ctrlKey)) || (event.key === '/' && !typing)) {
+      event.preventDefault();
+      openPalette();
+      return;
+    }
     if (event.key === 'Escape') {
       document.querySelectorAll('details.menu[open]').forEach((menu) => menu.removeAttribute('open'));
     }

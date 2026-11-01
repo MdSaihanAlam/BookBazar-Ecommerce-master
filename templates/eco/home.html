@@ -3,6 +3,7 @@
 
 {% block content %}
 <section class="hero">
+  <div class="hero-bg" aria-hidden="true"><span></span><span></span><span></span></div>
   <div class="container hero-grid">
     <div>
       <span class="eyebrow"><span class="dot"></span> {% translate "New season, new stories" %}</span>
@@ -35,11 +36,73 @@
 </section>
 
 <section class="section" style="padding-top: 0;">
-  <div class="container perks">
-    <div class="perk reveal"><span class="icon"><i class="fa-solid fa-truck-fast"></i></span><div><strong>{% translate "Free shipping" %}</strong><span>{% translate "Delivered to your door" %}</span></div></div>
-    <div class="perk reveal"><span class="icon"><i class="fa-solid fa-shield-halved"></i></span><div><strong>{% translate "Secure checkout" %}</strong><span>{% translate "Payments by Stripe" %}</span></div></div>
-    <div class="perk reveal"><span class="icon"><i class="fa-solid fa-tags"></i></span><div><strong>{% translate "Weekly deals" %}</strong><span>{% translate "Save on top titles" %}</span></div></div>
-    <div class="perk reveal"><span class="icon"><i class="fa-regular fa-heart"></i></span><div><strong>{% translate "Wishlist" %}</strong><span>{% translate "Save books for later" %}</span></div></div>
+  <div class="container bento">
+    {% with deal=deals.0|default:featured_books.0 %}
+    {% if deal %}
+    <article class="tile tile-deal reveal">
+      <div class="tile-deal-text">
+        <span class="eyebrow"><i class="fa-solid fa-bolt"></i> {% if deal.is_on_sale %}{% translate "Deal of the week" %}{% else %}{% translate "Editor's pick" %}{% endif %}</span>
+        <h3><a href="{{ deal.get_absolute_url }}">{{ deal.title }}</a></h3>
+        <p class="muted">{{ deal.author.name|default:_("Unknown author") }}</p>
+        <div class="price price-lg">
+          <span class="now">{% money deal.final_price %}</span>
+          {% if deal.is_on_sale %}<span class="was">{% money deal.price %}</span>{% endif %}
+        </div>
+        <div class="row" style="margin-top: 20px;">
+          <button type="button" class="btn btn-primary" data-add-to-cart="{% url 'eco:add-to-cart' deal.slug %}"><i class="fa-solid fa-bag-shopping"></i> {% translate "Add to cart" %}</button>
+          <a href="{{ deal.get_absolute_url }}" class="link-arrow">{% translate "Details" %} <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+      </div>
+      <a href="{{ deal.get_absolute_url }}" class="tile-deal-cover book-card" tabindex="-1" aria-hidden="true">
+        <span class="book-cover"><img src="{{ deal.image_url }}" alt="" loading="lazy"></span>
+        {% if deal.is_on_sale %}<span class="tile-sticker">−{{ deal.discount_percentage }}%</span>{% endif %}
+      </a>
+    </article>
+    {% endif %}
+    {% endwith %}
+
+    {% if promo %}
+    <article class="tile tile-promo reveal">
+      <div>
+        <span class="eyebrow">{% translate "Reader offer" %}</span>
+        {% money promo.amount as amount %}<h3>{% blocktranslate %}{{ amount }} off your order{% endblocktranslate %}</h3>
+        <p>{% blocktranslate with date=promo.valid_to|date:"F j, Y" %}Enter the code on the cart page. Valid until {{ date }}.{% endblocktranslate %}</p>
+      </div>
+      <button type="button" class="code-chip" data-copy="{{ promo.code }}" data-copied="{% translate 'Code copied' %}">
+        <strong>{{ promo.code }}</strong><i class="fa-regular fa-copy"></i>
+        <span class="sr-only">{% translate "Copy code" %}</span>
+      </button>
+    </article>
+    {% endif %}
+
+    <article class="tile tile-icon reveal">
+      <span class="icon"><i class="fa-solid fa-truck-fast"></i></span>
+      <div><strong>{% translate "Free shipping" %}</strong><span>{% translate "On every order, no minimum" %}</span></div>
+    </article>
+
+    <article class="tile tile-icon reveal">
+      <span class="icon"><i class="fa-solid fa-shield-halved"></i></span>
+      <div><strong>{% translate "Secure checkout" %}</strong><span>{% translate "Payments by Stripe" %}</span></div>
+    </article>
+
+    <button type="button" class="tile tile-search reveal" data-search-open>
+      <span class="icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+      <div><strong>{% translate "Find any book in seconds" %}</strong><span>{% blocktranslate %}Press <kbd>/</kbd> anywhere to search{% endblocktranslate %}</span></div>
+    </button>
+
+    <article class="tile tile-icon reveal">
+      <span class="icon"><i class="fa-regular fa-heart"></i></span>
+      <div><strong>{% translate "Wishlist" %}</strong><span>{% translate "Save books for later" %}</span></div>
+    </article>
+
+    {% if categories %}
+    <article class="tile tile-chips reveal">
+      <strong>{% translate "Jump into a genre" %}</strong>
+      <div class="chips">
+        {% for category in categories %}<a href="{{ category.get_absolute_url }}" class="chip">{{ category.name }} <small>{{ category.total_books }}</small></a>{% endfor %}
+      </div>
+    </article>
+    {% endif %}
   </div>
 </section>
 
@@ -81,25 +144,6 @@
           <span>{% blocktranslate count counter=category.total_books %}{{ counter }} book{% plural %}{{ counter }} books{% endblocktranslate %}</span>
         </a>
       {% endfor %}
-    </div>
-  </div>
-</section>
-{% endif %}
-
-{% if promo %}
-<section class="section">
-  <div class="container">
-    <div class="promo-banner reveal">
-      <div>
-        <span class="eyebrow">{% translate "Reader offer" %}</span>
-        {% money promo.amount as amount %}<h2>{% blocktranslate %}{{ amount }} off your order{% endblocktranslate %}</h2>
-        <p>{% blocktranslate with date=promo.valid_to|date:"F j, Y" %}Add a few books to your cart and enter the code on the cart page. Valid until {{ date }}.{% endblocktranslate %}</p>
-        <a href="{% url 'eco:product-list' %}" class="btn btn-primary" style="margin-top: 22px;">{% translate "Start shopping" %} <i class="fa-solid fa-arrow-right"></i></a>
-      </div>
-      <div class="code">
-        <span class="text-sm" style="opacity:.7">{% translate "Use code" %}</span>
-        <strong>{{ promo.code }}</strong>
-      </div>
     </div>
   </div>
 </section>

@@ -105,6 +105,21 @@
       </div>
     </div>
 
+    {% if item.is_available and item.stock_quantity > 0 %}
+      <div class="buy-bar" aria-hidden="true">
+        <div class="container buy-bar-inner">
+          <img src="{{ item.image_url }}" alt="">
+          <div class="buy-bar-text">
+            <strong>{{ item.title }}</strong>
+            <span class="price"><span class="now">{% money item.final_price %}</span>{% if item.is_on_sale %}<span class="was">{% money item.price %}</span>{% endif %}</span>
+          </div>
+          <button type="button" class="btn btn-primary" tabindex="-1" data-add-to-cart="{% url 'eco:add-to-cart' item.slug %}" data-qty-input="#quantity">
+            <i class="fa-solid fa-bag-shopping"></i> <span>{% translate "Add to cart" %}</span>
+          </button>
+        </div>
+      </div>
+    {% endif %}
+
     {% if related_items %}
       <section class="section" style="padding-bottom: 0;">
         <div class="section-head">

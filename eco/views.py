@@ -139,6 +139,34 @@ class SearchView(View):
         return redirect(url)
 
 
+def search_suggest(request):
+    """Live results for the search palette; with no query it returns featured books to start from."""
+    query = request.GET.get('q', '').strip()[:80]
+    books = Book.objects.filter(is_available=True).select_related('author')
+    categories = category_list()
+    if query:
+        books = search_books(books, query)
+        categories = categories.filter(name__icontains=query)
+    else:
+        books = books.order_by('-featured', '-created_at')
+        categories = categories.order_by('-total_books')
+
+    return JsonResponse({
+        'books': [{
+            'title': book.title,
+            'author': book.author.name if book.author else '',
+            'url': book.get_absolute_url(),
+            'cover': book.image_url,
+            'price': float(book.final_price),
+        } for book in books[:6]],
+        'categories': [{
+            'name': category.name,
+            'url': category.get_absolute_url(),
+            'count': category.total_books,
+        } for category in categories[:4]],
+    })
+
+
 # ==================== CART ====================
 
 @login_required
@@ -196,6 +224,26 @@ def cart_totals(cart):
         'final_total': cart.final_total,
         'total_items': cart.total_items,
     }
+
+
+def mini_cart(request):
+    """Cart contents for the slide-out cart drawer."""
+    if not request.user.is_authenticated:
+        return JsonResponse({'items': [], 'subtotal': 0, 'total_discount': 0, 'final_total': 0, 'total_items': 0})
+    cart, _created = Cart.objects.get_or_create(user=request.user)
+    items = cart.items.select_related('book', 'book__author')
+    return JsonResponse({
+        'items': [{
+            'id': item.id,
+            'title': item.book.title,
+            'author': item.book.author.name if item.book.author else '',
+            'url': item.book.get_absolute_url(),
+            'cover': item.book.image_url,
+            'quantity': item.quantity,
+            'total': float(item.final_price),
+        } for item in items],
+        **cart_totals(cart),
+    })
 
 
 @ajax_login_required

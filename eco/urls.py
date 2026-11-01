@@ -8,6 +8,7 @@ urlpatterns = [
 
     # Cart
     path('cart/', views.cart_view, name='cart'),
+    path('cart/mini/', views.mini_cart, name='mini-cart'),
     path('cart/add/<slug:slug>/', views.add_to_cart, name='add-to-cart'),
     path('cart/update/<int:item_id>/', views.update_cart_item, name='update-cart-item'),
     path('cart/remove/<int:item_id>/', views.remove_from_cart, name='remove-from-cart'),
@@ -42,6 +43,7 @@ urlpatterns = [
     path('products/', views.browse_books, name='product-list'),
     path('product/<slug:slug>/', views.EcoDetail.as_view(), name='product-detail'),
     path('search/', views.SearchView.as_view(), name='search'),
+    path('search/suggest/', views.search_suggest, name='search-suggest'),
 
     # Product management (staff only)
     path('add-product/', views.AddProductView.as_view(), name='add-product'),

@@ -14,13 +14,16 @@
       <a href="{% url 'eco:contact' %}" class="{% if current == 'contact' %}is-active{% endif %}">{% translate "Contact" %}</a>
     </nav>
 
-    <form class="nav-search input-icon" action="{% url 'eco:product-list' %}" method="get" role="search">
+    <button type="button" class="nav-search" data-search-open aria-haspopup="dialog">
       <i class="fa-solid fa-magnifying-glass"></i>
-      <label class="sr-only" for="nav-search">{% translate "Search books" %}</label>
-      <input id="nav-search" class="input" type="search" name="q" placeholder="{% translate 'Search titles, authors…' %}" value="{{ request.GET.q|default:'' }}">
-    </form>
+      <span>{% translate "Search titles, authors…" %}</span>
+      <kbd data-shortcut>Ctrl K</kbd>
+    </button>
 
     <div class="nav-actions">
+      <button class="icon-btn show-mobile" type="button" data-search-open aria-label="{% translate 'Search books' %}">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </button>
       <button class="icon-btn" type="button" data-theme-toggle aria-label="{% translate 'Toggle dark mode' %}">
         <i class="fa-regular fa-moon theme-icon-light"></i>
         <i class="fa-regular fa-sun theme-icon-dark"></i>
@@ -32,7 +35,7 @@
         </a>
       {% endif %}
 
-      <a href="{% url 'eco:cart' %}" class="icon-btn" aria-label="{% translate 'Cart' %}">
+      <a href="{% url 'eco:cart' %}" class="icon-btn" aria-label="{% translate 'Cart' %}"{% if user.is_authenticated %} data-cart-open{% endif %}>
         <i class="fa-solid fa-bag-shopping"></i>
         <span class="count-badge {% if not cart_count %}is-empty{% endif %}" data-cart-count>{{ cart_count|default:0 }}</span>
       </a>
@@ -69,6 +72,7 @@
       </button>
     </div>
   </div>
+  <div class="scroll-progress" aria-hidden="true"></div>
 </header>
 
 <nav class="mobile-nav" aria-label="{% translate 'Mobile' %}">

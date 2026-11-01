@@ -32,6 +32,52 @@
 
   {% block footer %}{% include 'eco/footer.html' %}{% endblock %}
 
+  {% with current=request.resolver_match.url_name %}
+  <nav class="tabbar" aria-label="{% translate 'Quick links' %}">
+    <a href="{% url 'eco:home' %}" class="{% if current == 'home' %}is-active{% endif %}"><i class="fa-solid fa-house"></i><span>{% translate "Home" %}</span></a>
+    <a href="{% url 'eco:product-list' %}" class="{% if current == 'product-list' or current == 'product-detail' %}is-active{% endif %}"><i class="fa-solid fa-book"></i><span>{% translate "Shop" %}</span></a>
+    <button type="button" data-search-open><i class="fa-solid fa-magnifying-glass"></i><span>{% translate "Search" %}</span></button>
+    <a href="{% url 'eco:cart' %}" class="{% if current == 'cart' %}is-active{% endif %}"{% if user.is_authenticated %} data-cart-open{% endif %}>
+      <i class="fa-solid fa-bag-shopping"></i><span>{% translate "Cart" %}</span>
+      <span class="count-badge {% if not cart_count %}is-empty{% endif %}" data-cart-count>{{ cart_count|default:0 }}</span>
+    </a>
+    <a href="{% if user.is_authenticated %}{% url 'users:profile' %}{% else %}{% url 'users:login' %}{% endif %}" class="{% if current == 'profile' %}is-active{% endif %}"><i class="fa-regular fa-user"></i><span>{% translate "Account" %}</span></a>
+  </nav>
+  {% endwith %}
+
+  <dialog class="palette" id="searchPalette" aria-label="{% translate 'Search books' %}" data-suggest-url="{% url 'eco:search-suggest' %}">
+    <form class="palette-input" action="{% url 'eco:product-list' %}" method="get" role="search">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="search" name="q" autocomplete="off" spellcheck="false" placeholder="{% translate 'Search titles, authors, categories…' %}"
+             aria-label="{% translate 'Search books' %}" role="combobox" aria-expanded="true" aria-controls="paletteResults" aria-autocomplete="list">
+      <kbd>Esc</kbd>
+    </form>
+    <div class="palette-results" id="paletteResults" role="listbox"></div>
+    <div class="palette-foot">
+      <span><kbd>↑</kbd><kbd>↓</kbd> {% translate "to navigate" %}</span>
+      <span><kbd>↵</kbd> {% translate "to open" %}</span>
+      <span class="hide-mobile"><kbd>Esc</kbd> {% translate "to close" %}</span>
+    </div>
+  </dialog>
+
+  {% if user.is_authenticated %}
+  <dialog class="drawer" id="cartDrawer" aria-labelledby="cartDrawerTitle" data-mini-cart-url="{% url 'eco:mini-cart' %}" data-update-url="{% url 'eco:update-cart-item' 0 %}">
+    <div class="drawer-head">
+      <h2 id="cartDrawerTitle">{% translate "Your cart" %} <span class="badge" data-drawer-count></span></h2>
+      <button type="button" class="icon-btn" data-drawer-close aria-label="{% translate 'Close cart' %}"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="drawer-body" data-drawer-items></div>
+    <div class="drawer-foot" data-drawer-foot>
+      <div class="summary-row total"><span>{% translate "Subtotal" %}</span><span data-drawer-subtotal></span></div>
+      <p class="muted text-sm">{% translate "Free shipping. Promo codes can be applied on the cart page." %}</p>
+      <div class="drawer-actions">
+        <a href="{% url 'eco:cart' %}" class="btn btn-secondary">{% translate "View cart" %}</a>
+        <a href="{% url 'eco:checkout' %}" class="btn btn-primary">{% translate "Checkout" %} <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </dialog>
+  {% endif %}
+
   {% if messages %}
     <div hidden>
       {% for message in messages %}<span data-message="{{ message.tags|default:'info' }}">{{ message }}</span>{% endfor %}
@@ -48,8 +94,20 @@
       dismiss: "{{ _("Dismiss")|escapejs }}",
       genericError: "{{ _("Something went wrong. Please try again.")|escapejs }}",
       cartError: "{{ _("Could not add to cart.")|escapejs }}",
-      wishlistError: "{{ _("Could not update wishlist.")|escapejs }}"
+      wishlistError: "{{ _("Could not update wishlist.")|escapejs }}",
+      books: "{{ _("Books")|escapejs }}",
+      popular: "{{ _("Popular right now")|escapejs }}",
+      categories: "{{ _("Categories")|escapejs }}",
+      seeAll: "{{ _("See all results for “{query}”")|escapejs }}",
+      noResults: "{{ _("No books match “{query}”.")|escapejs }}",
+      bookCount: "{{ _("{count} books")|escapejs }}",
+      remove: "{{ _("Remove")|escapejs }}",
+      cartEmpty: "{{ _("Your cart is empty")|escapejs }}",
+      cartEmptyHint: "{{ _("Books you add will show up here.")|escapejs }}",
+      startShopping: "{{ _("Start shopping")|escapejs }}",
+      qty: "{{ _("Qty {count}")|escapejs }}"
     };
+    window.BookBazarUrls = { shop: "{% url 'eco:product-list' %}" };
     window.BookBazarCurrency = {
       code: "{{ currency.code }}",
       symbol: "{{ currency.symbol|escapejs }}",
