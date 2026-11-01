@@ -107,6 +107,15 @@ CONTACT_EMAIL = config('CONTACT_EMAIL', default='support@bookbazar.local')
 STRIPE_PUBLIC_KEY = config('STRIPE_PUBLIC_KEY', default='pk_test_51HHON9JPYmkoAsB01yYUI288THzt2kKmjqu8BdzUePai7grGYVZfUKT3l3mezN15lGo4Zh8yHdFx0i4PSGChrwh800wK4Tgtmz')
 STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY', default='sk_test_51HHON9JPYmkoAsB0R80Mtvq8Bmd7G252UDuO9uCL0zFKKEbtM2RNqJOqXrmmqLEHyfE3CxuqOIMFkoB36t1QX5wM005bBFDEvI')
 
+# Prices are stored and charged in US dollars. Other currencies are shown using these
+# fixed rates (units per 1 USD); update them, or set them through the environment.
+CURRENCIES = {
+    'usd': {'symbol': '$', 'rate': 1.0, 'decimals': 2},
+    'eur': {'symbol': '€', 'rate': config('RATE_EUR', default=0.86, cast=float), 'decimals': 2},
+    'gbp': {'symbol': '£', 'rate': config('RATE_GBP', default=0.75, cast=float), 'decimals': 2},
+    'bdt': {'symbol': '৳', 'rate': config('RATE_BDT', default=122.0, cast=float), 'decimals': 0},
+}
+
 SESSION_COOKIE_AGE = 1209600  # 2 weeks
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='http://127.0.0.1:8000,http://localhost:8000', cast=Csv())

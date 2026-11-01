@@ -149,6 +149,16 @@
     if (label) label.textContent = active ? text.saved : text.save;
   }
 
+  /* Convert a US dollar amount to the visitor's currency, matching eco/currency.py's format_money. */
+  function formatMoney(amountUsd) {
+    const currency = window.BookBazarCurrency || { symbol: '$', rate: 1, decimals: 2 };
+    const value = Number(amountUsd) * currency.rate;
+    return currency.symbol + value.toLocaleString('en-US', {
+      minimumFractionDigits: currency.decimals,
+      maximumFractionDigits: currency.decimals,
+    });
+  }
+
   function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text || '';
@@ -235,5 +245,5 @@
     toast(message.textContent.trim(), message.dataset.message || 'info', { timeout: 6000 });
   });
 
-  window.BookBazar = { api, toast, setLoading, setCartCount, csrfToken };
+  window.BookBazar = { api, toast, setLoading, setCartCount, csrfToken, formatMoney };
 })();

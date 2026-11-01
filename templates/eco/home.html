@@ -1,5 +1,5 @@
 {% extends 'eco/layout.html' %}
-{% load i18n %}
+{% load i18n money %}
 
 {% block content %}
 <section class="hero">
@@ -92,7 +92,7 @@
     <div class="promo-banner reveal">
       <div>
         <span class="eyebrow">{% translate "Reader offer" %}</span>
-        <h2>{% blocktranslate with amount=promo.amount|floatformat:"-2" %}${{ amount }} off your order{% endblocktranslate %}</h2>
+        {% money promo.amount as amount %}<h2>{% blocktranslate %}{{ amount }} off your order{% endblocktranslate %}</h2>
         <p>{% blocktranslate with date=promo.valid_to|date:"F j, Y" %}Add a few books to your cart and enter the code on the cart page. Valid until {{ date }}.{% endblocktranslate %}</p>
         <a href="{% url 'eco:product-list' %}" class="btn btn-primary" style="margin-top: 22px;">{% translate "Start shopping" %} <i class="fa-solid fa-arrow-right"></i></a>
       </div>

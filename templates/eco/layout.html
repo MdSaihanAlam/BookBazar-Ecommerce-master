@@ -1,4 +1,4 @@
-{% load static i18n %}<!DOCTYPE html>
+{% load static i18n assets %}<!DOCTYPE html>
 {% get_current_language as LANGUAGE_CODE %}
 <html lang="{{ LANGUAGE_CODE }}">
 <head>
@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700{% if LANGUAGE_CODE == 'bn' %}&family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Serif+Bengali:wght@500;600;700{% endif %}&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="{% static 'eco/css/app.css' %}">
+  <link rel="stylesheet" href="{% versioned_static 'eco/css/app.css' %}">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
   {% block head %}{% endblock %}
 </head>
@@ -50,8 +50,14 @@
       cartError: "{{ _("Could not add to cart.")|escapejs }}",
       wishlistError: "{{ _("Could not update wishlist.")|escapejs }}"
     };
+    window.BookBazarCurrency = {
+      code: "{{ currency.code }}",
+      symbol: "{{ currency.symbol|escapejs }}",
+      rate: {{ currency.rate|stringformat:"s" }},
+      decimals: {{ currency.decimals }}
+    };
   </script>
-  <script src="{% static 'eco/js/app.js' %}"></script>
+  <script src="{% versioned_static 'eco/js/app.js' %}"></script>
   {% block scripts %}{% endblock %}
 </body>
 </html>

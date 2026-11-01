@@ -1,5 +1,5 @@
 {% extends 'eco/layout.html' %}
-{% load i18n %}
+{% load i18n money %}
 
 {% block title %}{% translate "Your cart" %} — BookBazar{% endblock %}
 
@@ -31,7 +31,7 @@
               <h3><a href="{{ item.book.get_absolute_url }}">{{ item.book.title }}</a></h3>
               <p class="muted text-sm">{{ item.book.author.name|default:_("Unknown author") }} · {{ item.book.get_format_type_display }}</p>
               <p class="text-sm" style="margin-top: 6px;">
-                {% blocktranslate with price=item.book.final_price|floatformat:2 %}${{ price }} each{% endblocktranslate %}
+                {% money item.book.final_price as unit_price %}{% blocktranslate %}{{ unit_price }} each{% endblocktranslate %}
                 {% if item.book.is_on_sale %}<span class="badge badge-success" style="margin-left: 6px;">−{{ item.book.discount_percentage }}%</span>{% endif %}
               </p>
               <div class="cart-item-actions">
@@ -50,8 +50,8 @@
               </div>
             </div>
             <div class="cart-item-price">
-              <div class="now" id="total-{{ item.id }}">${{ item.final_price|floatformat:2 }}</div>
-              {% if item.book.is_on_sale %}<div class="was" id="was-{{ item.id }}" data-unit="{{ item.book.price|stringformat:'s' }}">${{ item.total_price|floatformat:2 }}</div>{% endif %}
+              <div class="now" id="total-{{ item.id }}">{% money item.final_price %}</div>
+              {% if item.book.is_on_sale %}<div class="was" id="was-{{ item.id }}" data-unit="{{ item.book.price|stringformat:'s' }}">{% money item.total_price %}</div>{% endif %}
             </div>
           </div>
         {% endfor %}
@@ -59,16 +59,16 @@
 
       <aside class="card summary" data-coupon-amount="{% if coupon %}{{ coupon.amount|stringformat:'s' }}{% else %}0{% endif %}">
         <h2 class="card-title">{% translate "Order summary" %}</h2>
-        <div class="summary-row"><span>{% translate "Subtotal" %}</span><span data-subtotal>${{ cart.subtotal|floatformat:2 }}</span></div>
+        <div class="summary-row"><span>{% translate "Subtotal" %}</span><span data-subtotal>{% money cart.subtotal %}</span></div>
         <div class="summary-row {% if not cart.total_discount %}hidden{% endif %}" data-discount-row>
-          <span>{% translate "Book discounts" %}</span><span class="save" data-discount>−${{ cart.total_discount|floatformat:2 }}</span>
+          <span>{% translate "Book discounts" %}</span><span class="save" data-discount>−{% money cart.total_discount %}</span>
         </div>
         <div class="summary-row {% if not coupon %}hidden{% endif %}" data-coupon-row>
           <span>{% translate "Promo" %} <span class="badge badge-brand" data-coupon-code>{{ coupon.code }}</span></span>
-          <span class="save" data-coupon>−${{ coupon_discount|floatformat:2 }}</span>
+          <span class="save" data-coupon>−{% money coupon_discount %}</span>
         </div>
         <div class="summary-row"><span>{% translate "Shipping" %}</span><span class="text-success">{% translate "Free" %}</span></div>
-        <div class="summary-row total"><span>{% translate "Total" %}</span><span data-total>${{ order_total|floatformat:2 }}</span></div>
+        <div class="summary-row total"><span>{% translate "Total" %}</span><span data-total>{% money order_total %}</span></div>
 
         <form class="promo" id="promoForm">
           <label class="sr-only" for="promoInput">{% translate "Promo code" %}</label>
@@ -101,9 +101,9 @@
       enterCode: "{{ _('Enter a promo code first.')|escapejs }}",
       needAddress: "{{ _('Add a shipping address to continue to checkout.')|escapejs }}",
       oneItem: "{{ _('1 item')|escapejs }}",
-      manyItems: "{{ _('%(count)s items')|escapejs }}"
+      manyItems: "{{ _('{count} items')|escapejs }}"
     };
-    const money = (value) => '$' + Number(value).toFixed(2);
+    const money = window.BookBazar.formatMoney;
     let couponAmount = parseFloat(summary.dataset.couponAmount) || 0;
 
     function renderTotals(data) {
@@ -114,7 +114,7 @@
       summary.querySelector('[data-coupon]').textContent = '−' + money(couponDiscount);
       summary.querySelector('[data-total]').textContent = money(data.final_total - couponDiscount);
       document.querySelector('[data-item-count]').textContent =
-        data.total_items === 1 ? text.oneItem : text.manyItems.replace('%(count)s', data.total_items);
+        data.total_items === 1 ? text.oneItem : text.manyItems.replace('{count}', data.total_items);
       setCartCount(data.total_items);
 
       if (!data.total_items) {

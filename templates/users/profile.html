@@ -1,5 +1,5 @@
 {% extends 'users/account_base.html' %}
-{% load i18n %}
+{% load i18n money %}
 
 {% block title %}{% translate "My account" %} — BookBazar{% endblock %}
 
@@ -55,7 +55,7 @@
           {% if order.received %}<span class="badge badge-success">{% translate "Delivered" %}</span>
           {% elif order.being_delivered %}<span class="badge badge-warning">{% translate "On the way" %}</span>
           {% else %}<span class="badge badge-brand">{% translate "Processing" %}</span>{% endif %}
-          <strong>${{ order.payment.amount|floatformat:2 }}</strong>
+          <strong>{% money order.payment.amount %}</strong>
         </div>
       </div>
     {% endfor %}

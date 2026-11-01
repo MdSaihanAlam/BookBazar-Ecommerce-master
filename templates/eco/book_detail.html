@@ -1,5 +1,5 @@
 {% extends 'eco/layout.html' %}
-{% load i18n %}
+{% load i18n money %}
 
 {% block title %}{{ item.title }}{% if item.author %} — {{ item.author.name }}{% endif %} — BookBazar{% endblock %}
 {% block description %}{{ item.description|truncatewords:30 }}{% endblock %}
@@ -40,10 +40,10 @@
         <p class="product-author">{% translate "by" %} <a href="{% url 'eco:product-list' %}?q={{ item.author.name|urlencode }}">{{ item.author.name|default:_("Unknown author") }}</a></p>
 
         <div class="product-price price price-lg">
-          <span class="now">${{ item.final_price|floatformat:2 }}</span>
+          <span class="now">{% money item.final_price %}</span>
           {% if item.is_on_sale %}
-            <span class="was">${{ item.price|floatformat:2 }}</span>
-            <span class="badge badge-success">{% blocktranslate with amount=item.savings|floatformat:2 %}You save ${{ amount }}{% endblocktranslate %}</span>
+            <span class="was">{% money item.price %}</span>
+            {% money item.savings as savings %}<span class="badge badge-success">{% blocktranslate %}You save {{ savings }}{% endblocktranslate %}</span>
           {% endif %}
         </div>
 

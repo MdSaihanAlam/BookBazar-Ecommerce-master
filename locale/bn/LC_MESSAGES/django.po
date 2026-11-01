@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-01 16:52+0600\n"
+"POT-Creation-Date: 2026-11-01 18:17+0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -208,8 +208,8 @@ msgid "This promo code has expired."
 msgstr "এই প্রোমো কোডের মেয়াদ শেষ হয়ে গেছে।"
 
 #, python-format
-msgid "Promo code applied! $%(amount)s discount added."
-msgstr "প্রোমো কোড প্রয়োগ হয়েছে! $%(amount)s ছাড় যোগ হয়েছে।"
+msgid "Promo code applied! %(amount)s discount added."
+msgstr "প্রোমো কোড প্রয়োগ হয়েছে! %(amount)s ছাড় যোগ হয়েছে।"
 
 msgid "There was an error sending your message. Please try again later."
 msgstr "বার্তা পাঠাতে সমস্যা হয়েছে। পরে আবার চেষ্টা করুন।"
@@ -286,8 +286,8 @@ msgid "Unknown author"
 msgstr "অজানা লেখক"
 
 #, python-format
-msgid "$%(price)s each"
-msgstr "প্রতিটি $%(price)s"
+msgid "%(unit_price)s each"
+msgstr "প্রতিটি %(unit_price)s"
 
 msgid "Decrease quantity"
 msgstr "পরিমাণ কমান"
@@ -352,9 +352,9 @@ msgstr "চেকআউট করতে একটি ডেলিভারি �
 msgid "1 item"
 msgstr "১টি বই"
 
-#, python-format
-msgid "%(count)s items"
-msgstr "%(count)sটি বই"
+#, python-brace-format
+msgid "{count} items"
+msgstr "{count}টি বই"
 
 msgid "Breadcrumb"
 msgstr "পথনির্দেশ"
@@ -376,8 +376,8 @@ msgid "by"
 msgstr "লেখক:"
 
 #, python-format
-msgid "You save $%(amount)s"
-msgstr "আপনার সাশ্রয় $%(amount)s"
+msgid "You save %(savings)s"
+msgstr "আপনার সাশ্রয় %(savings)s"
 
 msgid "In stock, ready to ship"
 msgstr "স্টকে আছে, পাঠানোর জন্য প্রস্তুত"
@@ -575,8 +575,8 @@ msgid "Items (%(count)s)"
 msgstr "বই (%(count)s)"
 
 #, python-format
-msgid "Qty %(qty)s · $%(price)s each"
-msgstr "পরিমাণ %(qty)s · প্রতিটি $%(price)s"
+msgid "Qty %(qty)s · %(unit_price)s each"
+msgstr "পরিমাণ %(qty)s · প্রতিটি %(unit_price)s"
 
 msgid "Continue to payment"
 msgstr "পেমেন্টে যান"
@@ -653,9 +653,9 @@ msgstr "বই খুঁজুন"
 msgid "1 book saved"
 msgstr "১টি বই সংরক্ষিত"
 
-#, python-format
-msgid "%(count)s books saved"
-msgstr "%(count)sটি বই সংরক্ষিত"
+#, python-brace-format
+msgid "{count} books saved"
+msgstr "{count}টি বই সংরক্ষিত"
 
 msgid ""
 "Your trusted partner for quality books and educational resources. Discover "
@@ -701,7 +701,6 @@ msgstr "দিয়ে তৈরি"
 msgid "New season, new stories"
 msgstr "নতুন মৌসুম, নতুন গল্প"
 
-#| msgid "Find the book that"
 msgid "Find the book that <em>finds you</em>."
 msgstr "খুঁজে নিন সেই বই, যা <em>আপনাকে খুঁজছে</em>।"
 
@@ -762,8 +761,8 @@ msgid "Reader offer"
 msgstr "পাঠক অফার"
 
 #, python-format
-msgid "$%(amount)s off your order"
-msgstr "আপনার অর্ডারে $%(amount)s ছাড়"
+msgid "%(amount)s off your order"
+msgstr "আপনার অর্ডারে %(amount)s ছাড়"
 
 #, python-format
 msgid ""
@@ -883,8 +882,14 @@ msgid "Card details"
 msgstr "কার্ডের তথ্য"
 
 #, python-format
-msgid "Pay $%(amount)s"
-msgstr "$%(amount)s পরিশোধ করুন"
+msgid "Pay %(amount)s"
+msgstr "%(amount)s পরিশোধ করুন"
+
+#, python-format
+msgid ""
+"Your card will be charged $%(usd)s in US dollars. Prices in your currency "
+"are approximate."
+msgstr "আপনার কার্ড থেকে মার্কিন ডলারে $%(usd)s কাটা হবে। আপনার মুদ্রায় দেখানো দাম আনুমানিক।"
 
 msgid ""
 "Test mode: use card <strong>4242 4242 4242 4242</strong> with any future "
@@ -1178,8 +1183,9 @@ msgid "Preferences"
 msgstr "পছন্দসমূহ"
 
 msgid ""
-"The site is available in English and Bangla. Prices are shown in US dollars."
-msgstr "সাইটটি ইংরেজি ও বাংলায় পাওয়া যায়। দাম মার্কিন ডলারে দেখানো হয়।"
+"The site is available in English and Bangla. Prices are shown in your chosen "
+"currency; card payments are charged in US dollars."
+msgstr "সাইটটি ইংরেজি ও বাংলায় পাওয়া যায়। দাম আপনার বেছে নেওয়া মুদ্রায় দেখানো হয়; কার্ড পেমেন্ট মার্কিন ডলারে নেওয়া হয়।"
 
 msgid "That photo is larger than 5 MB."
 msgstr "ছবিটি ৫ MB-এর চেয়ে বড়।"

@@ -1,5 +1,5 @@
 {% extends 'eco/layout.html' %}
-{% load i18n %}
+{% load i18n money %}
 
 {% block title %}{% translate "Checkout" %} — BookBazar{% endblock %}
 
@@ -51,8 +51,8 @@
           {% for item in cart_items %}
             <div class="mini-item">
               <span class="book-cover"><img src="{{ item.book.image_url }}" alt=""></span>
-              <div><strong>{{ item.book.title }}</strong><span>{% blocktranslate with qty=item.quantity price=item.book.final_price|floatformat:2 %}Qty {{ qty }} · ${{ price }} each{% endblocktranslate %}</span></div>
-              <strong>${{ item.final_price|floatformat:2 }}</strong>
+              <div><strong>{{ item.book.title }}</strong><span>{% money item.book.final_price as unit_price %}{% blocktranslate with qty=item.quantity %}Qty {{ qty }} · {{ unit_price }} each{% endblocktranslate %}</span></div>
+              <strong>{% money item.final_price %}</strong>
             </div>
           {% endfor %}
         </section>
@@ -60,15 +60,15 @@
 
       <aside class="card summary">
         <h2 class="card-title">{% translate "Order summary" %}</h2>
-        <div class="summary-row"><span>{% translate "Subtotal" %}</span><span>${{ cart.subtotal|floatformat:2 }}</span></div>
+        <div class="summary-row"><span>{% translate "Subtotal" %}</span><span>{% money cart.subtotal %}</span></div>
         {% if cart.total_discount > 0 %}
-          <div class="summary-row"><span>{% translate "Book discounts" %}</span><span class="save">−${{ cart.total_discount|floatformat:2 }}</span></div>
+          <div class="summary-row"><span>{% translate "Book discounts" %}</span><span class="save">−{% money cart.total_discount %}</span></div>
         {% endif %}
         {% if coupon %}
-          <div class="summary-row"><span>{% translate "Promo" %} <span class="badge badge-brand">{{ coupon.code }}</span></span><span class="save">−${{ coupon_discount|floatformat:2 }}</span></div>
+          <div class="summary-row"><span>{% translate "Promo" %} <span class="badge badge-brand">{{ coupon.code }}</span></span><span class="save">−{% money coupon_discount %}</span></div>
         {% endif %}
         <div class="summary-row"><span>{% translate "Shipping" %}</span><span class="text-success">{% translate "Free" %}</span></div>
-        <div class="summary-row total"><span>{% translate "Total" %}</span><span>${{ order_total|floatformat:2 }}</span></div>
+        <div class="summary-row total"><span>{% translate "Total" %}</span><span>{% money order_total %}</span></div>
 
         <form method="post" action="{% url 'eco:checkout' %}" id="checkoutForm" style="margin-top: 20px;">
           {% csrf_token %}

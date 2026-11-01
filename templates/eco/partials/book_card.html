@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n money %}
 <article class="book-card">
   <a href="{{ book.get_absolute_url }}" class="book-cover">
     <img src="{{ book.image_url }}" alt="{% blocktranslate with title=book.title %}Cover of {{ title }}{% endblocktranslate %}" loading="lazy">
@@ -23,8 +23,8 @@
     <h3 class="book-title"><a href="{{ book.get_absolute_url }}">{{ book.title }}</a></h3>
     <span class="book-author">{{ book.author.name|default:_("Unknown author") }}</span>
     <div class="price">
-      <span class="now">${{ book.final_price|floatformat:2 }}</span>
-      {% if book.is_on_sale %}<span class="was">${{ book.price|floatformat:2 }}</span>{% endif %}
+      <span class="now">{% money book.final_price %}</span>
+      {% if book.is_on_sale %}<span class="was">{% money book.price %}</span>{% endif %}
     </div>
   </div>
 </article>

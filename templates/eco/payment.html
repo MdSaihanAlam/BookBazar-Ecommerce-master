@@ -1,5 +1,5 @@
 {% extends 'eco/layout.html' %}
-{% load i18n %}
+{% load i18n money %}
 
 {% block title %}{% translate "Payment" %} — BookBazar{% endblock %}
 
@@ -25,9 +25,16 @@
             <div id="card-errors" class="field-error" role="alert"></div>
           </div>
           <button type="submit" class="btn btn-primary btn-lg btn-block" id="payButton">
-            <i class="fa-solid fa-lock"></i> {% blocktranslate with amount=order_total|floatformat:2 %}Pay ${{ amount }}{% endblocktranslate %}
+            {% money order_total as amount %}<i class="fa-solid fa-lock"></i> {% blocktranslate %}Pay {{ amount }}{% endblocktranslate %}
           </button>
         </form>
+
+        {% if currency.code != 'usd' %}
+          <p class="muted text-sm" style="margin-top: 14px;">
+            <i class="fa-solid fa-circle-info"></i>
+            {% blocktranslate with usd=order_total|floatformat:2 %}Your card will be charged ${{ usd }} in US dollars. Prices in your currency are approximate.{% endblocktranslate %}
+          </p>
+        {% endif %}
 
         <div class="alert alert-info" style="margin-top: 20px;">
           <i class="fa-solid fa-flask" style="margin-top: 3px;"></i>
@@ -41,14 +48,14 @@
           <div class="mini-item">
             <span class="book-cover"><img src="{{ item.book.image_url }}" alt=""></span>
             <div><strong>{{ item.book.title }}</strong><span>{% blocktranslate with qty=item.quantity %}Qty {{ qty }}{% endblocktranslate %}</span></div>
-            <strong>${{ item.get_final_price|floatformat:2 }}</strong>
+            <strong>{% money item.get_final_price %}</strong>
           </div>
         {% endfor %}
         {% if order.coupon %}
-          <div class="summary-row" style="margin-top: 10px;"><span>{% translate "Promo" %} <span class="badge badge-brand">{{ order.coupon.code }}</span></span><span class="save">−${{ order.coupon.amount|floatformat:2 }}</span></div>
+          <div class="summary-row" style="margin-top: 10px;"><span>{% translate "Promo" %} <span class="badge badge-brand">{{ order.coupon.code }}</span></span><span class="save">−{% money order.coupon.amount %}</span></div>
         {% endif %}
         <div class="summary-row"><span>{% translate "Shipping" %}</span><span class="text-success">{% translate "Free" %}</span></div>
-        <div class="summary-row total"><span>{% translate "Total" %}</span><span>${{ order_total|floatformat:2 }}</span></div>
+        <div class="summary-row total"><span>{% translate "Total" %}</span><span>{% money order_total %}</span></div>
         <p class="secure-note"><i class="fa-solid fa-shield-halved"></i> {% translate "Card details never touch our servers" %}</p>
       </aside>
     </div>

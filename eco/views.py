@@ -23,6 +23,7 @@ from django.views.generic import CreateView, DetailView, FormView, ListView, Upd
 from django.views.generic.list import MultipleObjectMixin
 
 from .forms import AddressForm, CategoryForm, ContactForm, PaymentForm, ProductForm
+from .currency import format_money, user_currency
 from .models import Address, Book, Cart, CartItem, Category, Coupon, Order, OrderItem, Payment, Wishlist
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -541,7 +542,9 @@ def apply_promo_code(request):
     new_final_total = cart.final_total - discount_amount
     return JsonResponse({
         'success': True,
-        'message': _('Promo code applied! $%(amount)s discount added.') % {'amount': f'{discount_amount:.2f}'},
+        'message': _('Promo code applied! %(amount)s discount added.') % {
+            'amount': format_money(discount_amount, user_currency(request.user)),
+        },
         'discount_amount': discount_amount,
         'cart_data': {
             'subtotal': cart.subtotal,
