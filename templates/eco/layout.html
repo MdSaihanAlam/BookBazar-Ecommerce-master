@@ -1,6 +1,6 @@
 {% load static i18n assets %}<!DOCTYPE html>
-{% get_current_language as LANGUAGE_CODE %}
-<html lang="{{ LANGUAGE_CODE }}">
+{% get_current_language as LANGUAGE_CODE %}{% get_current_language_bidi as LANGUAGE_BIDI %}
+<html lang="{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,6 +20,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700{% if LANGUAGE_CODE == 'bn' %}&family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Serif+Bengali:wght@500;600;700{% endif %}&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="{% versioned_static 'eco/css/app.css' %}">
+  <meta property="og:site_name" content="BookBazar">
+  <meta property="og:locale" content="{{ LANGUAGE_CODE }}">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
   {% block head %}{% endblock %}
 </head>
@@ -58,6 +60,50 @@
       <span><kbd>↵</kbd> {% translate "to open" %}</span>
       <span class="hide-mobile"><kbd>Esc</kbd> {% translate "to close" %}</span>
     </div>
+  </dialog>
+
+  <dialog class="palette region-picker" id="regionPicker" aria-labelledby="regionTitle">
+    <form method="post" action="{% url 'eco:set-preferences' %}">
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ request.get_full_path }}">
+      <div class="drawer-head">
+        <h2 id="regionTitle">{% translate "Language & currency" %}</h2>
+        <button type="button" class="icon-btn" data-dialog-close aria-label="{% translate 'Close' %}"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="region-body">
+        <fieldset>
+          <legend>{% translate "Language" %}</legend>
+          <div class="choice-grid">
+            {% get_available_languages as AVAILABLE_LANGUAGES %}
+            {% get_language_info_list for AVAILABLE_LANGUAGES as site_languages %}
+            {% for language in site_languages %}
+              <label class="choice">
+                <input type="radio" name="language" value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %}checked{% endif %}>
+                <span class="choice-main" lang="{{ language.code }}">{{ language.name_local|capfirst }}</span>
+                <span class="choice-sub">{{ language.name_translated }}</span>
+              </label>
+            {% endfor %}
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>{% translate "Currency" %}</legend>
+          <div class="choice-grid choice-grid-3">
+            {% for choice in currency_choices %}
+              <label class="choice">
+                <input type="radio" name="currency" value="{{ choice.code }}" {% if choice.code == currency.code %}checked{% endif %}>
+                <span class="choice-main">{{ choice.symbol }} · {{ choice.code|upper }}</span>
+                <span class="choice-sub">{{ choice.name }}</span>
+              </label>
+            {% endfor %}
+          </div>
+        </fieldset>
+        <p class="region-note"><i class="fa-solid fa-circle-info"></i> {% translate "Prices in other currencies are approximate. Cards are charged in US dollars and your bank converts the amount." %}</p>
+      </div>
+      <div class="region-foot">
+        <button type="button" class="btn btn-secondary" data-dialog-close>{% translate "Cancel" %}</button>
+        <button type="submit" class="btn btn-primary">{% translate "Save" %}</button>
+      </div>
+    </form>
   </dialog>
 
   {% if user.is_authenticated %}

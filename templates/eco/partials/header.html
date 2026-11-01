@@ -24,6 +24,10 @@
       <button class="icon-btn show-mobile" type="button" data-search-open aria-label="{% translate 'Search books' %}">
         <i class="fa-solid fa-magnifying-glass"></i>
       </button>
+      <button class="region-btn hide-mobile" type="button" data-region-open aria-haspopup="dialog" title="{% translate 'Language & currency' %}">
+        <i class="fa-solid fa-globe"></i> {{ LANGUAGE_CODE|upper }} · {{ currency.symbol }}
+        <span class="sr-only">{% translate "Change language and currency" %}</span>
+      </button>
       <button class="icon-btn" type="button" data-theme-toggle aria-label="{% translate 'Toggle dark mode' %}">
         <i class="fa-regular fa-moon theme-icon-light"></i>
         <i class="fa-regular fa-sun theme-icon-dark"></i>
@@ -80,6 +84,10 @@
     <i class="fa-solid fa-magnifying-glass"></i>
     <input class="input" type="search" name="q" placeholder="{% translate 'Search titles, authors…' %}" aria-label="{% translate 'Search books' %}">
   </form>
+  <button type="button" class="mobile-nav-region" data-region-open>
+    <i class="fa-solid fa-globe"></i> {% translate "Language & currency" %}
+    <span class="muted">{{ LANGUAGE_CODE|upper }} · {{ currency.code|upper }}</span>
+  </button>
   <a href="{% url 'eco:home' %}">{% translate "Home" %}</a>
   <a href="{% url 'eco:product-list' %}">{% translate "Shop" %}</a>
   <a href="{% url 'eco:category-list' %}">{% translate "Categories" %}</a>

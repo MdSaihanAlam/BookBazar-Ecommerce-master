@@ -77,7 +77,7 @@
         </div>
 
         <div class="trust">
-          <div><i class="fa-solid fa-truck-fast"></i> {% translate "Free delivery" %}</div>
+          <div><i class="fa-solid fa-truck-fast"></i> {% if ship_country %}{% blocktranslate with country=ship_country %}Free delivery to {{ country }}{% endblocktranslate %}{% else %}{% translate "Free worldwide delivery" %}{% endif %}</div>
           <div><i class="fa-solid fa-rotate-left"></i> {% translate "Easy returns" %}</div>
           <div><i class="fa-solid fa-lock"></i> {% translate "Secure payment" %}</div>
         </div>

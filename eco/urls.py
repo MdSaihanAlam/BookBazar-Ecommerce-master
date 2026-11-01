@@ -44,6 +44,7 @@ urlpatterns = [
     path('product/<slug:slug>/', views.EcoDetail.as_view(), name='product-detail'),
     path('search/', views.SearchView.as_view(), name='search'),
     path('search/suggest/', views.search_suggest, name='search-suggest'),
+    path('preferences/', views.set_preferences, name='set-preferences'),
 
     # Product management (staff only)
     path('add-product/', views.AddProductView.as_view(), name='add-product'),

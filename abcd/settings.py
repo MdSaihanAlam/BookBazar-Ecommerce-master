@@ -114,6 +114,10 @@ CURRENCIES = {
     'eur': {'symbol': '€', 'rate': config('RATE_EUR', default=0.86, cast=float), 'decimals': 2},
     'gbp': {'symbol': '£', 'rate': config('RATE_GBP', default=0.75, cast=float), 'decimals': 2},
     'bdt': {'symbol': '৳', 'rate': config('RATE_BDT', default=122.0, cast=float), 'decimals': 0},
+    'inr': {'symbol': '₹', 'rate': config('RATE_INR', default=88.0, cast=float), 'decimals': 0},
+    'cad': {'symbol': 'CA$', 'rate': config('RATE_CAD', default=1.40, cast=float), 'decimals': 2},
+    'aud': {'symbol': 'A$', 'rate': config('RATE_AUD', default=1.53, cast=float), 'decimals': 2},
+    'jpy': {'symbol': '¥', 'rate': config('RATE_JPY', default=150.0, cast=float), 'decimals': 0},
 }
 
 SESSION_COOKIE_AGE = 1209600  # 2 weeks

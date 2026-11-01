@@ -67,6 +67,10 @@ class UserProfile(models.Model):
         ('eur', _('EUR (€)')),
         ('gbp', _('GBP (£)')),
         ('bdt', _('BDT (৳ Taka)')),
+        ('inr', _('INR (₹)')),
+        ('cad', _('CAD (CA$)')),
+        ('aud', _('AUD (A$)')),
+        ('jpy', _('JPY (¥)')),
     ]
     currency = models.CharField(
         max_length=3, 

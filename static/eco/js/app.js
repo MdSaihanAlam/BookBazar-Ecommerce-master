@@ -206,6 +206,7 @@
 
   function openPalette() {
     if (!palette) return;
+    closeMobileNav();
     openDialog(palette);
     paletteInput.select();
     if (!paletteResults.childElementCount) loadSuggestions('');
@@ -375,6 +376,19 @@
     }).observe(buyBox);
   }
 
+  function setMobileNav(open) {
+    const nav = document.querySelector('.mobile-nav');
+    if (!nav) return;
+    nav.classList.toggle('is-open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+    const icon = document.querySelector('[data-nav-toggle] i');
+    if (icon) icon.className = `fa-solid ${open ? 'fa-xmark' : 'fa-bars'}`;
+  }
+
+  function closeMobileNav() {
+    setMobileNav(false);
+  }
+
   /* ---------- Event delegation ---------- */
   document.addEventListener('click', (event) => {
     if (event.target.closest('[data-search-open]')) {
@@ -392,6 +406,19 @@
 
     if (event.target.closest('[data-drawer-close]')) {
       closeDialog(cartDrawer);
+      return;
+    }
+
+    const regionPicker = document.getElementById('regionPicker');
+    if (event.target.closest('[data-region-open]') && regionPicker) {
+      closeMobileNav();
+      openDialog(regionPicker);
+      return;
+    }
+
+    const dialogClose = event.target.closest('[data-dialog-close]');
+    if (dialogClose) {
+      closeDialog(dialogClose.closest('dialog'));
       return;
     }
 
@@ -443,10 +470,7 @@
 
     if (event.target.closest('[data-nav-toggle]')) {
       const nav = document.querySelector('.mobile-nav');
-      const open = nav.classList.toggle('is-open');
-      document.body.style.overflow = open ? 'hidden' : '';
-      const icon = document.querySelector('[data-nav-toggle] i');
-      if (icon) icon.className = `fa-solid ${open ? 'fa-xmark' : 'fa-bars'}`;
+      setMobileNav(!nav.classList.contains('is-open'));
       return;
     }
 

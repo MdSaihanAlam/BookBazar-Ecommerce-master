@@ -53,7 +53,8 @@ class AddressForm(forms.ModelForm):
     email = forms.EmailField(label=_("Email"), widget=forms.EmailInput(attrs={'placeholder': 'you@example.com'}))
     phone_number = forms.CharField(
         label=_("Phone number"), max_length=20,
-        widget=forms.TextInput(attrs={'placeholder': '+880 1XXX-XXXXXX'})
+        help_text=_("Include your country code so the courier can reach you."),
+        widget=forms.TextInput(attrs={'placeholder': '+44 20 7946 0958', 'autocomplete': 'tel'})
     )
     alternate_email = forms.EmailField(label=_("Alternate email"), required=False)
     is_business_address = forms.BooleanField(label=_("This is a business address"), required=False)
@@ -74,10 +75,10 @@ class AddressForm(forms.ModelForm):
             'default': _("Use as my default delivery address"),
         }
         widgets = {
-            'street_address': forms.TextInput(attrs={'placeholder': _('House, road and area')}),
-            'apartment_address': forms.TextInput(attrs={'placeholder': _('Flat or floor (optional)')}),
-            'country': CountrySelectWidget(),
-            'zip_code': forms.TextInput(attrs={'placeholder': '1212'}),
+            'street_address': forms.TextInput(attrs={'placeholder': _('Street name and number'), 'autocomplete': 'address-line1'}),
+            'apartment_address': forms.TextInput(attrs={'placeholder': _('Apartment, suite or floor (optional)'), 'autocomplete': 'address-line2'}),
+            'country': CountrySelectWidget(attrs={'autocomplete': 'country'}),
+            'zip_code': forms.TextInput(attrs={'placeholder': _('e.g. 10001 or SW1A 1AA'), 'autocomplete': 'postal-code'}),
         }
 
 

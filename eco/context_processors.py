@@ -1,6 +1,7 @@
+from django.conf import settings
 from django.db.models import Sum
 
-from .currency import currency_info, user_currency
+from .currency import currency_info, request_currency
 from .models import CartItem, Wishlist
 
 
@@ -15,5 +16,6 @@ def cart_count(request):
     return {
         'cart_count': count,
         'wishlist_ids': wishlist_ids,
-        'currency': currency_info(user_currency(request.user)),
+        'currency': currency_info(request_currency(request)),
+        'currency_choices': [currency_info(code) for code in settings.CURRENCIES],
     }

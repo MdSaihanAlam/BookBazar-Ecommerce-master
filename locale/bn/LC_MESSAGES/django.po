@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-02 00:17+0600\n"
+"POT-Creation-Date: 2026-11-02 00:31+0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,38 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\eco\currency.py:10
+msgid "US dollar"
+msgstr "মার্কিন ডলার"
+
+#: .\eco\currency.py:11
+msgid "Euro"
+msgstr "ইউরো"
+
+#: .\eco\currency.py:12
+msgid "British pound"
+msgstr "ব্রিটিশ পাউন্ড"
+
+#: .\eco\currency.py:13
+msgid "Bangladeshi taka"
+msgstr "বাংলাদেশি টাকা"
+
+#: .\eco\currency.py:14
+msgid "Indian rupee"
+msgstr "ভারতীয় রুপি"
+
+#: .\eco\currency.py:15
+msgid "Canadian dollar"
+msgstr "কানাডিয়ান ডলার"
+
+#: .\eco\currency.py:16
+msgid "Australian dollar"
+msgstr "অস্ট্রেলিয়ান ডলার"
+
+#: .\eco\currency.py:17
+msgid "Japanese yen"
+msgstr "জাপানি ইয়েন"
 
 #: .\eco\forms.py:14
 msgid "Your name"
@@ -70,7 +102,7 @@ msgstr "নামের প্রথম অংশ"
 msgid "Last name"
 msgstr "নামের শেষ অংশ"
 
-#: .\eco\forms.py:53 .\templates\eco\contact.html:27
+#: .\eco\forms.py:53 .\templates\eco\contact.html:19
 #: .\templates\users\profile.html:35 .\templates\users\profile_edit.html:44
 msgid "Email"
 msgstr "ইমেইল"
@@ -79,45 +111,53 @@ msgstr "ইমেইল"
 msgid "Phone number"
 msgstr "ফোন নম্বর"
 
-#: .\eco\forms.py:58
+#: .\eco\forms.py:56
+msgid "Include your country code so the courier can reach you."
+msgstr "কুরিয়ার যেন যোগাযোগ করতে পারে, তাই দেশের কোডসহ নম্বর দিন।"
+
+#: .\eco\forms.py:59
 msgid "Alternate email"
 msgstr "বিকল্প ইমেইল"
 
-#: .\eco\forms.py:59
+#: .\eco\forms.py:60
 msgid "This is a business address"
 msgstr "এটি একটি ব্যবসায়িক ঠিকানা"
 
-#: .\eco\forms.py:60
+#: .\eco\forms.py:61
 msgid "City"
 msgstr "শহর"
 
-#: .\eco\forms.py:70
+#: .\eco\forms.py:71
 msgid "Street address"
 msgstr "রাস্তার ঠিকানা"
 
-#: .\eco\forms.py:71
+#: .\eco\forms.py:72
 msgid "Apartment, suite, etc."
 msgstr "ফ্ল্যাট, তলা ইত্যাদি"
 
-#: .\eco\forms.py:72
+#: .\eco\forms.py:73
 msgid "Postal code"
 msgstr "পোস্ট কোড"
 
-#: .\eco\forms.py:73
+#: .\eco\forms.py:74
 msgid "Country"
 msgstr "দেশ"
 
-#: .\eco\forms.py:74
+#: .\eco\forms.py:75
 msgid "Use as my default delivery address"
 msgstr "এটিকে আমার ডিফল্ট ডেলিভারি ঠিকানা করুন"
 
-#: .\eco\forms.py:77
-msgid "House, road and area"
-msgstr "বাড়ি, রোড ও এলাকা"
-
 #: .\eco\forms.py:78
-msgid "Flat or floor (optional)"
-msgstr "ফ্ল্যাট বা তলা (ঐচ্ছিক)"
+msgid "Street name and number"
+msgstr "রাস্তার নাম ও নম্বর"
+
+#: .\eco\forms.py:79
+msgid "Apartment, suite or floor (optional)"
+msgstr "অ্যাপার্টমেন্ট, স্যুট বা তলা (ঐচ্ছিক)"
+
+#: .\eco\forms.py:81
+msgid "e.g. 10001 or SW1A 1AA"
+msgstr "যেমন 10001 বা SW1A 1AA"
 
 #: .\eco\models.py:41
 msgid "Hardcover"
@@ -155,191 +195,191 @@ msgstr "ভালো"
 msgid "Acceptable"
 msgstr "চলনসই"
 
-#: .\eco\views.py:52
+#: .\eco\views.py:54
 msgid "Please log in first."
 msgstr "আগে লগ ইন করুন।"
 
-#: .\eco\views.py:200
+#: .\eco\views.py:230
 #, python-format
 msgid "Sorry, %(title)s is out of stock."
 msgstr "দুঃখিত, %(title)s এখন স্টকে নেই।"
 
-#: .\eco\views.py:201 .\eco\views.py:435
+#: .\eco\views.py:231 .\eco\views.py:467
 #, python-format
 msgid "Only %(count)s copies of %(title)s are available."
 msgstr "%(title)s-এর মাত্র %(count)s কপি আছে।"
 
-#: .\eco\views.py:213
+#: .\eco\views.py:243
 #, python-format
 msgid "%(title)s added to your cart!"
 msgstr "%(title)s আপনার কার্টে যোগ হয়েছে!"
 
-#: .\eco\views.py:256
+#: .\eco\views.py:286
 msgid "Invalid request"
 msgstr "অবৈধ অনুরোধ"
 
-#: .\eco\views.py:262
+#: .\eco\views.py:292
 #, python-format
 msgid "Only %(count)s copies available."
 msgstr "মাত্র %(count)s কপি আছে।"
 
-#: .\eco\views.py:292 .\eco\views.py:295 .\eco\views.py:309 .\eco\views.py:327
+#: .\eco\views.py:322 .\eco\views.py:325 .\eco\views.py:339 .\eco\views.py:357
 #, python-format
 msgid "%(title)s removed from cart"
 msgstr "%(title)s কার্ট থেকে সরানো হয়েছে"
 
-#: .\eco\views.py:311 .\eco\views.py:320
+#: .\eco\views.py:341 .\eco\views.py:350
 msgid "Item not found in cart"
 msgstr "কার্টে বইটি পাওয়া যায়নি"
 
-#: .\eco\views.py:324
+#: .\eco\views.py:354
 #, python-format
 msgid "%(title)s quantity updated"
 msgstr "%(title)s-এর পরিমাণ হালনাগাদ হয়েছে"
 
-#: .\eco\views.py:397 .\eco\views.py:423 .\templates\eco\basket.html:19
-#: .\templates\eco\layout.html:105
+#: .\eco\views.py:429 .\eco\views.py:455 .\templates\eco\basket.html:19
+#: .\templates\eco\layout.html:151
 msgid "Your cart is empty"
 msgstr "আপনার কার্ট খালি"
 
-#: .\eco\views.py:402 .\eco\views.py:428
+#: .\eco\views.py:434 .\eco\views.py:460
 msgid "Please set up your default shipping address before checkout."
 msgstr "চেকআউটের আগে আপনার ডিফল্ট ডেলিভারি ঠিকানা যোগ করুন।"
 
-#: .\eco\views.py:463 .\eco\views.py:475
+#: .\eco\views.py:495 .\eco\views.py:507
 msgid "Please complete checkout first."
 msgstr "আগে চেকআউট সম্পন্ন করুন।"
 
-#: .\eco\views.py:480
+#: .\eco\views.py:512
 msgid "Please enter your card details."
 msgstr "আপনার কার্ডের তথ্য দিন।"
 
-#: .\eco\views.py:495
+#: .\eco\views.py:527
 msgid "Your card was declined."
 msgstr "আপনার কার্ডটি গ্রহণ করা হয়নি।"
 
-#: .\eco\views.py:498
+#: .\eco\views.py:530
 msgid "Payment could not be processed. You have not been charged."
 msgstr "পেমেন্ট সম্পন্ন করা যায়নি। আপনার কাছ থেকে কোনো টাকা কাটা হয়নি।"
 
-#: .\eco\views.py:502
+#: .\eco\views.py:534
 #, python-format
 msgid "Your order was placed successfully! Reference: %(ref)s"
 msgstr "আপনার অর্ডার সফলভাবে দেওয়া হয়েছে! রেফারেন্স: %(ref)s"
 
-#: .\eco\views.py:536
+#: .\eco\views.py:568
 msgid "Book was added to your wishlist"
 msgstr "বইটি আপনার উইশলিস্টে যোগ হয়েছে"
 
-#: .\eco\views.py:536
+#: .\eco\views.py:568
 msgid "Book was already in your wishlist"
 msgstr "বইটি আগেই আপনার উইশলিস্টে আছে"
 
-#: .\eco\views.py:555
+#: .\eco\views.py:587
 msgid "Book removed from your wishlist"
 msgstr "বইটি উইশলিস্ট থেকে সরানো হয়েছে"
 
-#: .\eco\views.py:556
+#: .\eco\views.py:588
 msgid "Book not found in your wishlist"
 msgstr "উইশলিস্টে বইটি পাওয়া যায়নি"
 
-#: .\eco\views.py:559
+#: .\eco\views.py:591
 msgid "Book was removed from your wishlist."
 msgstr "বইটি উইশলিস্ট থেকে সরানো হয়েছে।"
 
-#: .\eco\views.py:561
+#: .\eco\views.py:593
 msgid "Book not found in your wishlist."
 msgstr "উইশলিস্টে বইটি পাওয়া যায়নি।"
 
-#: .\eco\views.py:570
+#: .\eco\views.py:602
 msgid "Please log in to apply promo codes."
 msgstr "প্রোমো কোড ব্যবহার করতে লগ ইন করুন।"
 
-#: .\eco\views.py:575
+#: .\eco\views.py:607
 msgid "Invalid request."
 msgstr "অবৈধ অনুরোধ।"
 
-#: .\eco\views.py:579
+#: .\eco\views.py:611
 msgid "Please add items to your cart first."
 msgstr "আগে কার্টে বই যোগ করুন।"
 
-#: .\eco\views.py:583
+#: .\eco\views.py:615
 msgid "Invalid or expired promo code."
 msgstr "প্রোমো কোডটি সঠিক নয় বা মেয়াদ শেষ।"
 
-#: .\eco\views.py:585
+#: .\eco\views.py:617
 msgid "This promo code has expired."
 msgstr "এই প্রোমো কোডের মেয়াদ শেষ হয়ে গেছে।"
 
-#: .\eco\views.py:593
+#: .\eco\views.py:625
 #, python-format
 msgid "Promo code applied! %(amount)s discount added."
 msgstr "প্রোমো কোড প্রয়োগ হয়েছে! %(amount)s ছাড় যোগ হয়েছে।"
 
-#: .\eco\views.py:631
+#: .\eco\views.py:663
 msgid "There was an error sending your message. Please try again later."
 msgstr "বার্তা পাঠাতে সমস্যা হয়েছে। পরে আবার চেষ্টা করুন।"
 
-#: .\eco\views.py:633
+#: .\eco\views.py:665
 msgid "Your message has been sent successfully!"
 msgstr "আপনার বার্তা সফলভাবে পাঠানো হয়েছে!"
 
-#: .\eco\views.py:662
+#: .\eco\views.py:694
 msgid "Shipping address saved successfully!"
 msgstr "ডেলিভারি ঠিকানা সংরক্ষণ করা হয়েছে!"
 
-#: .\eco\views.py:666 .\users\views.py:91
+#: .\eco\views.py:698 .\users\views.py:91
 msgid "Please correct the errors below."
 msgstr "নিচের ভুলগুলো ঠিক করুন।"
 
-#: .\eco\views.py:685 .\eco\views.py:686 .\eco\views.py:711 .\eco\views.py:712
+#: .\eco\views.py:717 .\eco\views.py:718 .\eco\views.py:743 .\eco\views.py:744
 msgid "Address not found"
 msgstr "ঠিকানা পাওয়া যায়নি"
 
-#: .\eco\views.py:698
+#: .\eco\views.py:730
 #, python-format
 msgid "Address \"%(address)s\" deleted successfully!"
 msgstr "\"%(address)s\" ঠিকানাটি মুছে ফেলা হয়েছে!"
 
-#: .\eco\views.py:719
+#: .\eco\views.py:751
 msgid "Default shipping address updated successfully!"
 msgstr "ডিফল্ট ডেলিভারি ঠিকানা হালনাগাদ হয়েছে!"
 
-#: .\eco\views.py:736
+#: .\eco\views.py:768
 msgid "Address updated successfully!"
 msgstr "ঠিকানা হালনাগাদ হয়েছে!"
 
-#: .\eco\views.py:777
+#: .\eco\views.py:809
 msgid "Add New Book"
 msgstr "নতুন বই যোগ করুন"
 
-#: .\eco\views.py:778
+#: .\eco\views.py:810
 msgid "Book added successfully!"
 msgstr "বই সফলভাবে যোগ হয়েছে!"
 
-#: .\eco\views.py:784
+#: .\eco\views.py:816
 msgid "Edit Book"
 msgstr "বই সম্পাদনা"
 
-#: .\eco\views.py:785
+#: .\eco\views.py:817
 msgid "Book updated successfully!"
 msgstr "বই হালনাগাদ হয়েছে!"
 
-#: .\eco\views.py:793
+#: .\eco\views.py:825
 #, python-format
 msgid "Book \"%(title)s\" deleted successfully!"
 msgstr "\"%(title)s\" বইটি মুছে ফেলা হয়েছে!"
 
-#: .\eco\views.py:800
+#: .\eco\views.py:832
 msgid "Add New Category"
 msgstr "নতুন বিভাগ যোগ করুন"
 
-#: .\eco\views.py:801
+#: .\eco\views.py:833
 msgid "Category added successfully!"
 msgstr "বিভাগ সফলভাবে যোগ হয়েছে!"
 
 #: .\templates\eco\basket.html:4 .\templates\eco\basket.html:11
-#: .\templates\eco\footer.html:22 .\templates\eco\layout.html:66
+#: .\templates\eco\footer.html:22 .\templates\eco\layout.html:112
 msgid "Your cart"
 msgstr "আপনার কার্ট"
 
@@ -360,7 +400,7 @@ msgid ""
 "read."
 msgstr "মনে হচ্ছে আপনি এখনো কোনো বই যোগ করেননি। চলুন পড়ার মতো দারুণ কিছু খুঁজে নিই।"
 
-#: .\templates\eco\basket.html:21 .\templates\eco\layout.html:107
+#: .\templates\eco\basket.html:21 .\templates\eco\layout.html:153
 #: .\templates\users\profile.html:67
 msgid "Start shopping"
 msgstr "কেনাকাটা শুরু করুন"
@@ -392,16 +432,17 @@ msgid "Increase quantity"
 msgstr "পরিমাণ বাড়ান"
 
 #: .\templates\eco\basket.html:45 .\templates\eco\book_detail.html:75
-#: .\templates\eco\layout.html:92
+#: .\templates\eco\layout.html:138
 msgid "Saved"
 msgstr "সংরক্ষিত"
 
 #: .\templates\eco\basket.html:45 .\templates\eco\book_detail.html:75
-#: .\templates\eco\layout.html:93 .\templates\eco\manage_form.html:21
+#: .\templates\eco\layout.html:104 .\templates\eco\layout.html:139
+#: .\templates\eco\manage_form.html:21
 msgid "Save"
 msgstr "সংরক্ষণ"
 
-#: .\templates\eco\basket.html:48 .\templates\eco\layout.html:104
+#: .\templates\eco\basket.html:48 .\templates\eco\layout.html:150
 #: .\templates\users\profile_edit.html:27
 msgid "Remove"
 msgstr "সরান"
@@ -412,7 +453,7 @@ msgid "Order summary"
 msgstr "অর্ডারের সারাংশ"
 
 #: .\templates\eco\basket.html:62 .\templates\eco\checkout.html:63
-#: .\templates\eco\layout.html:71
+#: .\templates\eco\layout.html:117
 msgid "Subtotal"
 msgstr "উপমোট"
 
@@ -449,7 +490,7 @@ msgid "Apply"
 msgstr "প্রয়োগ করুন"
 
 #: .\templates\eco\basket.html:81 .\templates\eco\checkout.html:4
-#: .\templates\eco\layout.html:75
+#: .\templates\eco\layout.html:121
 msgid "Checkout"
 msgstr "চেকআউট"
 
@@ -487,14 +528,14 @@ msgid "Breadcrumb"
 msgstr "পথনির্দেশ"
 
 #: .\templates\eco\book_detail.html:16 .\templates\eco\category.html:11
-#: .\templates\eco\layout.html:37 .\templates\eco\partials\header.html:11
-#: .\templates\eco\partials\header.html:83
+#: .\templates\eco\layout.html:39 .\templates\eco\partials\header.html:11
+#: .\templates\eco\partials\header.html:91
 msgid "Home"
 msgstr "হোম"
 
 #: .\templates\eco\book_detail.html:17 .\templates\eco\footer.html:18
-#: .\templates\eco\layout.html:38 .\templates\eco\partials\header.html:12
-#: .\templates\eco\partials\header.html:84
+#: .\templates\eco\layout.html:40 .\templates\eco\partials\header.html:12
+#: .\templates\eco\partials\header.html:92
 msgid "Shop"
 msgstr "দোকান"
 
@@ -544,9 +585,14 @@ msgstr "কার্টে যোগ করুন"
 msgid "Currently unavailable"
 msgstr "এখন পাওয়া যাচ্ছে না"
 
+#: .\templates\eco\book_detail.html:80
+#, python-format
+msgid "Free delivery to %(country)s"
+msgstr "%(country)s-এ ফ্রি ডেলিভারি"
+
 #: .\templates\eco\book_detail.html:80 .\templates\eco\home.html:32
-msgid "Free delivery"
-msgstr "ফ্রি ডেলিভারি"
+msgid "Free worldwide delivery"
+msgstr "বিশ্বজুড়ে ফ্রি ডেলিভারি"
 
 #: .\templates\eco\book_detail.html:81
 msgid "Easy returns"
@@ -580,8 +626,8 @@ msgstr "প্রকাশক"
 msgid "Published"
 msgstr "প্রকাশকাল"
 
-#: .\templates\eco\book_detail.html:99 .\templates\users\profile.html:38
-#: .\users\forms.py:66
+#: .\templates\eco\book_detail.html:99 .\templates\eco\layout.html:75
+#: .\templates\users\profile.html:38 .\users\forms.py:66
 msgid "Language"
 msgstr "ভাষা"
 
@@ -642,9 +688,9 @@ msgstr[0] "%(counter)sটি বই পাঠানোর জন্য প্র
 msgstr[1] "%(counter)sটি বই পাঠানোর জন্য প্রস্তুত"
 
 #: .\templates\eco\browse_books.html:25 .\templates\eco\home.html:14
-#: .\templates\eco\layout.html:48 .\templates\eco\layout.html:52
+#: .\templates\eco\layout.html:50 .\templates\eco\layout.html:54
 #: .\templates\eco\partials\header.html:24
-#: .\templates\eco\partials\header.html:81
+#: .\templates\eco\partials\header.html:85
 msgid "Search books"
 msgstr "বই খুঁজুন"
 
@@ -653,7 +699,7 @@ msgid "Title, author, ISBN or category…"
 msgstr "শিরোনাম, লেখক, ISBN বা বিভাগ…"
 
 #: .\templates\eco\browse_books.html:28 .\templates\eco\home.html:16
-#: .\templates\eco\layout.html:39
+#: .\templates\eco\layout.html:41
 msgid "Search"
 msgstr "খুঁজুন"
 
@@ -684,8 +730,8 @@ msgstr "নতুন বই আসছে। শিগগিরই আবার �
 
 #: .\templates\eco\category.html:4 .\templates\eco\category.html:12
 #: .\templates\eco\footer.html:21 .\templates\eco\home.html:22
-#: .\templates\eco\layout.html:100 .\templates\eco\partials\header.html:13
-#: .\templates\eco\partials\header.html:85
+#: .\templates\eco\layout.html:146 .\templates\eco\partials\header.html:13
+#: .\templates\eco\partials\header.html:93
 msgid "Categories"
 msgstr "বিভাগসমূহ"
 
@@ -697,7 +743,7 @@ msgstr "বিভাগ"
 msgid "Explore our hand-picked titles in this category."
 msgstr "এই বিভাগে আমাদের বাছাই করা বইগুলো দেখুন।"
 
-#: .\templates\eco\category.html:22 .\templates\eco\home.html:133
+#: .\templates\eco\category.html:22 .\templates\eco\home.html:137
 msgid "Explore"
 msgstr "ঘুরে দেখুন"
 
@@ -709,7 +755,7 @@ msgstr "বিভাগ অনুযায়ী দেখুন"
 msgid "From timeless classics to page-turning thrillers, find your next read."
 msgstr "চিরায়ত ক্লাসিক থেকে রুদ্ধশ্বাস থ্রিলার, খুঁজে নিন আপনার পরের বই।"
 
-#: .\templates\eco\category.html:44 .\templates\eco\home.html:144
+#: .\templates\eco\category.html:44 .\templates\eco\home.html:148
 #, python-format
 msgid "%(counter)s book"
 msgid_plural "%(counter)s books"
@@ -738,9 +784,9 @@ msgstr "সব বই দেখুন"
 msgid "Checkout progress"
 msgstr "চেকআউটের ধাপ"
 
-#: .\templates\eco\checkout.html:10 .\templates\eco\layout.html:41
-#: .\templates\eco\partials\header.html:38
-#: .\templates\eco\partials\header.html:86 .\templates\eco\payment.html:10
+#: .\templates\eco\checkout.html:10 .\templates\eco\layout.html:43
+#: .\templates\eco\partials\header.html:42
+#: .\templates\eco\partials\header.html:94 .\templates\eco\payment.html:10
 #: .\templates\eco\shipping_address.html:11
 #: .\templates\users\account_base.html:24
 msgid "Cart"
@@ -806,7 +852,7 @@ msgstr "কার্টে ফিরুন"
 msgid "Your data is encrypted and secure"
 msgstr "আপনার তথ্য এনক্রিপ্টেড ও নিরাপদ"
 
-#: .\templates\eco\contact.html:4
+#: .\templates\eco\contact.html:4 .\templates\eco\footer.html:38
 msgid "Contact us"
 msgstr "যোগাযোগ করুন"
 
@@ -827,30 +873,46 @@ msgstr ""
 "পাঠান, এক কর্মদিবসের মধ্যে উত্তর দেব।"
 
 #: .\templates\eco\contact.html:19
-msgid "Visit us"
-msgstr "আমাদের ঠিকানা"
-
-#: .\templates\eco\contact.html:19 .\templates\eco\footer.html:45
-msgid "Block A, Gulshan Square, Gulshan 2, Dhaka 1200"
-msgstr "ব্লক এ, গুলশান স্কয়ার, গুলশান ২, ঢাকা ১২০০"
+msgid "Best for order questions from any country"
+msgstr "যেকোনো দেশ থেকে অর্ডার সংক্রান্ত প্রশ্নের জন্য সবচেয়ে ভালো"
 
 #: .\templates\eco\contact.html:23
 msgid "Call us"
 msgstr "ফোন করুন"
 
-#: .\templates\eco\contact.html:31
-msgid "Opening hours"
-msgstr "খোলার সময়"
+#: .\templates\eco\contact.html:23
+msgid "International call rates may apply"
+msgstr "আন্তর্জাতিক কল চার্জ প্রযোজ্য হতে পারে"
+
+#: .\templates\eco\contact.html:27
+msgid "Support hours"
+msgstr "সহায়তার সময়"
+
+#: .\templates\eco\contact.html:27
+msgid "Saturday – Thursday, 10:00 – 20:00 Bangladesh time (GMT+6)"
+msgstr "শনিবার – বৃহস্পতিবার, ১০:০০ – ২০:০০ বাংলাদেশ সময় (GMT+6)"
 
 #: .\templates\eco\contact.html:31
-msgid "Saturday – Thursday, 10am – 8pm"
-msgstr "শনিবার – বৃহস্পতিবার, সকাল ১০টা – রাত ৮টা"
+msgid "Languages"
+msgstr "ভাষাসমূহ"
 
-#: .\templates\eco\contact.html:42
+#: .\templates\eco\contact.html:31
+msgid "We reply in English and Bangla"
+msgstr "আমরা ইংরেজি ও বাংলায় উত্তর দিই"
+
+#: .\templates\eco\contact.html:35
+msgid "Head office"
+msgstr "প্রধান কার্যালয়"
+
+#: .\templates\eco\contact.html:35
+msgid "Block A, Gulshan Square, Gulshan 2, Dhaka 1212, Bangladesh"
+msgstr "ব্লক এ, গুলশান স্কয়ার, গুলশান ২, ঢাকা ১২১২, বাংলাদেশ"
+
+#: .\templates\eco\contact.html:46
 msgid "Send a message"
 msgstr "বার্তা পাঠান"
 
-#: .\templates\eco\contact.html:51
+#: .\templates\eco\contact.html:55
 msgid "Send message"
 msgstr "বার্তা পাঠান"
 
@@ -903,74 +965,66 @@ msgstr "{count}টি বই সংরক্ষিত"
 
 #: .\templates\eco\footer.html:9
 msgid ""
-"Your trusted partner for quality books and educational resources. Discover "
-"your next favourite read with us."
-msgstr ""
-"মানসম্মত বই ও শিক্ষাসামগ্রীর বিশ্বস্ত সঙ্গী। আমাদের সাথে খুঁজে নিন আপনার পরের প্রিয় "
-"বই।"
+"An online bookstore for readers everywhere. Classics, bestsellers and new "
+"arrivals, shipped free to your country."
+msgstr "সব দেশের পাঠকের জন্য একটি অনলাইন বইয়ের দোকান। ক্লাসিক, বেস্টসেলার ও নতুন বই, ফ্রি শিপিংয়ে আপনার দেশে।"
 
-#: .\templates\eco\footer.html:23 .\templates\eco\home.html:95
-#: .\templates\eco\partials\header.html:33
-#: .\templates\eco\partials\header.html:56
-#: .\templates\eco\partials\header.html:88
+#: .\templates\eco\footer.html:23 .\templates\eco\partials\header.html:37
+#: .\templates\eco\partials\header.html:60
+#: .\templates\eco\partials\header.html:96
 #: .\templates\users\account_base.html:23
 msgid "Wishlist"
 msgstr "উইশলিস্ট"
 
-#: .\templates\eco\footer.html:28 .\templates\eco\layout.html:44
-#: .\templates\users\account_base.html:18
-msgid "Account"
-msgstr "অ্যাকাউন্ট"
-
-#: .\templates\eco\footer.html:31 .\templates\eco\partials\header.html:55
-#: .\templates\eco\partials\header.html:89 .\templates\users\profile.html:4
+#: .\templates\eco\footer.html:25 .\templates\eco\partials\header.html:59
+#: .\templates\eco\partials\header.html:97 .\templates\users\profile.html:4
 #: .\templates\users\profile.html:14
 msgid "My account"
 msgstr "আমার অ্যাকাউন্ট"
 
-#: .\templates\eco\footer.html:32 .\templates\eco\partials\header.html:57
-#: .\templates\eco\shipping_address.html:4
-#: .\templates\users\account_base.html:22
-msgid "Addresses"
-msgstr "ঠিকানাসমূহ"
-
-#: .\templates\eco\footer.html:33 .\templates\users\change_password.html:4
-#: .\templates\users\change_password.html:8
-msgid "Change password"
-msgstr "পাসওয়ার্ড পরিবর্তন"
-
-#: .\templates\eco\footer.html:35 .\templates\eco\partials\header.html:67
-#: .\templates\eco\partials\header.html:94 .\templates\users\login.html:4
+#: .\templates\eco\footer.html:27 .\templates\eco\partials\header.html:71
+#: .\templates\eco\partials\header.html:102 .\templates\users\login.html:4
 #: .\templates\users\login.html:29
 #: .\templates\users\password_reset_complete.html:9
 #: .\templates\users\register.html:33
 msgid "Sign in"
 msgstr "সাইন ইন"
 
-#: .\templates\eco\footer.html:36 .\templates\eco\partials\header.html:95
-#: .\templates\users\register.html:4 .\templates\users\register.html:30
-msgid "Create account"
-msgstr "অ্যাকাউন্ট খুলুন"
+#: .\templates\eco\footer.html:33
+msgid "Help"
+msgstr "সহায়তা"
 
-#: .\templates\eco\footer.html:38
-msgid "Help & contact"
-msgstr "সহায়তা ও যোগাযোগ"
+#: .\templates\eco\footer.html:35
+msgid "Shipping & delivery"
+msgstr "শিপিং ও ডেলিভারি"
+
+#: .\templates\eco\footer.html:36
+msgid "Payments & currencies"
+msgstr "পেমেন্ট ও মুদ্রা"
+
+#: .\templates\eco\footer.html:37
+msgid "Promo codes"
+msgstr "প্রোমো কোড"
 
 #: .\templates\eco\footer.html:43
 msgid "Get in touch"
 msgstr "যোগাযোগ"
 
-#: .\templates\eco\footer.html:53
+#: .\templates\eco\footer.html:47
+msgid "Sat – Thu, 10:00 – 20:00 (GMT+6)"
+msgstr "শনি – বৃহস্পতি, ১০:০০ – ২০:০০ (GMT+6)"
+
+#: .\templates\eco\footer.html:48
+msgid "Head office: Gulshan 2, Dhaka, Bangladesh"
+msgstr "প্রধান কার্যালয়: গুলশান ২, ঢাকা, বাংলাদেশ"
+
+#: .\templates\eco\footer.html:54
 msgid "All rights reserved."
 msgstr "সর্বস্বত্ব সংরক্ষিত।"
 
-#: .\templates\eco\footer.html:54
-msgid "Made with"
-msgstr "পাঠকদের জন্য"
-
-#: .\templates\eco\footer.html:54
-msgid "for readers"
-msgstr "দিয়ে তৈরি"
+#: .\templates\eco\footer.html:56
+msgid "We accept Visa, Mastercard and American Express via Stripe"
+msgstr "Stripe-এর মাধ্যমে আমরা ভিসা, মাস্টারকার্ড ও আমেরিকান এক্সপ্রেস গ্রহণ করি"
 
 #: .\templates\eco\home.html:9
 msgid "New season, new stories"
@@ -982,11 +1036,9 @@ msgstr "খুঁজে নিন সেই বই, যা <em>আপনাক�
 
 #: .\templates\eco\home.html:11
 msgid ""
-"Hand-picked classics, modern bestsellers and hidden gems, delivered to your "
-"door. Free shipping on every order."
-msgstr ""
-"বাছাই করা ক্লাসিক, আধুনিক বেস্টসেলার আর লুকানো রত্ন, পৌঁছে যাবে আপনার দরজায়। "
-"প্রতিটি অর্ডারে ফ্রি ডেলিভারি।"
+"Hand-picked classics, modern bestsellers and hidden gems, shipped free to "
+"readers around the world. Shop in your language and pay in your currency."
+msgstr "বাছাই করা ক্লাসিক, আধুনিক বেস্টসেলার আর লুকানো রত্ন, বিশ্বের যেকোনো প্রান্তে ফ্রি শিপিংয়ে। নিজের ভাষায় কেনাকাটা করুন, নিজের মুদ্রায় দাম দেখুন।"
 
 #: .\templates\eco\home.html:15
 msgid "Search by title, author or category…"
@@ -1000,7 +1052,7 @@ msgstr "স্টকে থাকা বই"
 msgid "Authors"
 msgstr "লেখক"
 
-#: .\templates\eco\home.html:32 .\templates\eco\home.html:80
+#: .\templates\eco\home.html:32
 msgid "On every order, no minimum"
 msgstr "প্রতিটি অর্ডারে, কোনো ন্যূনতম সীমা নেই"
 
@@ -1035,76 +1087,165 @@ msgid "Copy code"
 msgstr "কোড কপি করুন"
 
 #: .\templates\eco\home.html:80
-msgid "Free shipping"
-msgstr "ফ্রি ডেলিভারি"
+msgid "Free worldwide shipping"
+msgstr "বিশ্বজুড়ে ফ্রি শিপিং"
+
+#: .\templates\eco\home.html:80
+msgid "To any country, no minimum order"
+msgstr "যেকোনো দেশে, ন্যূনতম অর্ডার নেই"
 
 #: .\templates\eco\home.html:85
 msgid "Secure checkout"
 msgstr "নিরাপদ চেকআউট"
 
 #: .\templates\eco\home.html:85
-msgid "Payments by Stripe"
-msgstr "Stripe-এর মাধ্যমে পেমেন্ট"
+msgid "Visa, Mastercard and Amex via Stripe"
+msgstr "Stripe-এর মাধ্যমে ভিসা, মাস্টারকার্ড ও অ্যামেক্স"
 
-#: .\templates\eco\home.html:90
+#: .\templates\eco\home.html:91
+msgid "Your language, your currency"
+msgstr "আপনার ভাষা, আপনার মুদ্রা"
+
+#: .\templates\eco\home.html:93
+#, python-format
+msgid "Showing %(language)s · %(code)s. Tap to change."
+msgstr "এখন দেখাচ্ছে %(language)s · %(code)s। বদলাতে চাপুন।"
+
+#: .\templates\eco\home.html:99
 msgid "Find any book in seconds"
 msgstr "মুহূর্তেই যেকোনো বই খুঁজুন"
 
-#: .\templates\eco\home.html:90
+#: .\templates\eco\home.html:99
 msgid "Press <kbd>/</kbd> anywhere to search"
 msgstr "খুঁজতে যেকোনো জায়গায় <kbd>/</kbd> চাপুন"
 
-#: .\templates\eco\home.html:95
-msgid "Save books for later"
-msgstr "পরে পড়ার জন্য বই রাখুন"
-
-#: .\templates\eco\home.html:100
+#: .\templates\eco\home.html:104
 msgid "Jump into a genre"
 msgstr "পছন্দের ধরনে চলে যান"
 
-#: .\templates\eco\home.html:114
+#: .\templates\eco\home.html:118
 msgid "Editor's picks"
 msgstr "সম্পাদকের পছন্দ"
 
-#: .\templates\eco\home.html:115
+#: .\templates\eco\home.html:119
 msgid "Featured books"
 msgstr "বিশেষ বই"
 
-#: .\templates\eco\home.html:117
+#: .\templates\eco\home.html:121
 msgid "Browse all"
 msgstr "সব দেখুন"
 
-#: .\templates\eco\home.html:134
+#: .\templates\eco\home.html:138
 msgid "Shop by category"
 msgstr "বিভাগ অনুযায়ী কিনুন"
 
-#: .\templates\eco\home.html:136
+#: .\templates\eco\home.html:140
 msgid "All categories"
 msgstr "সব বিভাগ"
 
-#: .\templates\eco\home.html:157
+#: .\templates\eco\home.html:161
 msgid "Just landed"
 msgstr "সদ্য এসেছে"
 
-#: .\templates\eco\home.html:158
+#: .\templates\eco\home.html:162
 msgid "New arrivals"
 msgstr "নতুন বই"
 
-#: .\templates\eco\home.html:160
+#: .\templates\eco\home.html:164
 msgid "See more"
 msgstr "আরও দেখুন"
 
-#: .\templates\eco\home.html:176
+#: .\templates\eco\home.html:180
 msgid "Limited time"
 msgstr "সীমিত সময়"
 
-#: .\templates\eco\home.html:177
+#: .\templates\eco\home.html:181
 msgid "Deals of the week"
 msgstr "এই সপ্তাহের অফার"
 
-#: .\templates\eco\home.html:178
+#: .\templates\eco\home.html:182
 msgid "Great reads at even better prices."
 msgstr "দারুণ বই, আরও ভালো দামে।"
+
+#: .\templates\eco\home.html:197
+msgid "Good to know"
+msgstr "জেনে রাখুন"
+
+#: .\templates\eco\home.html:198
+msgid "Shopping from anywhere"
+msgstr "যেকোনো জায়গা থেকে কেনাকাটা"
+
+#: .\templates\eco\home.html:199
+msgid ""
+"Everything you need to know about delivery, payment and currencies before "
+"you order."
+msgstr "অর্ডারের আগে ডেলিভারি, পেমেন্ট ও মুদ্রা সম্পর্কে যা জানা দরকার।"
+
+#: .\templates\eco\home.html:200
+msgid "Ask a question"
+msgstr "প্রশ্ন করুন"
+
+#: .\templates\eco\home.html:204
+msgid "Do you ship to my country?"
+msgstr "আপনারা কি আমার দেশে শিপিং করেন?"
+
+#: .\templates\eco\home.html:205
+msgid ""
+"Yes. Add any delivery address at checkout and we ship there. Shipping is "
+"free on every order, with no minimum."
+msgstr "হ্যাঁ। চেকআউটে যেকোনো ডেলিভারি ঠিকানা দিন, আমরা সেখানেই পাঠাব। প্রতিটি অর্ডারে শিপিং ফ্রি, ন্যূনতম অর্ডারের শর্ত নেই।"
+
+#: .\templates\eco\home.html:208
+msgid "Which currency will I pay in?"
+msgstr "আমি কোন মুদ্রায় পেমেন্ট করব?"
+
+#: .\templates\eco\home.html:209
+#, python-format
+msgid ""
+"Prices are shown in %(code)s. You can switch currency from the language & "
+"currency menu. Cards are charged in US dollars, so your bank converts the "
+"final amount and it may differ slightly from the price shown."
+msgstr "দাম দেখানো হচ্ছে %(code)s-এ। ভাষা ও মুদ্রা মেনু থেকে মুদ্রা বদলাতে পারেন। কার্ড থেকে মার্কিন ডলারে চার্জ হয়, তাই আপনার ব্যাংক চূড়ান্ত পরিমাণ রূপান্তর করে এবং তা দেখানো দামের থেকে সামান্য আলাদা হতে পারে।"
+
+#: .\templates\eco\home.html:212
+msgid "Which payment methods do you accept?"
+msgstr "আপনারা কোন কোন পেমেন্ট পদ্ধতি গ্রহণ করেন?"
+
+#: .\templates\eco\home.html:213
+msgid ""
+"Visa, Mastercard and American Express, processed securely by Stripe. We "
+"never see or store your card details."
+msgstr "ভিসা, মাস্টারকার্ড ও আমেরিকান এক্সপ্রেস, Stripe-এর মাধ্যমে নিরাপদে প্রসেস করা হয়। আমরা কখনো আপনার কার্ডের তথ্য দেখি বা সংরক্ষণ করি না।"
+
+#: .\templates\eco\home.html:216
+msgid "Will I pay customs or import duties?"
+msgstr "আমাকে কি কাস্টমস বা আমদানি শুল্ক দিতে হবে?"
+
+#: .\templates\eco\home.html:217
+msgid ""
+"Some countries charge duties or taxes on imported goods. These are set by "
+"your local customs office and are not included in our prices."
+msgstr "কিছু দেশ আমদানি করা পণ্যে শুল্ক বা কর নেয়। এগুলো আপনার স্থানীয় কাস্টমস অফিস নির্ধারণ করে এবং আমাদের দামের মধ্যে ধরা নেই।"
+
+#: .\templates\eco\home.html:220
+msgid "How do promo codes work?"
+msgstr "প্রোমো কোড কীভাবে কাজ করে?"
+
+#: .\templates\eco\home.html:221
+msgid ""
+"Enter the code on your cart page before checkout. The discount comes off "
+"your order total, and one code can be used per order."
+msgstr "চেকআউটের আগে কার্ট পেজে কোডটি লিখুন। ছাড় আপনার মোট অর্ডার থেকে বাদ যাবে, এবং প্রতি অর্ডারে একটি কোড ব্যবহার করা যাবে।"
+
+#: .\templates\eco\home.html:224
+msgid "Can I use the site in my language?"
+msgstr "আমি কি নিজের ভাষায় সাইটটি ব্যবহার করতে পারব?"
+
+#: .\templates\eco\home.html:225
+msgid ""
+"BookBazar is available in English and Bangla. Pick your language from the "
+"globe menu at the top or bottom of any page."
+msgstr "BookBazar ইংরেজি ও বাংলায় পাওয়া যায়। যেকোনো পেজের ওপরে বা নিচে গ্লোব মেনু থেকে ভাষা বেছে নিন।"
 
 #: .\templates\eco\layout.html:8
 msgid "BookBazar — Find your next favourite book"
@@ -1118,90 +1259,121 @@ msgstr ""
 "BookBazar একটি অনলাইন বইয়ের দোকান, যেখানে ক্লাসিক, বেস্টসেলার ও নতুন বই পৌঁছে "
 "যায় আপনার দরজায়।"
 
-#: .\templates\eco\layout.html:36
+#: .\templates\eco\layout.html:38
 msgid "Quick links"
 msgstr "দ্রুত লিংক"
 
-#: .\templates\eco\layout.html:51
+#: .\templates\eco\layout.html:46 .\templates\users\account_base.html:18
+msgid "Account"
+msgstr "অ্যাকাউন্ট"
+
+#: .\templates\eco\layout.html:53
 msgid "Search titles, authors, categories…"
 msgstr "শিরোনাম, লেখক, বিভাগ খুঁজুন…"
 
-#: .\templates\eco\layout.html:57
+#: .\templates\eco\layout.html:59
 msgid "to navigate"
 msgstr "সরাতে"
 
-#: .\templates\eco\layout.html:58
+#: .\templates\eco\layout.html:60
 msgid "to open"
 msgstr "খুলতে"
 
-#: .\templates\eco\layout.html:59
+#: .\templates\eco\layout.html:61
 msgid "to close"
 msgstr "বন্ধ করতে"
 
-#: .\templates\eco\layout.html:67
+#: .\templates\eco\layout.html:70 .\templates\eco\partials\header.html:27
+#: .\templates\eco\partials\header.html:88
+msgid "Language & currency"
+msgstr "ভাষা ও মুদ্রা"
+
+#: .\templates\eco\layout.html:71
+msgid "Close"
+msgstr "বন্ধ করুন"
+
+#: .\templates\eco\layout.html:89 .\templates\users\profile.html:39
+#: .\users\forms.py:67
+msgid "Currency"
+msgstr "মুদ্রা"
+
+#: .\templates\eco\layout.html:100
+msgid ""
+"Prices in other currencies are approximate. Cards are charged in US dollars "
+"and your bank converts the amount."
+msgstr "অন্য মুদ্রায় দেখানো দাম আনুমানিক। কার্ড থেকে মার্কিন ডলারে চার্জ হয় এবং আপনার ব্যাংক পরিমাণটি রূপান্তর করে।"
+
+#: .\templates\eco\layout.html:103 .\templates\eco\manage_form.html:22
+#: .\templates\eco\shipping_address.html:27
+#: .\templates\users\change_password.html:32
+#: .\templates\users\profile_edit.html:73
+msgid "Cancel"
+msgstr "বাতিল"
+
+#: .\templates\eco\layout.html:113
 msgid "Close cart"
 msgstr "কার্ট বন্ধ করুন"
 
-#: .\templates\eco\layout.html:72
+#: .\templates\eco\layout.html:118
 msgid "Free shipping. Promo codes can be applied on the cart page."
 msgstr "ফ্রি শিপিং। প্রোমো কোড কার্ট পেজে ব্যবহার করা যাবে।"
 
-#: .\templates\eco\layout.html:74 .\templates\eco\layout.html:89
+#: .\templates\eco\layout.html:120 .\templates\eco\layout.html:135
 msgid "View cart"
 msgstr "কার্ট দেখুন"
 
-#: .\templates\eco\layout.html:90
+#: .\templates\eco\layout.html:136
 msgid "Saved to your wishlist"
 msgstr "উইশলিস্টে সংরক্ষিত হয়েছে"
 
-#: .\templates\eco\layout.html:91
+#: .\templates\eco\layout.html:137
 msgid "Removed from your wishlist"
 msgstr "উইশলিস্ট থেকে সরানো হয়েছে"
 
-#: .\templates\eco\layout.html:94
+#: .\templates\eco\layout.html:140
 msgid "Dismiss"
 msgstr "বন্ধ করুন"
 
-#: .\templates\eco\layout.html:95
+#: .\templates\eco\layout.html:141
 msgid "Something went wrong. Please try again."
 msgstr "কিছু একটা ভুল হয়েছে। আবার চেষ্টা করুন।"
 
-#: .\templates\eco\layout.html:96
+#: .\templates\eco\layout.html:142
 msgid "Could not add to cart."
 msgstr "কার্টে যোগ করা যায়নি।"
 
-#: .\templates\eco\layout.html:97
+#: .\templates\eco\layout.html:143
 msgid "Could not update wishlist."
 msgstr "উইশলিস্ট হালনাগাদ করা যায়নি।"
 
-#: .\templates\eco\layout.html:98
+#: .\templates\eco\layout.html:144
 msgid "Books"
 msgstr "বই"
 
-#: .\templates\eco\layout.html:99
+#: .\templates\eco\layout.html:145
 msgid "Popular right now"
 msgstr "এখন জনপ্রিয়"
 
-#: .\templates\eco\layout.html:101
+#: .\templates\eco\layout.html:147
 #, python-brace-format
 msgid "See all results for “{query}”"
 msgstr "“{query}”-এর সব ফলাফল দেখুন"
 
-#: .\templates\eco\layout.html:102
+#: .\templates\eco\layout.html:148
 #, python-brace-format
 msgid "No books match “{query}”."
 msgstr "“{query}”-এর সাথে মেলে এমন কোনো বই নেই।"
 
-#: .\templates\eco\layout.html:103
+#: .\templates\eco\layout.html:149
 #, python-brace-format
 msgid "{count} books"
 msgstr "{count}টি বই"
 
-#: .\templates\eco\layout.html:106
+#: .\templates\eco\layout.html:152
 msgid "Books you add will show up here."
 msgstr "আপনি যে বই যোগ করবেন তা এখানে দেখা যাবে।"
 
-#: .\templates\eco\layout.html:108
+#: .\templates\eco\layout.html:154
 #, python-brace-format
 msgid "Qty {count}"
 msgstr "পরিমাণ {count}"
@@ -1209,12 +1381,6 @@ msgstr "পরিমাণ {count}"
 #: .\templates\eco\manage_form.html:10
 msgid "Staff"
 msgstr "স্টাফ"
-
-#: .\templates\eco\manage_form.html:22 .\templates\eco\shipping_address.html:27
-#: .\templates\users\change_password.html:32
-#: .\templates\users\profile_edit.html:73
-msgid "Cancel"
-msgstr "বাতিল"
 
 #: .\templates\eco\pagination.html:3
 msgid "Pagination"
@@ -1246,45 +1412,60 @@ msgid "Main"
 msgstr "প্রধান"
 
 #: .\templates\eco\partials\header.html:14
-#: .\templates\eco\partials\header.html:90
-#: .\templates\eco\partials\header.html:93
+#: .\templates\eco\partials\header.html:98
+#: .\templates\eco\partials\header.html:101
 msgid "Contact"
 msgstr "যোগাযোগ"
 
 #: .\templates\eco\partials\header.html:19
-#: .\templates\eco\partials\header.html:81
+#: .\templates\eco\partials\header.html:85
 msgid "Search titles, authors…"
 msgstr "শিরোনাম, লেখক খুঁজুন…"
 
-#: .\templates\eco\partials\header.html:27
+#: .\templates\eco\partials\header.html:29
+msgid "Change language and currency"
+msgstr "ভাষা ও মুদ্রা বদলান"
+
+#: .\templates\eco\partials\header.html:31
 msgid "Toggle dark mode"
 msgstr "ডার্ক মোড চালু/বন্ধ"
 
-#: .\templates\eco\partials\header.html:45
+#: .\templates\eco\partials\header.html:49
 msgid "Account menu"
 msgstr "অ্যাকাউন্ট মেনু"
 
-#: .\templates\eco\partials\header.html:59
+#: .\templates\eco\partials\header.html:61
+#: .\templates\eco\shipping_address.html:4
+#: .\templates\users\account_base.html:22
+msgid "Addresses"
+msgstr "ঠিকানাসমূহ"
+
+#: .\templates\eco\partials\header.html:63
 msgid "Add a book"
 msgstr "বই যোগ করুন"
 
-#: .\templates\eco\partials\header.html:60
+#: .\templates\eco\partials\header.html:64
 msgid "Admin"
 msgstr "অ্যাডমিন"
 
-#: .\templates\eco\partials\header.html:63
-#: .\templates\eco\partials\header.html:91
+#: .\templates\eco\partials\header.html:67
+#: .\templates\eco\partials\header.html:99
 #: .\templates\users\account_base.html:25
 msgid "Sign out"
 msgstr "সাইন আউট"
 
-#: .\templates\eco\partials\header.html:70
+#: .\templates\eco\partials\header.html:74
 msgid "Open menu"
 msgstr "মেনু খুলুন"
 
-#: .\templates\eco\partials\header.html:78
+#: .\templates\eco\partials\header.html:82
 msgid "Mobile"
 msgstr "মোবাইল"
+
+#: .\templates\eco\partials\header.html:103 .\templates\users\register.html:4
+#: .\templates\users\register.html:30
+msgid "Create account"
+msgstr "অ্যাকাউন্ট খুলুন"
 
 #: .\templates\eco\payment.html:18
 msgid "Enter your card details to complete your order."
@@ -1424,6 +1605,11 @@ msgid ""
 "lives only one."
 msgstr ""
 "একজন পাঠক মৃত্যুর আগে হাজারটা জীবন বাঁচে। যে কখনো পড়ে না, সে বাঁচে মাত্র একটি।"
+
+#: .\templates\users\change_password.html:4
+#: .\templates\users\change_password.html:8
+msgid "Change password"
+msgstr "পাসওয়ার্ড পরিবর্তন"
 
 #: .\templates\users\change_password.html:9
 msgid "Use at least 8 characters, and avoid passwords you use elsewhere."
@@ -1626,10 +1812,6 @@ msgstr "ফোন"
 #: .\templates\users\profile.html:37 .\users\forms.py:61
 msgid "Birthday"
 msgstr "জন্মদিন"
-
-#: .\templates\users\profile.html:39 .\users\forms.py:67
-msgid "Currency"
-msgstr "মুদ্রা"
 
 #: .\templates\users\profile.html:40
 msgid "Default address"
@@ -1864,11 +2046,27 @@ msgstr "GBP (£)"
 msgid "BDT (৳ Taka)"
 msgstr "BDT (৳ টাকা)"
 
-#: .\users\models.py:82
+#: .\users\models.py:70
+msgid "INR (₹)"
+msgstr "INR (₹ রুপি)"
+
+#: .\users\models.py:71
+msgid "CAD (CA$)"
+msgstr "CAD (CA$)"
+
+#: .\users\models.py:72
+msgid "AUD (A$)"
+msgstr "AUD (A$)"
+
+#: .\users\models.py:73
+msgid "JPY (¥)"
+msgstr "JPY (¥ ইয়েন)"
+
+#: .\users\models.py:86
 msgid "User Profile"
 msgstr ""
 
-#: .\users\models.py:83
+#: .\users\models.py:87
 msgid "User Profiles"
 msgstr ""
 
@@ -1905,6 +2103,34 @@ msgstr "বর্তমান পাসওয়ার্ড সঠিক নয
 #: .\users\views.py:124
 msgid "Password changed successfully!"
 msgstr "পাসওয়ার্ড সফলভাবে পরিবর্তন হয়েছে!"
+
+#~ msgid "House, road and area"
+#~ msgstr "বাড়ি, রোড ও এলাকা"
+
+#~ msgid "Visit us"
+#~ msgstr "আমাদের ঠিকানা"
+
+#~ msgid "Opening hours"
+#~ msgstr "খোলার সময়"
+
+#~ msgid ""
+#~ "Your trusted partner for quality books and educational resources. "
+#~ "Discover your next favourite read with us."
+#~ msgstr ""
+#~ "মানসম্মত বই ও শিক্ষাসামগ্রীর বিশ্বস্ত সঙ্গী। আমাদের সাথে খুঁজে নিন আপনার পরের "
+#~ "প্রিয় বই।"
+
+#~ msgid "Help & contact"
+#~ msgstr "সহায়তা ও যোগাযোগ"
+
+#~ msgid "Made with"
+#~ msgstr "পাঠকদের জন্য"
+
+#~ msgid "for readers"
+#~ msgstr "দিয়ে তৈরি"
+
+#~ msgid "Save books for later"
+#~ msgstr "পরে পড়ার জন্য বই রাখুন"
 
 #~ msgid "Delivered to your door"
 #~ msgstr "আপনার দরজায় পৌঁছে দিই"

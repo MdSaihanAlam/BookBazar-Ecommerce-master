@@ -17,13 +17,15 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
+from django.utils.http import url_has_allowed_host_and_scheme
 from django.utils.translation import gettext as _, gettext_lazy
 from django.views.decorators.http import require_POST
 from django.views.generic import CreateView, DetailView, FormView, ListView, UpdateView, View
 from django.views.generic.list import MultipleObjectMixin
 
 from .forms import AddressForm, CategoryForm, ContactForm, PaymentForm, ProductForm
-from .currency import format_money, user_currency
+from .currency import SESSION_CURRENCY, browser_country, format_money, request_currency
+from .middleware import SESSION_LANGUAGE, activate_user_language
 from .models import Address, Book, Cart, CartItem, Category, Coupon, Order, OrderItem, Payment, Wishlist
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -137,6 +139,34 @@ class SearchView(View):
         if query:
             url += '?' + request.GET.urlencode()
         return redirect(url)
+
+
+@require_POST
+def set_preferences(request):
+    """Save the language and currency picked in the site's language & currency menu.
+    Guests keep them for the session; signed-in users also get them saved to their profile."""
+    language = request.POST.get('language')
+    currency = request.POST.get('currency')
+    language = language if language in dict(settings.LANGUAGES) else None
+    currency = currency if currency in settings.CURRENCIES else None
+    if language:
+        request.session[SESSION_LANGUAGE] = language
+    if currency:
+        request.session[SESSION_CURRENCY] = currency
+
+    profile = getattr(request.user, 'profile', None) if request.user.is_authenticated else None
+    if profile:
+        if language:
+            profile.language = language
+        if currency:
+            profile.currency = currency
+        profile.save(update_fields=['language', 'currency', 'updated_at'])
+
+    activate_user_language(request)
+    next_url = request.POST.get('next', '')
+    if not url_has_allowed_host_and_scheme(next_url, {request.get_host()}, request.is_secure()):
+        next_url = reverse('eco:home')
+    return redirect(next_url)
 
 
 def search_suggest(request):
@@ -361,6 +391,8 @@ class EcoDetail(DetailView):
         )
         context['in_wishlist'] = user.is_authenticated and Wishlist.objects.filter(user=user, book=book).exists()
         context['in_cart'] = user.is_authenticated and CartItem.objects.filter(cart__user=user, book=book).exists()
+        address = get_default_shipping_address(user) if user.is_authenticated else None
+        context['ship_country'] = address.country.name if address else None
         return context
 
 
@@ -591,7 +623,7 @@ def apply_promo_code(request):
     return JsonResponse({
         'success': True,
         'message': _('Promo code applied! %(amount)s discount added.') % {
-            'amount': format_money(discount_amount, user_currency(request.user)),
+            'amount': format_money(discount_amount, request_currency(request)),
         },
         'discount_amount': discount_amount,
         'cart_data': {
@@ -665,7 +697,7 @@ def shipping_address_view(request):
             return redirect('eco:shipping-address')
         messages.error(request, _('Please correct the errors below.'))
     else:
-        form = AddressForm(initial={'address_type': 'S'})
+        form = AddressForm(initial={'address_type': 'S', 'country': browser_country(request)})
 
     context = {
         'form': form,
