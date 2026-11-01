@@ -54,6 +54,7 @@ class UserProfile(models.Model):
         ('es', 'Spanish'),
         ('fr', 'French'),
         ('de', 'German'),
+        ('bn', 'Bangla (বাংলা)'),
     ]
     language = models.CharField(
         max_length=10, 
@@ -65,6 +66,7 @@ class UserProfile(models.Model):
         ('usd', 'USD ($)'),
         ('eur', 'EUR (€)'),
         ('gbp', 'GBP (£)'),
+        ('bdt', 'BDT (৳ Taka)'),
     ]
     currency = models.CharField(
         max_length=3, 
