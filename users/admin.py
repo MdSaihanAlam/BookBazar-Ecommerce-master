@@ -1,8 +1,10 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.db.models import Count, Q
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 from .forms import CustomUserCreationForm, CustomUserChangeForm
+from store.admin_site import FriendlyAdminMixin
 from .models import CustomUser, UserProfile
 
 
@@ -37,18 +39,19 @@ class UserProfileInline(admin.StackedInline):
     profile_photo_preview.short_description = 'Profile Photo Preview'
 
 
-class CustomUserAdmin(UserAdmin):
+class CustomUserAdmin(FriendlyAdminMixin, UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
     model = CustomUser
     
     # Display fields in user list
     list_display = (
-        'email', 
-        'get_full_name', 
-        'is_staff', 
-        'is_active',
+        'email',
+        'get_full_name',
+        'order_count',
         'date_joined',
+        'is_active',
+        'is_staff',
     )
     
     list_filter = (
@@ -115,11 +118,17 @@ class CustomUserAdmin(UserAdmin):
     
     def get_queryset(self, request):
         """Optimize queryset to prefetch related profile data"""
-        return super().get_queryset(request).select_related('profile')
+        return super().get_queryset(request).select_related('profile').annotate(
+            num_orders=Count('order', filter=Q(order__ordered=True))
+        )
+
+    @admin.display(description='Orders', ordering='num_orders')
+    def order_count(self, obj):
+        return obj.num_orders
 
 
 @admin.register(UserProfile)
-class UserProfileAdmin(admin.ModelAdmin):
+class UserProfileAdmin(FriendlyAdminMixin, admin.ModelAdmin):
     """Admin configuration for UserProfile model"""
     
     list_display = (

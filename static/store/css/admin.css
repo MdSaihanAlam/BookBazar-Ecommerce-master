@@ -391,3 +391,28 @@ input[type=checkbox], input[type=radio] { accent-color: var(--bb-brand); }
 .dashboard #content { width: auto; max-width: 1280px; }
 .bb-panel td a strong { white-space: nowrap; }
 .object-tools a.viewsitelink { padding-right: 28px; background-position: right 10px center; }
+
+/* ---------- Quick actions ---------- */
+.bb-quick { display: flex; flex-wrap: wrap; gap: 10px; margin: -6px 0 20px; }
+.bb-quick-btn {
+  display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border-radius: 999px;
+  border: 1px solid var(--border-color); background: var(--bb-surface); color: var(--body-fg) !important;
+  font-weight: 600; font-size: .85rem; text-decoration: none !important; transition: border-color .15s, color .15s;
+}
+.bb-quick-btn:hover { border-color: var(--bb-brand); color: var(--bb-brand) !important; }
+.bb-quick-btn.is-primary { background: var(--bb-brand); border-color: var(--bb-brand); color: #fff !important; }
+.bb-quick-btn.is-primary:hover { background: var(--bb-brand-hover); color: #fff !important; }
+.bb-count { display: inline-grid; place-items: center; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px; background: var(--bb-warning-soft); color: var(--bb-warning); font-size: .72rem; }
+
+/* ---------- Edit pages ---------- */
+.bb-cover-lg { width: 120px; height: 180px; border-radius: 4px 10px 10px 4px; }
+.bb-items { border-collapse: collapse; min-width: 420px; }
+.bb-items td { padding: 8px 12px 8px 0; border-bottom: 1px solid var(--hairline-color); vertical-align: middle; }
+.bb-items .bb-num { text-align: right; white-space: nowrap; }
+.bb-items-total td { border-bottom: 0; font-weight: 700; padding-top: 12px; }
+fieldset .description { color: var(--body-quiet-color); font-size: .82rem; padding: 10px 16px 0; margin: 0; }
+.submit-row { gap: 8px; }
+
+/* Grouped sections in the admin home and side menu */
+.app-catalog caption a, .app-sales caption a, .app-marketing caption a,
+.app-customers caption a, .app-access caption a, .app-other caption a { pointer-events: none; }

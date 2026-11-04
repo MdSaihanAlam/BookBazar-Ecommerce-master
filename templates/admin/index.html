@@ -4,6 +4,13 @@
 {% block content %}
 {% admin_dashboard as stats %}
 <div class="bb-dashboard">
+  <div class="bb-quick">
+    {% if perms.eco.add_book %}<a class="bb-quick-btn is-primary" href="{% url 'admin:eco_book_add' %}">+ {% translate "Add a book" %}</a>{% endif %}
+    {% if perms.eco.change_order %}<a class="bb-quick-btn" href="{{ stats.links.to_ship }}">{% translate "Orders to ship" %}{% if stats.to_ship %} <span class="bb-count">{{ stats.to_ship }}</span>{% endif %}</a>{% endif %}
+    {% if perms.eco.add_coupon %}<a class="bb-quick-btn" href="{% url 'admin:eco_coupon_add' %}">{% translate "New promo code" %}</a>{% endif %}
+    <a class="bb-quick-btn" href="{% url 'store:home' %}" target="_blank" rel="noopener">{% translate "Open the store" %} ↗</a>
+  </div>
+
   <div class="bb-stats">
     <a class="bb-stat" href="{{ stats.links.payments }}">
       <span class="bb-stat-label">{% translate "Revenue, last 30 days" %}</span>

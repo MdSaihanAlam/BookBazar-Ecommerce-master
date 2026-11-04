@@ -1,4 +1,10 @@
 from django.apps import AppConfig
+from django.contrib.admin.apps import AdminConfig
+
+
+class BookBazarAdminConfig(AdminConfig):
+    """Installs the BookBazar admin site in place of Django's default one."""
+    default_site = 'store.admin_site.BookBazarAdminSite'
 
 
 class StoreConfig(AppConfig):
