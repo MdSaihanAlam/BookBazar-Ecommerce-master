@@ -15,6 +15,7 @@ from .models import (
     CartItem,
     Category,
     Coupon,
+    HeroSlide,
     Order,
     OrderItem,
     Payment,
@@ -22,6 +23,7 @@ from .models import (
     Refund,
     Wishlist,
 )
+from .hero import slide_from_model
 from .templatetags.admin_dashboard import LOW_STOCK, order_status
 
 
@@ -421,6 +423,91 @@ class CouponAdmin(StoreAdmin):
         if obj.valid_from > now:
             return badge('Scheduled', 'is-brand')
         return badge('Live', 'is-success')
+
+
+@admin.register(HeroSlide)
+class HeroSlideAdmin(StoreAdmin):
+    list_display = ['thumbnail', 'slide', 'colour', 'schedule', 'sort_order', 'is_active']
+    list_display_links = ['thumbnail', 'slide']
+    list_editable = ['sort_order', 'is_active']
+    list_filter = ['is_active', 'tone']
+    list_select_related = ['book']
+    search_fields = ['title', 'title_bn', 'eyebrow', 'text', 'book__title']
+    autocomplete_fields = ['book']
+    readonly_fields = ['preview']
+    save_on_top = True
+
+    fieldsets = (
+        (None, {
+            'fields': ('preview',),
+            'description': 'The home page slider shows every slide that is switched on, in order. '
+                           'Until you add one, it shows the featured books automatically.',
+        }),
+        ('Book', {
+            'fields': ('book', 'show_price'),
+            'description': 'Pick a book to fill in its title, author, price, cover and link. '
+                           'Anything you type below replaces the book\'s own details.',
+        }),
+        ('Wording', {
+            'fields': ('eyebrow', 'title', 'text', 'button_label', 'link'),
+        }),
+        ('Bangla wording', {
+            'fields': ('eyebrow_bn', 'title_bn', 'text_bn', 'button_label_bn'),
+            'classes': ('collapse',),
+            'description': 'Shown to visitors browsing in Bangla. Left empty, they see the English wording.',
+        }),
+        ('Look', {
+            'fields': ('tone', 'image', 'icon'),
+        }),
+        ('When to show it', {
+            'fields': ('is_active', 'sort_order', ('starts_at', 'ends_at')),
+        }),
+    )
+
+    @admin.display(description='')
+    def thumbnail(self, obj):
+        if obj.image:
+            return format_html('<img class="bb-thumb" src="{}" alt="">', obj.image.url)
+        if obj.book:
+            return format_html('<img class="bb-cover" src="{}" alt="">', obj.book.image_url)
+        return format_html('<span class="bb-thumb bb-tone-{}"></span>', obj.tone)
+
+    @admin.display(description='Slide', ordering='title')
+    def slide(self, obj):
+        title = obj.title or (obj.book.title if obj.book else '—')
+        details = obj.eyebrow or obj.text or (f'From book: {obj.book.title}' if obj.book else '')
+        return format_html('<strong>{}</strong><div class="bb-sub">{}</div>', title, details)
+
+    @admin.display(description='Colour', ordering='tone')
+    def colour(self, obj):
+        return format_html('<span class="bb-swatch bb-tone-{}"></span> {}', obj.tone, obj.get_tone_display())
+
+    @admin.display(description='Status')
+    def schedule(self, obj):
+        now = timezone.now()
+        if not obj.is_active:
+            return badge('Hidden')
+        if obj.starts_at and obj.starts_at > now:
+            return badge('Scheduled', 'is-brand')
+        if obj.ends_at and obj.ends_at < now:
+            return badge('Ended', 'is-danger')
+        return badge('Showing', 'is-success')
+
+    @admin.display(description='Preview')
+    def preview(self, obj):
+        if not obj or not obj.pk:
+            return 'Save the slide to see a preview.'
+        data = slide_from_model(obj, bangla=False)
+        art = (format_html('<img src="{}" alt="">', data['picture_url'] or data['cover_url'])
+               if data['picture_url'] or data['cover_url']
+               else format_html('<i class="fa-solid {}"></i>', data['art_icon']))
+        price = format_html('<div class="bb-slide-price">{}</div>', money(data['price'])) if data['price'] is not None else ''
+        return format_html(
+            '<div class="bb-slide bb-tone-{}"><div><span class="bb-slide-eyebrow">{}</span>'
+            '<div class="bb-slide-title">{}</div><div class="bb-slide-text">{}</div>{}'
+            '<span class="bb-slide-btn">{} →</span></div><div class="bb-slide-art">{}</div></div>',
+            data['tone'], data['eyebrow'], data['title'], data['text'], price, data['button_label'], art,
+        )
 
 
 # ==================== CUSTOMERS ====================

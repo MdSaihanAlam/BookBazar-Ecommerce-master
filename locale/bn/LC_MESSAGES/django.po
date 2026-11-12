@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-05 21:15+0600\n"
+"POT-Creation-Date: 2026-11-13 01:06+0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -159,228 +159,432 @@ msgstr "অ্যাপার্টমেন্ট, স্যুট বা ত�
 msgid "e.g. 10001 or SW1A 1AA"
 msgstr "যেমন 10001 বা SW1A 1AA"
 
-#: .\store\models.py:41
+#: .\store\hero.py:21
+#, python-format
+msgid "%(percent)s%% off this week"
+msgstr "এই সপ্তাহে %(percent)s%% ছাড়"
+
+#: .\store\hero.py:21 .\templates\store\home.html:78
+msgid "Editor's pick"
+msgstr "সম্পাদকের পছন্দ"
+
+#: .\store\hero.py:24 .\templates\store\basket.html:32
+#: .\templates\store\book_detail.html:40
+#: .\templates\store\customer_wishlist.html:33 .\templates\store\home.html:80
+#: .\templates\store\partials\book_card.html:24
+msgid "Unknown author"
+msgstr "অজানা লেখক"
+
+#: .\store\hero.py:57 .\store\hero.py:69
+msgid "Shop now"
+msgstr "এখনই কিনুন"
+
+#: .\store\hero.py:73
+msgid "Free shipping"
+msgstr "ফ্রি শিপিং"
+
+#: .\store\hero.py:75
+msgid "From our shelves to your door, anywhere"
+msgstr "আমাদের তাক থেকে আপনার দরজায়, যেকোনো জায়গায়"
+
+#: .\store\hero.py:76
+msgid "On every order, no minimum"
+msgstr "প্রতিটি অর্ডারে, কোনো ন্যূনতম সীমা নেই"
+
+#: .\store\hero.py:78
+msgid "Browse books"
+msgstr "বই দেখুন"
+
+#: .\store\models.py:42
 msgid "Hardcover"
 msgstr "হার্ডকভার"
 
-#: .\store\models.py:42
+#: .\store\models.py:43
 msgid "Paperback"
 msgstr "পেপারব্যাক"
 
-#: .\store\models.py:43
+#: .\store\models.py:44
 msgid "E-Book"
 msgstr "ই-বুক"
 
-#: .\store\models.py:44
+#: .\store\models.py:45
 msgid "Audiobook"
 msgstr "অডিওবুক"
 
-#: .\store\models.py:48
+#: .\store\models.py:49
 msgid "New"
 msgstr "নতুন"
 
-#: .\store\models.py:49
+#: .\store\models.py:50
 msgid "Like New"
 msgstr "প্রায় নতুন"
 
-#: .\store\models.py:50
+#: .\store\models.py:51
 msgid "Very Good"
 msgstr "খুব ভালো"
 
-#: .\store\models.py:51
+#: .\store\models.py:52
 msgid "Good"
 msgstr "ভালো"
 
-#: .\store\models.py:52
+#: .\store\models.py:53
 msgid "Acceptable"
 msgstr "চলনসই"
 
-#: .\store\views.py:54
+#: .\store\models.py:481
+msgid "Start the link with \"/\" for a page on this site, or with https://"
+msgstr "এই সাইটের পেজের জন্য লিংক \"/\" দিয়ে, অন্যথায় https:// দিয়ে শুরু করুন"
+
+#: .\store\models.py:497
+msgid "Indigo"
+msgstr "নীলাভ"
+
+#: .\store\models.py:498
+msgid "Teal"
+msgstr "টিল"
+
+#: .\store\models.py:499
+msgid "Rose"
+msgstr "গোলাপি"
+
+#: .\store\models.py:500
+msgid "Orange"
+msgstr "কমলা"
+
+#: .\store\models.py:501
+msgid "Green"
+msgstr "সবুজ"
+
+#: .\store\models.py:502
+msgid "Slate"
+msgstr "ধূসর"
+
+#: .\store\models.py:505
+msgid "Book"
+msgstr "বই"
+
+#: .\store\models.py:506
+msgid "Delivery truck"
+msgstr "ডেলিভারি ট্রাক"
+
+#: .\store\models.py:507
+msgid "Globe"
+msgstr "গ্লোব"
+
+#: .\store\models.py:508
+msgid "Price tag"
+msgstr "দামের ট্যাগ"
+
+#: .\store\models.py:509
+msgid "Gift"
+msgstr "উপহার"
+
+#: .\store\models.py:510
+msgid "Star"
+msgstr "তারা"
+
+#: .\store\models.py:515
+msgid ""
+"Optional. Fills in the title, author, price, cover and link from this book."
+msgstr "ঐচ্ছিক। এই বই থেকে শিরোনাম, লেখক, দাম, প্রচ্ছদ ও লিংক বসে যাবে।"
+
+#: .\store\models.py:517
+msgid "label"
+msgstr "লেবেল"
+
+#: .\store\models.py:518
+msgid ""
+"Small label above the title, e.g. \"Summer sale\". Left empty for a book on "
+"sale, it shows the discount."
+msgstr "শিরোনামের ওপরের ছোট লেবেল, যেমন \"গ্রীষ্মের সেল\"। ছাড়ে থাকা বইয়ের জন্য ফাঁকা রাখলে ছাড়ের হার দেখাবে।"
+
+#: .\store\models.py:519
+msgid "Left empty, the book's title is used."
+msgstr "ফাঁকা রাখলে বইয়ের শিরোনাম ব্যবহার হবে।"
+
+#: .\store\models.py:521
+msgid "text"
+msgstr "লেখা"
+
+#: .\store\models.py:521
+msgid "One short line under the title. Left empty, the book's author is used."
+msgstr "শিরোনামের নিচে একটি ছোট লাইন। ফাঁকা রাখলে বইয়ের লেখকের নাম ব্যবহার হবে।"
+
+#: .\store\models.py:522
+msgid "Left empty, it reads \"Shop now\"."
+msgstr "ফাঁকা রাখলে \"এখনই কিনুন\" লেখা থাকবে।"
+
+#: .\store\models.py:525
+msgid ""
+"Where the slide leads, e.g. /products/?q=dune. Left empty, it opens the "
+"book's page or the shop."
+msgstr "স্লাইডটি কোথায় নিয়ে যাবে, যেমন /products/?q=dune। ফাঁকা রাখলে বইয়ের পেজ বা দোকান খুলবে।"
+
+#: .\store\models.py:527
+msgid "label (Bangla)"
+msgstr "লেবেল (বাংলা)"
+
+#: .\store\models.py:528
+msgid "title (Bangla)"
+msgstr "শিরোনাম (বাংলা)"
+
+#: .\store\models.py:529
+msgid "text (Bangla)"
+msgstr "লেখা (বাংলা)"
+
+#: .\store\models.py:530
+msgid "button label (Bangla)"
+msgstr "বোতামের লেখা (বাংলা)"
+
+#: .\store\models.py:534
+msgid ""
+"Optional picture on the right. Left empty, the book's cover or the icon is "
+"shown."
+msgstr "ডান পাশের ঐচ্ছিক ছবি। ফাঁকা রাখলে বইয়ের প্রচ্ছদ বা আইকন দেখাবে।"
+
+#: .\store\models.py:535
+msgid "Shown when there is no book or picture."
+msgstr "বই বা ছবি না থাকলে দেখানো হয়।"
+
+#: .\store\models.py:536
+msgid "colour"
+msgstr "রং"
+
+#: .\store\models.py:537
+msgid "Show the book's price on the slide."
+msgstr "স্লাইডে বইয়ের দাম দেখান।"
+
+#: .\store\models.py:539
+msgid "show on site"
+msgstr "সাইটে দেখান"
+
+#: .\store\models.py:540
+msgid "order"
+msgstr "ক্রম"
+
+#: .\store\models.py:540
+msgid "Lower numbers come first."
+msgstr "ছোট সংখ্যা আগে আসে।"
+
+#: .\store\models.py:541
+msgid "show from"
+msgstr "যখন থেকে দেখাবে"
+
+#: .\store\models.py:541 .\store\models.py:542
+msgid "Optional."
+msgstr "ঐচ্ছিক।"
+
+#: .\store\models.py:542
+msgid "show until"
+msgstr "যখন পর্যন্ত দেখাবে"
+
+#: .\store\models.py:550
+msgid "banner slide"
+msgstr "ব্যানার স্লাইড"
+
+#: .\store\models.py:551
+msgid "banner slides"
+msgstr "ব্যানার স্লাইড"
+
+#: .\store\models.py:554
+#, python-format
+msgid "Slide %(number)s"
+msgstr "স্লাইড %(number)s"
+
+#: .\store\models.py:558
+msgid "This must be after the start date."
+msgstr "এটি শুরুর তারিখের পরে হতে হবে।"
+
+#: .\store\models.py:560
+msgid "Add a title, or pick a book to take it from."
+msgstr "একটি শিরোনাম দিন, অথবা একটি বই বেছে নিন।"
+
+#: .\store\views.py:55
 msgid "Please log in first."
 msgstr "আগে লগ ইন করুন।"
 
-#: .\store\views.py:230
+#: .\store\views.py:231
 #, python-format
 msgid "Sorry, %(title)s is out of stock."
 msgstr "দুঃখিত, %(title)s এখন স্টকে নেই।"
 
-#: .\store\views.py:231 .\store\views.py:467
+#: .\store\views.py:232 .\store\views.py:468
 #, python-format
 msgid "Only %(count)s copies of %(title)s are available."
 msgstr "%(title)s-এর মাত্র %(count)s কপি আছে।"
 
-#: .\store\views.py:243
+#: .\store\views.py:244
 #, python-format
 msgid "%(title)s added to your cart!"
 msgstr "%(title)s আপনার কার্টে যোগ হয়েছে!"
 
-#: .\store\views.py:286
+#: .\store\views.py:287
 msgid "Invalid request"
 msgstr "অবৈধ অনুরোধ"
 
-#: .\store\views.py:292
+#: .\store\views.py:293
 #, python-format
 msgid "Only %(count)s copies available."
 msgstr "মাত্র %(count)s কপি আছে।"
 
-#: .\store\views.py:322 .\store\views.py:325 .\store\views.py:339
-#: .\store\views.py:357
+#: .\store\views.py:323 .\store\views.py:326 .\store\views.py:340
+#: .\store\views.py:358
 #, python-format
 msgid "%(title)s removed from cart"
 msgstr "%(title)s কার্ট থেকে সরানো হয়েছে"
 
-#: .\store\views.py:341 .\store\views.py:350
+#: .\store\views.py:342 .\store\views.py:351
 msgid "Item not found in cart"
 msgstr "কার্টে বইটি পাওয়া যায়নি"
 
-#: .\store\views.py:354
+#: .\store\views.py:355
 #, python-format
 msgid "%(title)s quantity updated"
 msgstr "%(title)s-এর পরিমাণ হালনাগাদ হয়েছে"
 
-#: .\store\views.py:429 .\store\views.py:455 .\templates\store\basket.html:19
+#: .\store\views.py:430 .\store\views.py:456 .\templates\store\basket.html:19
 #: .\templates\store\layout.html:151
 msgid "Your cart is empty"
 msgstr "আপনার কার্ট খালি"
 
-#: .\store\views.py:434 .\store\views.py:460
+#: .\store\views.py:435 .\store\views.py:461
 msgid "Please set up your default shipping address before checkout."
 msgstr "চেকআউটের আগে আপনার ডিফল্ট ডেলিভারি ঠিকানা যোগ করুন।"
 
-#: .\store\views.py:495 .\store\views.py:507
+#: .\store\views.py:496 .\store\views.py:508
 msgid "Please complete checkout first."
 msgstr "আগে চেকআউট সম্পন্ন করুন।"
 
-#: .\store\views.py:512
+#: .\store\views.py:513
 msgid "Please enter your card details."
 msgstr "আপনার কার্ডের তথ্য দিন।"
 
-#: .\store\views.py:527
+#: .\store\views.py:528
 msgid "Your card was declined."
 msgstr "আপনার কার্ডটি গ্রহণ করা হয়নি।"
 
-#: .\store\views.py:530
+#: .\store\views.py:531
 msgid "Payment could not be processed. You have not been charged."
 msgstr "পেমেন্ট সম্পন্ন করা যায়নি। আপনার কাছ থেকে কোনো টাকা কাটা হয়নি।"
 
-#: .\store\views.py:534
+#: .\store\views.py:535
 #, python-format
 msgid "Your order was placed successfully! Reference: %(ref)s"
 msgstr "আপনার অর্ডার সফলভাবে দেওয়া হয়েছে! রেফারেন্স: %(ref)s"
 
-#: .\store\views.py:568
+#: .\store\views.py:569
 msgid "Book was added to your wishlist"
 msgstr "বইটি আপনার উইশলিস্টে যোগ হয়েছে"
 
-#: .\store\views.py:568
+#: .\store\views.py:569
 msgid "Book was already in your wishlist"
 msgstr "বইটি আগেই আপনার উইশলিস্টে আছে"
 
-#: .\store\views.py:587
+#: .\store\views.py:588
 msgid "Book removed from your wishlist"
 msgstr "বইটি উইশলিস্ট থেকে সরানো হয়েছে"
 
-#: .\store\views.py:588
+#: .\store\views.py:589
 msgid "Book not found in your wishlist"
 msgstr "উইশলিস্টে বইটি পাওয়া যায়নি"
 
-#: .\store\views.py:591
+#: .\store\views.py:592
 msgid "Book was removed from your wishlist."
 msgstr "বইটি উইশলিস্ট থেকে সরানো হয়েছে।"
 
-#: .\store\views.py:593
+#: .\store\views.py:594
 msgid "Book not found in your wishlist."
 msgstr "উইশলিস্টে বইটি পাওয়া যায়নি।"
 
-#: .\store\views.py:602
+#: .\store\views.py:603
 msgid "Please log in to apply promo codes."
 msgstr "প্রোমো কোড ব্যবহার করতে লগ ইন করুন।"
 
-#: .\store\views.py:607
+#: .\store\views.py:608
 msgid "Invalid request."
 msgstr "অবৈধ অনুরোধ।"
 
-#: .\store\views.py:611
+#: .\store\views.py:612
 msgid "Please add items to your cart first."
 msgstr "আগে কার্টে বই যোগ করুন।"
 
-#: .\store\views.py:615
+#: .\store\views.py:616
 msgid "Invalid or expired promo code."
 msgstr "প্রোমো কোডটি সঠিক নয় বা মেয়াদ শেষ।"
 
-#: .\store\views.py:617
+#: .\store\views.py:618
 msgid "This promo code has expired."
 msgstr "এই প্রোমো কোডের মেয়াদ শেষ হয়ে গেছে।"
 
-#: .\store\views.py:625
+#: .\store\views.py:626
 #, python-format
 msgid "Promo code applied! %(amount)s discount added."
 msgstr "প্রোমো কোড প্রয়োগ হয়েছে! %(amount)s ছাড় যোগ হয়েছে।"
 
-#: .\store\views.py:663
+#: .\store\views.py:664
 msgid "There was an error sending your message. Please try again later."
 msgstr "বার্তা পাঠাতে সমস্যা হয়েছে। পরে আবার চেষ্টা করুন।"
 
-#: .\store\views.py:665
+#: .\store\views.py:666
 msgid "Your message has been sent successfully!"
 msgstr "আপনার বার্তা সফলভাবে পাঠানো হয়েছে!"
 
-#: .\store\views.py:694
+#: .\store\views.py:695
 msgid "Shipping address saved successfully!"
 msgstr "ডেলিভারি ঠিকানা সংরক্ষণ করা হয়েছে!"
 
-#: .\store\views.py:698 .\users\views.py:91
+#: .\store\views.py:699 .\users\views.py:91
 msgid "Please correct the errors below."
 msgstr "নিচের ভুলগুলো ঠিক করুন।"
 
-#: .\store\views.py:717 .\store\views.py:718 .\store\views.py:743
-#: .\store\views.py:744
+#: .\store\views.py:718 .\store\views.py:719 .\store\views.py:744
+#: .\store\views.py:745
 msgid "Address not found"
 msgstr "ঠিকানা পাওয়া যায়নি"
 
-#: .\store\views.py:730
+#: .\store\views.py:731
 #, python-format
 msgid "Address \"%(address)s\" deleted successfully!"
 msgstr "\"%(address)s\" ঠিকানাটি মুছে ফেলা হয়েছে!"
 
-#: .\store\views.py:751
+#: .\store\views.py:752
 msgid "Default shipping address updated successfully!"
 msgstr "ডিফল্ট ডেলিভারি ঠিকানা হালনাগাদ হয়েছে!"
 
-#: .\store\views.py:768
+#: .\store\views.py:769
 msgid "Address updated successfully!"
 msgstr "ঠিকানা হালনাগাদ হয়েছে!"
 
-#: .\store\views.py:809
+#: .\store\views.py:810
 msgid "Add New Book"
 msgstr "নতুন বই যোগ করুন"
 
-#: .\store\views.py:810
+#: .\store\views.py:811
 msgid "Book added successfully!"
 msgstr "বই সফলভাবে যোগ হয়েছে!"
 
-#: .\store\views.py:816
+#: .\store\views.py:817
 msgid "Edit Book"
 msgstr "বই সম্পাদনা"
 
-#: .\store\views.py:817
+#: .\store\views.py:818
 msgid "Book updated successfully!"
 msgstr "বই হালনাগাদ হয়েছে!"
 
-#: .\store\views.py:825
+#: .\store\views.py:826
 #, python-format
 msgid "Book \"%(title)s\" deleted successfully!"
 msgstr "\"%(title)s\" বইটি মুছে ফেলা হয়েছে!"
 
-#: .\store\views.py:832
+#: .\store\views.py:833
 msgid "Add New Category"
 msgstr "নতুন বিভাগ যোগ করুন"
 
-#: .\store\views.py:833
+#: .\store\views.py:834
 msgid "Category added successfully!"
 msgstr "বিভাগ সফলভাবে যোগ হয়েছে!"
 
-#: .\templates\admin\base_site.html:18
+#: .\templates\admin\base_site.html:19
 #: .\templates\store\partials\header.html:64
 msgid "Admin"
 msgstr "অ্যাডমিন"
@@ -515,12 +719,6 @@ msgstr "কেনাকাটা শুরু করুন"
 #, python-format
 msgid "Cover of %(title)s"
 msgstr "%(title)s-এর প্রচ্ছদ"
-
-#: .\templates\store\basket.html:32 .\templates\store\book_detail.html:40
-#: .\templates\store\customer_wishlist.html:33 .\templates\store\home.html:37
-#: .\templates\store\home.html:83 .\templates\store\partials\book_card.html:24
-msgid "Unknown author"
-msgstr "অজানা লেখক"
 
 #: .\templates\store\basket.html:34
 #, python-format
@@ -676,7 +874,7 @@ msgid "Quantity"
 msgstr "পরিমাণ"
 
 #: .\templates\store\book_detail.html:66 .\templates\store\book_detail.html:117
-#: .\templates\store\customer_wishlist.html:40 .\templates\store\home.html:89
+#: .\templates\store\customer_wishlist.html:40 .\templates\store\home.html:86
 #: .\templates\store\partials\book_card.html:18
 msgid "Add to cart"
 msgstr "কার্টে যোগ করুন"
@@ -710,7 +908,7 @@ msgstr "বইটি সম্পর্কে"
 msgid "Excerpt"
 msgstr "অংশবিশেষ"
 
-#: .\templates\store\book_detail.html:94 .\templates\store\home.html:90
+#: .\templates\store\book_detail.html:94 .\templates\store\home.html:87
 msgid "Details"
 msgstr "বিস্তারিত"
 
@@ -839,7 +1037,7 @@ msgstr "বিভাগ"
 msgid "Explore our hand-picked titles in this category."
 msgstr "এই বিভাগে আমাদের বাছাই করা বইগুলো দেখুন।"
 
-#: .\templates\store\category.html:22 .\templates\store\home.html:174
+#: .\templates\store\category.html:22 .\templates\store\home.html:171
 msgid "Explore"
 msgstr "ঘুরে দেখুন"
 
@@ -851,7 +1049,7 @@ msgstr "বিভাগ অনুযায়ী দেখুন"
 msgid "From timeless classics to page-turning thrillers, find your next read."
 msgstr "চিরায়ত ক্লাসিক থেকে রুদ্ধশ্বাস থ্রিলার, খুঁজে নিন আপনার পরের বই।"
 
-#: .\templates\store\category.html:44 .\templates\store\home.html:185
+#: .\templates\store\category.html:44 .\templates\store\home.html:182
 #, python-format
 msgid "%(counter)s book"
 msgid_plural "%(counter)s books"
@@ -1156,181 +1354,152 @@ msgstr "লেখক"
 msgid "Featured offers"
 msgstr "বিশেষ অফার"
 
-#: .\templates\store\home.html:33
-#, python-format
-msgid "%(percent)s%% off this week"
-msgstr "এই সপ্তাহে %(percent)s%% ছাড়"
-
-#: .\templates\store\home.html:34 .\templates\store\home.html:81
-msgid "Editor's pick"
-msgstr "সম্পাদকের পছন্দ"
-
-#: .\templates\store\home.html:42
-msgid "Shop now"
-msgstr "এখনই কিনুন"
-
-#: .\templates\store\home.html:52
-msgid "Free shipping"
-msgstr "ফ্রি শিপিং"
-
-#: .\templates\store\home.html:53
-msgid "From our shelves to your door, anywhere"
-msgstr "আমাদের তাক থেকে আপনার দরজায়, যেকোনো জায়গায়"
-
-#: .\templates\store\home.html:54
-msgid "On every order, no minimum"
-msgstr "প্রতিটি অর্ডারে, কোনো ন্যূনতম সীমা নেই"
-
-#: .\templates\store\home.html:55
-msgid "Browse books"
-msgstr "বই দেখুন"
-
-#: .\templates\store\home.html:63
+#: .\templates\store\home.html:60
 msgid "Previous slide"
 msgstr "আগের স্লাইড"
 
-#: .\templates\store\home.html:65
+#: .\templates\store\home.html:62
 msgid "Next slide"
 msgstr "পরের স্লাইড"
 
-#: .\templates\store\home.html:66 .\templates\store\home.html:67
+#: .\templates\store\home.html:63 .\templates\store\home.html:64
 msgid "Pause slideshow"
 msgstr "স্লাইডশো থামান"
 
-#: .\templates\store\home.html:67
+#: .\templates\store\home.html:64
 msgid "Play slideshow"
 msgstr "স্লাইডশো চালান"
 
-#: .\templates\store\home.html:81
+#: .\templates\store\home.html:78
 msgid "Deal of the week"
 msgstr "এই সপ্তাহের সেরা অফার"
 
-#: .\templates\store\home.html:104
+#: .\templates\store\home.html:101
 msgid "Reader offer"
 msgstr "পাঠক অফার"
 
-#: .\templates\store\home.html:105
+#: .\templates\store\home.html:102
 #, python-format
 msgid "%(amount)s off your order"
 msgstr "আপনার অর্ডারে %(amount)s ছাড়"
 
-#: .\templates\store\home.html:106
+#: .\templates\store\home.html:103
 #, python-format
 msgid "Enter the code on the cart page. Valid until %(date)s."
 msgstr "কার্ট পেজে কোডটি লিখুন। %(date)s পর্যন্ত প্রযোজ্য।"
 
-#: .\templates\store\home.html:108
+#: .\templates\store\home.html:105
 msgid "Code copied"
 msgstr "কোড কপি হয়েছে"
 
-#: .\templates\store\home.html:110
+#: .\templates\store\home.html:107
 msgid "Copy code"
 msgstr "কোড কপি করুন"
 
-#: .\templates\store\home.html:117
+#: .\templates\store\home.html:114
 msgid "Free worldwide shipping"
 msgstr "বিশ্বজুড়ে ফ্রি শিপিং"
 
-#: .\templates\store\home.html:117
+#: .\templates\store\home.html:114
 msgid "To any country, no minimum order"
 msgstr "যেকোনো দেশে, ন্যূনতম অর্ডার নেই"
 
-#: .\templates\store\home.html:122
+#: .\templates\store\home.html:119
 msgid "Secure checkout"
 msgstr "নিরাপদ চেকআউট"
 
-#: .\templates\store\home.html:122
+#: .\templates\store\home.html:119
 msgid "Visa, Mastercard and Amex via Stripe"
 msgstr "Stripe-এর মাধ্যমে ভিসা, মাস্টারকার্ড ও অ্যামেক্স"
 
-#: .\templates\store\home.html:128
+#: .\templates\store\home.html:125
 msgid "Your language, your currency"
 msgstr "আপনার ভাষা, আপনার মুদ্রা"
 
-#: .\templates\store\home.html:130
+#: .\templates\store\home.html:127
 #, python-format
 msgid "Showing %(language)s · %(code)s. Tap to change."
 msgstr "এখন দেখাচ্ছে %(language)s · %(code)s। বদলাতে চাপুন।"
 
-#: .\templates\store\home.html:136
+#: .\templates\store\home.html:133
 msgid "Find any book in seconds"
 msgstr "মুহূর্তেই যেকোনো বই খুঁজুন"
 
-#: .\templates\store\home.html:136
+#: .\templates\store\home.html:133
 msgid "Press <kbd>/</kbd> anywhere to search"
 msgstr "খুঁজতে যেকোনো জায়গায় <kbd>/</kbd> চাপুন"
 
-#: .\templates\store\home.html:141
+#: .\templates\store\home.html:138
 msgid "Jump into a genre"
 msgstr "পছন্দের ধরনে চলে যান"
 
-#: .\templates\store\home.html:155
+#: .\templates\store\home.html:152
 msgid "Editor's picks"
 msgstr "সম্পাদকের পছন্দ"
 
-#: .\templates\store\home.html:156
+#: .\templates\store\home.html:153
 msgid "Featured books"
 msgstr "বিশেষ বই"
 
-#: .\templates\store\home.html:158
+#: .\templates\store\home.html:155
 msgid "Browse all"
 msgstr "সব দেখুন"
 
-#: .\templates\store\home.html:175
+#: .\templates\store\home.html:172
 msgid "Shop by category"
 msgstr "বিভাগ অনুযায়ী কিনুন"
 
-#: .\templates\store\home.html:177
+#: .\templates\store\home.html:174
 msgid "All categories"
 msgstr "সব বিভাগ"
 
-#: .\templates\store\home.html:198
+#: .\templates\store\home.html:195
 msgid "Just landed"
 msgstr "সদ্য এসেছে"
 
-#: .\templates\store\home.html:199
+#: .\templates\store\home.html:196
 msgid "New arrivals"
 msgstr "নতুন বই"
 
-#: .\templates\store\home.html:201
+#: .\templates\store\home.html:198
 msgid "See more"
 msgstr "আরও দেখুন"
 
-#: .\templates\store\home.html:217
+#: .\templates\store\home.html:214
 msgid "Limited time"
 msgstr "সীমিত সময়"
 
-#: .\templates\store\home.html:218
+#: .\templates\store\home.html:215
 msgid "Deals of the week"
 msgstr "এই সপ্তাহের অফার"
 
-#: .\templates\store\home.html:219
+#: .\templates\store\home.html:216
 msgid "Great reads at even better prices."
 msgstr "দারুণ বই, আরও ভালো দামে।"
 
-#: .\templates\store\home.html:234
+#: .\templates\store\home.html:231
 msgid "Good to know"
 msgstr "জেনে রাখুন"
 
-#: .\templates\store\home.html:235
+#: .\templates\store\home.html:232
 msgid "Shopping from anywhere"
 msgstr "যেকোনো জায়গা থেকে কেনাকাটা"
 
-#: .\templates\store\home.html:236
+#: .\templates\store\home.html:233
 msgid ""
 "Everything you need to know about delivery, payment and currencies before "
 "you order."
 msgstr "অর্ডারের আগে ডেলিভারি, পেমেন্ট ও মুদ্রা সম্পর্কে যা জানা দরকার।"
 
-#: .\templates\store\home.html:237
+#: .\templates\store\home.html:234
 msgid "Ask a question"
 msgstr "প্রশ্ন করুন"
 
-#: .\templates\store\home.html:241
+#: .\templates\store\home.html:238
 msgid "Do you ship to my country?"
 msgstr "আপনারা কি আমার দেশে শিপিং করেন?"
 
-#: .\templates\store\home.html:242
+#: .\templates\store\home.html:239
 msgid ""
 "Yes. Add any delivery address at checkout and we ship there. Shipping is "
 "free on every order, with no minimum."
@@ -1338,11 +1507,11 @@ msgstr ""
 "হ্যাঁ। চেকআউটে যেকোনো ডেলিভারি ঠিকানা দিন, আমরা সেখানেই পাঠাব। প্রতিটি অর্ডারে "
 "শিপিং ফ্রি, ন্যূনতম অর্ডারের শর্ত নেই।"
 
-#: .\templates\store\home.html:245
+#: .\templates\store\home.html:242
 msgid "Which currency will I pay in?"
 msgstr "আমি কোন মুদ্রায় পেমেন্ট করব?"
 
-#: .\templates\store\home.html:246
+#: .\templates\store\home.html:243
 #, python-format
 msgid ""
 "Prices are shown in %(code)s. You can switch currency from the language & "
@@ -1353,11 +1522,11 @@ msgstr ""
 "থেকে মার্কিন ডলারে চার্জ হয়, তাই আপনার ব্যাংক চূড়ান্ত পরিমাণ রূপান্তর করে এবং তা "
 "দেখানো দামের থেকে সামান্য আলাদা হতে পারে।"
 
-#: .\templates\store\home.html:249
+#: .\templates\store\home.html:246
 msgid "Which payment methods do you accept?"
 msgstr "আপনারা কোন কোন পেমেন্ট পদ্ধতি গ্রহণ করেন?"
 
-#: .\templates\store\home.html:250
+#: .\templates\store\home.html:247
 msgid ""
 "Visa, Mastercard and American Express, processed securely by Stripe. We "
 "never see or store your card details."
@@ -1365,11 +1534,11 @@ msgstr ""
 "ভিসা, মাস্টারকার্ড ও আমেরিকান এক্সপ্রেস, Stripe-এর মাধ্যমে নিরাপদে প্রসেস করা হয়। "
 "আমরা কখনো আপনার কার্ডের তথ্য দেখি বা সংরক্ষণ করি না।"
 
-#: .\templates\store\home.html:253
+#: .\templates\store\home.html:250
 msgid "Will I pay customs or import duties?"
 msgstr "আমাকে কি কাস্টমস বা আমদানি শুল্ক দিতে হবে?"
 
-#: .\templates\store\home.html:254
+#: .\templates\store\home.html:251
 msgid ""
 "Some countries charge duties or taxes on imported goods. These are set by "
 "your local customs office and are not included in our prices."
@@ -1377,11 +1546,11 @@ msgstr ""
 "কিছু দেশ আমদানি করা পণ্যে শুল্ক বা কর নেয়। এগুলো আপনার স্থানীয় কাস্টমস অফিস নির্ধারণ "
 "করে এবং আমাদের দামের মধ্যে ধরা নেই।"
 
-#: .\templates\store\home.html:257
+#: .\templates\store\home.html:254
 msgid "How do promo codes work?"
 msgstr "প্রোমো কোড কীভাবে কাজ করে?"
 
-#: .\templates\store\home.html:258
+#: .\templates\store\home.html:255
 msgid ""
 "Enter the code on your cart page before checkout. The discount comes off "
 "your order total, and one code can be used per order."
@@ -1389,11 +1558,11 @@ msgstr ""
 "চেকআউটের আগে কার্ট পেজে কোডটি লিখুন। ছাড় আপনার মোট অর্ডার থেকে বাদ যাবে, এবং "
 "প্রতি অর্ডারে একটি কোড ব্যবহার করা যাবে।"
 
-#: .\templates\store\home.html:261
+#: .\templates\store\home.html:258
 msgid "Can I use the site in my language?"
 msgstr "আমি কি নিজের ভাষায় সাইটটি ব্যবহার করতে পারব?"
 
-#: .\templates\store\home.html:262
+#: .\templates\store\home.html:259
 msgid ""
 "BookBazar is available in English and Bangla. Pick your language from the "
 "globe menu at the top or bottom of any page."

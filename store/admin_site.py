@@ -12,7 +12,7 @@ class BookBazarAdminSite(admin.AdminSite):
     SECTIONS = [
         ('Catalog', 'catalog', ['eco.book', 'eco.category', 'eco.author', 'eco.publisher', 'eco.bookreview']),
         ('Sales', 'sales', ['eco.order', 'eco.payment', 'eco.refund']),
-        ('Marketing', 'marketing', ['eco.coupon']),
+        ('Marketing', 'marketing', ['eco.heroslide', 'eco.coupon']),
         ('Customers', 'customers', ['users.customuser', 'users.userprofile', 'eco.address', 'eco.wishlist', 'eco.cart']),
         ('Access', 'access', ['auth.group']),
     ]

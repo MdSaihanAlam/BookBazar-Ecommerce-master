@@ -25,6 +25,7 @@ from django.views.generic.list import MultipleObjectMixin
 
 from .forms import AddressForm, CategoryForm, ContactForm, PaymentForm, ProductForm
 from .currency import SESSION_CURRENCY, browser_country, format_money, request_currency
+from .hero import hero_slides
 from .middleware import SESSION_LANGUAGE, activate_user_language
 from .models import Address, Book, Cart, CartItem, Category, Coupon, Order, OrderItem, Payment, Wishlist
 
@@ -98,7 +99,7 @@ def home(request):
 
     context = {
         'featured_books': featured_books,
-        'hero_books': featured_books[:3],
+        'hero_slides': hero_slides(featured_books[:3] or available.order_by('-created_at')[:3]),
         'new_arrivals': available.order_by('-created_at')[:10],
         'deals': available.filter(discount_price__isnull=False, discount_price__lt=F('price'))[:4],
         'categories': category_list().order_by('-total_books')[:6],

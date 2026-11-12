@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
 from datetime import timedelta
@@ -473,6 +474,91 @@ class Coupon(models.Model):
     def is_valid(self):
         now = timezone.now()
         return self.active and self.valid_from <= now <= self.valid_to
+
+def validate_slide_link(value):
+    """Banner links must be a page on this site (/...) or a normal web address."""
+    if value and not value.startswith(('/', 'https://', 'http://')):
+        raise ValidationError(_('Start the link with "/" for a page on this site, or with https://'))
+
+
+class HeroSlideQuerySet(models.QuerySet):
+    def live(self):
+        now = timezone.now()
+        return self.filter(
+            models.Q(starts_at__isnull=True) | models.Q(starts_at__lte=now),
+            models.Q(ends_at__isnull=True) | models.Q(ends_at__gte=now),
+            is_active=True,
+        )
+
+
+class HeroSlide(models.Model):
+    """A banner in the home page slider, managed from the admin."""
+    TONES = [
+        ('indigo', _('Indigo')),
+        ('teal', _('Teal')),
+        ('rose', _('Rose')),
+        ('orange', _('Orange')),
+        ('green', _('Green')),
+        ('slate', _('Slate')),
+    ]
+    ICONS = [
+        ('book', _('Book')),
+        ('truck', _('Delivery truck')),
+        ('globe', _('Globe')),
+        ('tag', _('Price tag')),
+        ('gift', _('Gift')),
+        ('star', _('Star')),
+    ]
+
+    book = models.ForeignKey(
+        Book, on_delete=models.SET_NULL, null=True, blank=True, related_name='+',
+        help_text=_("Optional. Fills in the title, author, price, cover and link from this book."))
+    eyebrow = models.CharField(
+        _('label'), max_length=60, blank=True,
+        help_text=_('Small label above the title, e.g. "Summer sale". Left empty for a book on sale, it shows the discount.'))
+    title = models.CharField(max_length=120, blank=True, help_text=_("Left empty, the book's title is used."))
+    text = models.CharField(
+        _('text'), max_length=200, blank=True, help_text=_("One short line under the title. Left empty, the book's author is used."))
+    button_label = models.CharField(max_length=40, blank=True, help_text=_('Left empty, it reads "Shop now".'))
+    link = models.CharField(
+        max_length=300, blank=True, validators=[validate_slide_link],
+        help_text=_("Where the slide leads, e.g. /products/?q=dune. Left empty, it opens the book's page or the shop."))
+
+    eyebrow_bn = models.CharField(_('label (Bangla)'), max_length=60, blank=True)
+    title_bn = models.CharField(_('title (Bangla)'), max_length=120, blank=True)
+    text_bn = models.CharField(_('text (Bangla)'), max_length=200, blank=True)
+    button_label_bn = models.CharField(_('button label (Bangla)'), max_length=40, blank=True)
+
+    image = models.ImageField(
+        upload_to='banners/', blank=True, null=True,
+        help_text=_("Optional picture on the right. Left empty, the book's cover or the icon is shown."))
+    icon = models.CharField(max_length=10, choices=ICONS, default='book', help_text=_('Shown when there is no book or picture.'))
+    tone = models.CharField(_('colour'), max_length=10, choices=TONES, default='indigo')
+    show_price = models.BooleanField(default=True, help_text=_("Show the book's price on the slide."))
+
+    is_active = models.BooleanField(_('show on site'), default=True)
+    sort_order = models.PositiveSmallIntegerField(_('order'), default=0, help_text=_('Lower numbers come first.'))
+    starts_at = models.DateTimeField(_('show from'), null=True, blank=True, help_text=_('Optional.'))
+    ends_at = models.DateTimeField(_('show until'), null=True, blank=True, help_text=_('Optional.'))
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    objects = HeroSlideQuerySet.as_manager()
+
+    class Meta:
+        ordering = ['sort_order', 'id']
+        verbose_name = _('banner slide')
+        verbose_name_plural = _('banner slides')
+
+    def __str__(self):
+        return self.title or (self.book.title if self.book else _('Slide %(number)s') % {'number': self.pk})
+
+    def clean(self):
+        if self.starts_at and self.ends_at and self.ends_at < self.starts_at:
+            raise ValidationError({'ends_at': _('This must be after the start date.')})
+        if not self.book and not self.title:
+            raise ValidationError({'title': _('Add a title, or pick a book to take it from.')})
+
 
 class Refund(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)

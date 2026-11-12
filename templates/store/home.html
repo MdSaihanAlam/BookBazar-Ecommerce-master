@@ -26,36 +26,33 @@
     <div class="hero-slider" data-slider data-interval="5000" role="region" aria-roledescription="carousel" aria-label="{% translate 'Featured offers' %}">
       <div class="slider-viewport">
         <div class="slider-track" data-slider-track aria-live="off">
-          {% for book in hero_books|default:new_arrivals|slice:":3" %}
-            <article class="hero-slide tone-{{ forloop.counter0 }}" role="group" aria-roledescription="slide">
+          {% for slide in hero_slides %}
+            <article class="hero-slide tone-{{ slide.tone }}" role="group" aria-roledescription="slide">
               <div class="hero-slide-text">
-                <span class="slide-eyebrow">
-                  {% if book.is_on_sale %}<i class="fa-solid fa-bolt"></i> {% blocktranslate with percent=book.discount_percentage %}{{ percent }}% off this week{% endblocktranslate %}
-                  {% else %}<i class="fa-solid fa-star"></i> {% translate "Editor's pick" %}{% endif %}
-                </span>
-                <h2><a href="{{ book.get_absolute_url }}">{{ book.title }}</a></h2>
-                <p>{{ book.author.name|default:_("Unknown author") }}</p>
-                <div class="price">
-                  <span class="now">{% money book.final_price %}</span>
-                  {% if book.is_on_sale %}<span class="was">{% money book.price %}</span>{% endif %}
-                </div>
-                <a href="{{ book.get_absolute_url }}" class="btn btn-dark">{% translate "Shop now" %} <i class="fa-solid fa-arrow-right"></i></a>
+                {% if slide.eyebrow %}<span class="slide-eyebrow"><i class="fa-solid {{ slide.eyebrow_icon }}"></i> {{ slide.eyebrow }}</span>{% endif %}
+                <h2><a href="{{ slide.link }}">{{ slide.title }}</a></h2>
+                {% if slide.text %}<p>{{ slide.text }}</p>{% endif %}
+                {% if slide.price is not None %}
+                  <div class="price">
+                    <span class="now">{% money slide.price %}</span>
+                    {% if slide.was_price is not None %}<span class="was">{% money slide.was_price %}</span>{% endif %}
+                  </div>
+                {% endif %}
+                <a href="{{ slide.link }}" class="btn btn-dark">{{ slide.button_label }} <i class="fa-solid fa-arrow-right"></i></a>
               </div>
-              <a href="{{ book.get_absolute_url }}" class="hero-slide-cover" tabindex="-1" aria-hidden="true">
-                <img src="{{ book.image_url }}" alt="" {% if not forloop.first %}loading="lazy"{% endif %}>
-              </a>
+              {% if slide.picture_url %}
+                <a href="{{ slide.link }}" class="hero-slide-picture" tabindex="-1" aria-hidden="true">
+                  <img src="{{ slide.picture_url }}" alt="" {% if not forloop.first %}loading="lazy"{% endif %}>
+                </a>
+              {% elif slide.cover_url %}
+                <a href="{{ slide.link }}" class="hero-slide-cover" tabindex="-1" aria-hidden="true">
+                  <img src="{{ slide.cover_url }}" alt="" {% if not forloop.first %}loading="lazy"{% endif %}>
+                </a>
+              {% else %}
+                <div class="hero-slide-art" aria-hidden="true"><i class="fa-solid {{ slide.art_icon }}"></i></div>
+              {% endif %}
             </article>
           {% endfor %}
-
-          <article class="hero-slide tone-ship" role="group" aria-roledescription="slide">
-            <div class="hero-slide-text">
-              <span class="slide-eyebrow"><i class="fa-solid fa-truck-fast"></i> {% translate "Free shipping" %}</span>
-              <h2>{% translate "From our shelves to your door, anywhere" %}</h2>
-              <p>{% translate "On every order, no minimum" %}</p>
-              <a href="{% url 'store:product-list' %}" class="btn btn-dark">{% translate "Browse books" %} <i class="fa-solid fa-arrow-right"></i></a>
-            </div>
-            <div class="hero-slide-art" aria-hidden="true"><i class="fa-solid fa-earth-asia"></i></div>
-          </article>
         </div>
       </div>
 

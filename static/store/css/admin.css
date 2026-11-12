@@ -416,3 +416,35 @@ fieldset .description { color: var(--body-quiet-color); font-size: .82rem; paddi
 /* Grouped sections in the admin home and side menu */
 .app-catalog caption a, .app-sales caption a, .app-marketing caption a,
 .app-customers caption a, .app-access caption a, .app-other caption a { pointer-events: none; }
+
+/* ---------- Banner slides ---------- */
+.bb-tone-indigo { --tone: #4f46e5; }
+.bb-tone-teal { --tone: #0d9488; }
+.bb-tone-rose { --tone: #e11d48; }
+.bb-tone-orange { --tone: #ea580c; }
+.bb-tone-green { --tone: #16a34a; }
+.bb-tone-slate { --tone: #475569; }
+.bb-swatch { display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: var(--tone); vertical-align: -1px; margin-right: 4px; }
+.bb-thumb { display: block; width: 56px; height: 40px; border-radius: 8px; object-fit: cover; background: linear-gradient(135deg, color-mix(in srgb, var(--tone) 35%, transparent), color-mix(in srgb, var(--tone) 10%, transparent)); }
+
+/* Preview on the slide's edit page, styled like the home page banner */
+.bb-slide {
+  display: grid; grid-template-columns: minmax(0, 1fr) 140px; gap: 20px; align-items: center;
+  max-width: 560px; padding: 26px 28px; border-radius: 22px; border: 1px solid var(--hairline-color);
+  background:
+    radial-gradient(90% 80% at 88% 18%, color-mix(in srgb, var(--tone) 24%, transparent), transparent 62%),
+    linear-gradient(140deg, color-mix(in srgb, var(--tone) 9%, transparent), transparent 70%),
+    var(--bb-surface);
+}
+.bb-slide-eyebrow:not(:empty) {
+  display: inline-block; padding: 4px 10px; border-radius: 999px; margin-bottom: 10px;
+  background: color-mix(in srgb, var(--tone) 13%, transparent); color: color-mix(in srgb, var(--tone) 72%, var(--body-fg));
+  font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+}
+.bb-slide-title { font-family: "Fraunces", Georgia, serif; font-size: 1.5rem; font-weight: 600; line-height: 1.15; color: var(--body-loud-color); }
+.bb-slide-text { margin-top: 6px; color: var(--body-quiet-color); }
+.bb-slide-price { margin-top: 10px; font-family: "Fraunces", Georgia, serif; font-size: 1.3rem; font-weight: 600; }
+.bb-slide-btn { display: inline-block; margin-top: 14px; padding: 7px 14px; border-radius: 999px; background: var(--body-loud-color); color: var(--body-bg); font-weight: 600; font-size: .8rem; }
+.bb-slide-art { display: grid; place-items: center; }
+.bb-slide-art img { width: 110px; aspect-ratio: 2 / 3; object-fit: cover; border-radius: 4px 10px 10px 4px; box-shadow: var(--bb-shadow); transform: rotate(4deg); }
+.bb-slide-art i { display: grid; place-items: center; width: 100px; height: 100px; border-radius: 26px; font-size: 2.6rem; color: var(--tone); background: color-mix(in srgb, var(--tone) 12%, transparent); }
