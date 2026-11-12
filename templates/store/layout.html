@@ -151,7 +151,9 @@
       cartEmpty: "{{ _("Your cart is empty")|escapejs }}",
       cartEmptyHint: "{{ _("Books you add will show up here.")|escapejs }}",
       startShopping: "{{ _("Start shopping")|escapejs }}",
-      qty: "{{ _("Qty {count}")|escapejs }}"
+      qty: "{{ _("Qty {count}")|escapejs }}",
+      slideOf: "{{ _("{n} of {total}")|escapejs }}",
+      goToSlide: "{{ _("Go to slide {n}")|escapejs }}"
     };
     window.BookBazarUrls = { shop: "{% url 'store:product-list' %}" };
     window.BookBazarCurrency = {

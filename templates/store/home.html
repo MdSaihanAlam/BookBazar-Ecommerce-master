@@ -23,13 +23,50 @@
       </div>
     </div>
 
-    <div class="hero-books" aria-hidden="true">
-      {% for book in hero_books|default:new_arrivals|slice:":3" %}
-        <a class="cover" href="{{ book.get_absolute_url }}" tabindex="-1"><img src="{{ book.image_url }}" alt=""></a>
-      {% endfor %}
-      <div class="float-card">
-        <span class="icon"><i class="fa-solid fa-truck-fast"></i></span>
-        <div><strong>{% translate "Free worldwide delivery" %}</strong><br><span class="muted">{% translate "On every order, no minimum" %}</span></div>
+    <div class="hero-slider" data-slider data-interval="5000" role="region" aria-roledescription="carousel" aria-label="{% translate 'Featured offers' %}">
+      <div class="slider-viewport">
+        <div class="slider-track" data-slider-track aria-live="off">
+          {% for book in hero_books|default:new_arrivals|slice:":3" %}
+            <article class="hero-slide tone-{{ forloop.counter0 }}" role="group" aria-roledescription="slide">
+              <div class="hero-slide-text">
+                <span class="slide-eyebrow">
+                  {% if book.is_on_sale %}<i class="fa-solid fa-bolt"></i> {% blocktranslate with percent=book.discount_percentage %}{{ percent }}% off this week{% endblocktranslate %}
+                  {% else %}<i class="fa-solid fa-star"></i> {% translate "Editor's pick" %}{% endif %}
+                </span>
+                <h2><a href="{{ book.get_absolute_url }}">{{ book.title }}</a></h2>
+                <p>{{ book.author.name|default:_("Unknown author") }}</p>
+                <div class="price">
+                  <span class="now">{% money book.final_price %}</span>
+                  {% if book.is_on_sale %}<span class="was">{% money book.price %}</span>{% endif %}
+                </div>
+                <a href="{{ book.get_absolute_url }}" class="btn btn-dark">{% translate "Shop now" %} <i class="fa-solid fa-arrow-right"></i></a>
+              </div>
+              <a href="{{ book.get_absolute_url }}" class="hero-slide-cover" tabindex="-1" aria-hidden="true">
+                <img src="{{ book.image_url }}" alt="" {% if not forloop.first %}loading="lazy"{% endif %}>
+              </a>
+            </article>
+          {% endfor %}
+
+          <article class="hero-slide tone-ship" role="group" aria-roledescription="slide">
+            <div class="hero-slide-text">
+              <span class="slide-eyebrow"><i class="fa-solid fa-truck-fast"></i> {% translate "Free shipping" %}</span>
+              <h2>{% translate "From our shelves to your door, anywhere" %}</h2>
+              <p>{% translate "On every order, no minimum" %}</p>
+              <a href="{% url 'store:product-list' %}" class="btn btn-dark">{% translate "Browse books" %} <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+            <div class="hero-slide-art" aria-hidden="true"><i class="fa-solid fa-earth-asia"></i></div>
+          </article>
+        </div>
+      </div>
+
+      <div class="slider-controls">
+        <button type="button" class="slider-btn" data-slider-prev aria-label="{% translate 'Previous slide' %}"><i class="fa-solid fa-chevron-left"></i></button>
+        <div class="slider-dots" data-slider-dots></div>
+        <button type="button" class="slider-btn" data-slider-next aria-label="{% translate 'Next slide' %}"><i class="fa-solid fa-chevron-right"></i></button>
+        <button type="button" class="slider-btn" data-slider-toggle aria-label="{% translate 'Pause slideshow' %}"
+                data-label-pause="{% translate 'Pause slideshow' %}" data-label-play="{% translate 'Play slideshow' %}">
+          <i class="fa-solid fa-pause"></i>
+        </button>
       </div>
     </div>
   </div>

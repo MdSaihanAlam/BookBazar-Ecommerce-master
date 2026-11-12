@@ -355,9 +355,9 @@
   // Name only the clicked cover, so the browser's cross-page view transition can morph it into the book page
   document.addEventListener('click', (event) => {
     const link = event.target.closest('a[href]');
-    const card = link && link.closest('.book-card, .palette-item, .hero-books');
+    const card = link && link.closest('.book-card, .palette-item, .hero-slide');
     if (!card || event.metaKey || event.ctrlKey || event.shiftKey) return;
-    const img = link.querySelector('img') || card.querySelector('.book-cover img');
+    const img = link.querySelector('img') || card.querySelector('.book-cover img, .hero-slide-cover img');
     if (!img) return;
     // Two elements with the same name would cancel the transition, so release the book page's own cover first
     document.querySelectorAll('.product-media img').forEach((cover) => { cover.style.viewTransitionName = 'none'; });
@@ -366,6 +366,112 @@
   window.addEventListener('pageshow', () => {
     document.querySelectorAll('img[style*="view-transition-name"]').forEach((img) => { img.style.viewTransitionName = ''; });
   });
+
+  /* ---------- Hero banner slider ---------- */
+  function initSlider(slider) {
+    const track = slider.querySelector('[data-slider-track]');
+    const slides = Array.from(track.children);
+    const dotsBox = slider.querySelector('[data-slider-dots]');
+    const toggle = slider.querySelector('[data-slider-toggle]');
+    const interval = parseInt(slider.dataset.interval, 10) || 5000;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let index = 0;
+    let timer = null;
+    let paused = reduceMotion;   // never auto-advance for people who asked for less motion
+    let hovering = false;
+
+    if (slides.length < 2) {
+      slider.querySelector('.slider-controls').hidden = true;
+      return;
+    }
+
+    slider.style.setProperty('--slide-interval', `${interval}ms`);
+    const dots = slides.map((slide, i) => {
+      slide.setAttribute('aria-label', (text.slideOf || '{n} of {total}').replace('{n}', i + 1).replace('{total}', slides.length));
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'slider-dot';
+      dot.setAttribute('aria-label', (text.goToSlide || 'Go to slide {n}').replace('{n}', i + 1));
+      dot.innerHTML = '<span></span>';
+      dot.addEventListener('click', () => { go(i); restart(); });
+      dotsBox.appendChild(dot);
+      return dot;
+    });
+
+    function go(next) {
+      index = (next + slides.length) % slides.length;
+      track.style.transform = `translateX(-${index * 100}%)`;
+      slides.forEach((slide, i) => {
+        const active = i === index;
+        slide.classList.toggle('is-active', active);
+        slide.toggleAttribute('inert', !active);
+      });
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('is-active', i === index);
+        dot.setAttribute('aria-current', i === index ? 'true' : 'false');
+        // Restart the dot's fill animation so it times the new slide
+        const fill = dot.firstElementChild;
+        fill.style.animation = 'none';
+        void fill.offsetWidth;
+        fill.style.animation = '';
+      });
+    }
+
+    function stop() {
+      clearInterval(timer);
+      timer = null;
+    }
+
+    function restart() {
+      stop();
+      const running = !paused && !hovering && !document.hidden;
+      slider.classList.toggle('is-playing', running);
+      if (running) timer = setInterval(() => go(index + 1), interval);
+    }
+
+    function setPaused(value) {
+      paused = value;
+      toggle.innerHTML = `<i class="fa-solid ${paused ? 'fa-play' : 'fa-pause'}"></i>`;
+      toggle.setAttribute('aria-label', paused ? toggle.dataset.labelPlay : toggle.dataset.labelPause);
+      // While it plays, screen readers are not interrupted by each change
+      track.setAttribute('aria-live', paused ? 'polite' : 'off');
+      restart();
+    }
+
+    slider.querySelector('[data-slider-prev]').addEventListener('click', () => { go(index - 1); restart(); });
+    slider.querySelector('[data-slider-next]').addEventListener('click', () => { go(index + 1); restart(); });
+    toggle.addEventListener('click', () => setPaused(!paused));
+
+    slider.addEventListener('mouseenter', () => { hovering = true; restart(); });
+    slider.addEventListener('mouseleave', () => { hovering = false; restart(); });
+    slider.addEventListener('focusin', () => { hovering = true; restart(); });
+    slider.addEventListener('focusout', (event) => {
+      if (!slider.contains(event.relatedTarget)) { hovering = false; restart(); }
+    });
+    document.addEventListener('visibilitychange', restart);
+
+    slider.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowRight') { go(index + 1); restart(); }
+      if (event.key === 'ArrowLeft') { go(index - 1); restart(); }
+    });
+
+    // Swipe on touch screens
+    let startX = null;
+    slider.addEventListener('pointerdown', (event) => {
+      if (event.pointerType !== 'mouse') startX = event.clientX;
+    });
+    slider.addEventListener('pointerup', (event) => {
+      if (startX === null) return;
+      const distance = event.clientX - startX;
+      startX = null;
+      if (Math.abs(distance) > 40) { go(index + (distance < 0 ? 1 : -1)); restart(); }
+    });
+
+    go(0);
+    setPaused(paused);
+  }
+
+  document.querySelectorAll('[data-slider]').forEach(initSlider);
 
   /* ---------- Sticky buy bar ---------- */
   const buyBar = document.querySelector('.buy-bar');
